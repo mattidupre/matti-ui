@@ -1,0 +1,13 @@
+{
+  "eslint.useFlatConfig": true,
+  "rewrap.onSave": true,
+  "editor.codeActionsOnSave": ["source.fixAll.eslint"],
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "json.schemas": [
+    {
+      "fileMatch": ["tsconfig.json", "*-tsconfig.json"],
+      "url": "http://json.schemastore.org/tsconfig"
+    }
+  ]
+}

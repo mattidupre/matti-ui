@@ -1,13 +1,16 @@
 // @ts-check
 // @ts-ignore
 import typescriptParser from '@typescript-eslint/parser';
-import { resolveFromRoot, pathFromRoot, PATHS } from './paths.js';
+import { resolveFromRoot, PATHS, EXTENSIONS } from './paths.js';
+import { defineFlatConfig } from 'eslint-define-config';
 
 const REACT_VERSION = '18.2';
-const EXTENSIONS = ['js', 'cjs', 'mjs', 'jsx', 'ts', 'tsx'];
 const INCLUDES = EXTENSIONS.map((ext) => `**/*.${ext}`);
 const IGNORES = ['*', '!src/'];
+
+/** @type { Record<string, string> } */
 const PLUGINS = {
+  '@pandacss': '@pandacss/eslint-plugin',
   '@stylistic': '@stylistic/eslint-plugin',
   '@typescript-eslint': '@typescript-eslint/eslint-plugin',
   import: 'eslint-plugin-import',
@@ -22,6 +25,7 @@ const PLUGINS = {
   'unused-imports': 'eslint-plugin-unused-imports',
 };
 
+/** @type { Record<string, any> } */
 const ESLINT_PLUGINS = Object.fromEntries(
   await Promise.all(
     Object.entries(PLUGINS).map(async ([id, importPath]) => [
@@ -31,7 +35,7 @@ const ESLINT_PLUGINS = Object.fromEntries(
   ),
 );
 
-export default [
+export default defineFlatConfig([
   {
     files: INCLUDES,
     plugins: ESLINT_PLUGINS,
@@ -48,6 +52,7 @@ export default [
       ecmaVersion: 'latest',
     },
     settings: {
+      '@pandacss/configPath': PATHS.panda,
       'import/parsers': {
         [resolveFromRoot('@typescript-eslint/parser')]: EXTENSIONS,
       },
@@ -69,6 +74,24 @@ export default [
   {
     files: INCLUDES,
     rules: {
+      '@pandacss/file-not-included': 'error',
+      '@pandacss/no-config-function-in-source': 'error',
+      '@pandacss/no-debug': 'error',
+      '@pandacss/no-dynamic-styling': 'error',
+      '@pandacss/no-escape-hatch': 'off',
+      '@pandacss/no-hardcoded-color': 'error',
+      '@pandacss/no-important': 'off',
+      '@pandacss/no-invalid-token-paths': 'error',
+      '@pandacss/no-invalid-nesting': 'error',
+      '@pandacss/no-margin-properties': 'off',
+      '@pandacss/no-physical-properties': 'off',
+      '@pandacss/no-property-renaming': 'error',
+      '@pandacss/no-unsafe-token-fn-usage': 'error',
+      '@pandacss/prefer-longhand-properties': 'off',
+      '@pandacss/prefer-shorthand-properties': 'off',
+      '@pandacss/prefer-atomic-properties': 'off',
+      '@pandacss/prefer-composite-properties': 'off',
+      '@pandacss/prefer-unified-property-style': 'off',
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/ban-types': 'error',
       'no-array-constructor': 'off',
@@ -397,4 +420,4 @@ export default [
       'storybook/use-storybook-testing-library': 'error',
     },
   },
-];
+]);

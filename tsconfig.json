@@ -14,7 +14,9 @@
     "outDir": "./dist",
     "experimentalDecorators": true,
     "paths": {
-      "@styled-system/*": ["../styled-system/*"]
+      "@styled-system/*": ["../styled-system/*"],
+      "@environment/*": ["../environment/*"],
+      "@config": ["../ui.config.js"]
     }
   },
   "include": ["./src/**/*"]

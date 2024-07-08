@@ -1,20 +1,24 @@
+// @ts-check
+
 import { defineConfig } from '@pandacss/dev';
+import { UI_ENVIRONMENT } from './ui.config.js';
+import { mapValues } from 'lodash-es';
 
 export default defineConfig({
+  presets: [],
+
   // Whether to use css reset
   preflight: true,
 
-  // Where to look for your css declarations
   include: ['./src/**/*.{js,jsx,ts,tsx}'],
-
-  // Files to exclude
   exclude: [],
-
-  // Useful for theme customization
-  theme: {
-    extend: {},
-  },
-
-  // The output directory for your css system
   outdir: 'styled-system',
+  theme: {
+    breakpoints: UI_ENVIRONMENT.breakpoints.sizes,
+    tokens: {
+      colors: mapValues(UI_ENVIRONMENT.colors.cssVariablesWrapped, (palette) =>
+        mapValues(palette, (value) => ({ value })),
+      ),
+    },
+  },
 });

@@ -5,12 +5,12 @@ export function Box() {
     <>
       <h1
         className={css({
-          bg: 'red.300',
-          fontFamily: 'Inter',
-          px: '4',
-          py: '3',
-          borderRadius: 'md',
-          _hover: { bg: 'red.400' },
+          bg: 'primary.300',
+          // fontFamily: 'Inter',
+          // px: '4',
+          // py: '3',
+          // borderRadius: 'md',
+          _hover: { bg: 'accent.400' },
         })}
       >
         Box

@@ -1,84 +1,51 @@
-import type { Simplify } from 'type-fest';
 import type {
-  ColorObject,
+  LightOrDarkOrBase,
+  PaletteConfig,
+  PaletteConfigById,
   PaletteId,
+  SwatchConfig,
   SwatchId,
-  ColorOptions,
-  Palette,
-} from './types';
+  SwatchOptions,
+} from './entities';
+import { extendSwatch } from './extendSwatch';
 import { UI_ENVIRONMENT } from '@config';
 
 const {
   colors: { paletteIds, palettes },
 } = UI_ENVIRONMENT;
 
-const DEFAULT_COLOR_OBJECT: ColorObject = {
-  lightness: 0,
-  chroma: 0,
-  hue: 0,
-};
+type DefineSwatchOptions = LightOrDarkOrBase<
+  Partial<{ lightness: number; chroma: number; hue: number }>
+>;
 
-type BaseOptions = ColorOptions<Partial<ColorObject>>;
-
-type SwatchOptions = ColorOptions<Partial<ColorObject>>;
-
-type PaletteOptions<TPaletteId extends PaletteId = PaletteId> = {
-  _base?: BaseOptions;
-} & {
-  [X in SwatchId<TPaletteId>]: SwatchOptions;
-};
-
-type PaletteConfig<TPaletteId extends PaletteId = PaletteId> =
-  Palette<TPaletteId> & {
+type DefinePaletteOptions = {
+  [TPaletteId in PaletteId]: {
+    base?: DefineSwatchOptions;
     swatches: {
-      [TSwatchId in SwatchId<TPaletteId>]: {
-        light: ColorObject;
-        dark: ColorObject;
-      };
+      [X in SwatchId<TPaletteId>]: DefineSwatchOptions;
     };
   };
-
-export type PalettesConfig = {
-  [TPaletteId in PaletteId]: PaletteConfig<TPaletteId>;
 };
 
 export const definePalettes = (
-  colors: Simplify<{
-    [TPaletteId in PaletteId]: PaletteOptions<TPaletteId>;
-  }>,
-): PalettesConfig => {
-  const colorsConfig = {} as Record<string, unknown>;
+  options: DefinePaletteOptions,
+): PaletteConfigById => {
+  const paletteConfigById = {} as PaletteConfigById;
   for (const paletteId of paletteIds) {
-    const palette = palettes[paletteId];
-    const { _base = {}, ...swatchesOptions } = colors[paletteId];
+    const { base, swatches: swatchesOptions } = options[paletteId];
     const paletteConfig = {
-      ...palette,
+      ...palettes[paletteId],
       swatches: {},
     } as PaletteConfig;
-    for (const swatchId of palette.swatchIds) {
-      const {
-        light: lightOptions,
-        dark: darkOptions,
-        ...baseOptions
-      } = swatchesOptions[
-        swatchId as keyof typeof swatchesOptions
-      ] as SwatchOptions;
-      paletteConfig.swatches[swatchId] = {
-        light: {
-          ...DEFAULT_COLOR_OBJECT,
-          ..._base,
-          ...baseOptions,
-          ...lightOptions,
-        },
-        dark: {
-          ...DEFAULT_COLOR_OBJECT,
-          ..._base,
-          ...baseOptions,
-          ...darkOptions,
-        },
-      };
+    for (const swatchId of paletteConfig.swatchIds) {
+      (paletteConfig.swatches as Record<SwatchId, SwatchConfig>)[swatchId] =
+        extendSwatch(
+          base,
+          (swatchesOptions as Record<SwatchId, SwatchOptions>)[swatchId],
+        );
     }
-    colorsConfig[paletteId] = paletteConfig;
+    (paletteConfigById as Record<PaletteId, PaletteConfig>)[paletteId] =
+      paletteConfig;
   }
-  return colorsConfig as PalettesConfig;
+  return paletteConfigById;
 };

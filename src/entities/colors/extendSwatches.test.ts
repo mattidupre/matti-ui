@@ -1,38 +1,55 @@
-import { describe, test, expect } from 'vitest';
+import { test, expect } from 'vitest';
 import { extendSwatches } from './extendSwatches';
 import { BASE_PALETTES } from './config';
 
-describe(extendSwatches, () => {
-  test('empty swatches', () => {
-    expect(extendSwatches(BASE_PALETTES, {})).toStrictEqual({});
-  });
+const SWATCHES = BASE_PALETTES['primary'].swatches;
 
-  test('single swatch', () => {
-    const RESULT = extendSwatches(BASE_PALETTES, {
-      primary: {
-        hue: 123,
-      },
-    });
+const EXPECTED_RESULT = {
+  '100': {
+    light: {
+      ...SWATCHES['100'].light,
+      hue: 123,
+      lightness: 0.123,
+    },
+    dark: {
+      ...SWATCHES['100'].dark,
+      hue: 321,
+      lightness: 0.123,
+    },
+  },
+  '200': {
+    light: {
+      ...SWATCHES['200'].light,
+      lightness: 0.123,
+    },
+    dark: {
+      ...SWATCHES['200'].dark,
+      lightness: 0.123,
+    },
+  },
+};
 
-    expect(RESULT).toMatchSnapshot();
-    expect(RESULT.primary[500].light.hue).toBe(123);
-    expect(RESULT.primary[500].dark.hue).toBe(123);
-  });
-
-  test('multiple swatches', () => {
-    const RESULT = extendSwatches(BASE_PALETTES, {
-      primary: {
-        hue: 123,
-      },
-      accent: {
-        hue: 321,
-      },
-    });
-
-    expect(RESULT).toMatchSnapshot();
-    expect(RESULT.primary[500].light.hue).toBe(123);
-    expect(RESULT.primary[500].dark.hue).toBe(123);
-    expect(RESULT.accent[500].light.hue).toBe(321);
-    expect(RESULT.accent[500].dark.hue).toBe(321);
-  });
+test(extendSwatches, () => {
+  expect
+    .soft(
+      extendSwatches(SWATCHES, {
+        lightness: 0.123,
+        '100': { hue: 123, dark: { hue: 321 } },
+      }),
+    )
+    .toMatchObject(EXPECTED_RESULT);
+  expect
+    .soft(
+      extendSwatches(
+        SWATCHES,
+        undefined,
+        {
+          '100': { hue: 123, dark: { hue: 321 } },
+        },
+        {
+          lightness: 0.123,
+        },
+      ),
+    )
+    .toMatchObject(EXPECTED_RESULT);
 });

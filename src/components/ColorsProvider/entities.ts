@@ -1,7 +1,7 @@
 import { createContext } from 'react';
-import type { ColorsOptions } from '../../entities/colors/types';
+import type { PaletteOptions } from '../../entities/colors/entities';
 
-export type ColorsContextValue = { options: ColorsOptions };
+export type ColorsContextValue = { options: PaletteOptions };
 
 export const ColorsContext = createContext<undefined | ColorsContextValue>(
   undefined,

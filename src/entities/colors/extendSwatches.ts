@@ -1,43 +1,34 @@
-import { mapValues } from 'lodash-es';
-import type { ColorsOptions } from './types';
-import type { PalettesConfig } from './definePalettes';
+import { pick } from 'lodash-es';
+import {
+  SWATCH_PARTIAL_KEYS,
+  type SwatchConfigById,
+  type SwatchPartial,
+  type SwatchOptions,
+  type SwatchConfig,
+  type SwatchesPartial,
+} from './entities';
+import { extendSwatch } from './extendSwatch';
 
-export const extendSwatches = <TOptions extends ColorsOptions>(
-  palettes: PalettesConfig,
-  colors: TOptions,
-): Pick<PalettesConfig['swatches'], keyof TOptions> => {
-  const extendedPalettes = {} as Pick<
-    PalettesConfig['swatches'],
-    keyof TOptions
-  >;
-
-  for (const paletteId of Object.keys(colors) as ReadonlyArray<
-    keyof typeof colors
-  >) {
-    if (!colors[paletteId]) {
-      continue;
+export const extendSwatches = <TSwatch extends SwatchConfigById>(
+  swatch: TSwatch,
+  ...options: ReadonlyArray<undefined | SwatchesPartial>
+): TSwatch => {
+  const result = {} as Record<string, SwatchConfig>;
+  const baseOptions = options.map(
+    (swatch) => pick(swatch, SWATCH_PARTIAL_KEYS) as undefined | SwatchOptions,
+  );
+  for (const swatchId of Object.keys(swatch)) {
+    const extendArgs: Array<undefined | SwatchPartial> = [
+      (swatch as Record<string, SwatchConfig>)[swatchId],
+    ];
+    for (const [i, option] of options.entries()) {
+      extendArgs.push(
+        baseOptions[i],
+        option && (option as Record<string, SwatchPartial>)[swatchId],
+      );
     }
-    const {
-      light: lightOptions,
-      dark: darkOptions,
-      ...baseOptions
-    } = colors[paletteId];
-    const swatches = mapValues(
-      palettes[paletteId].swatches,
-      ({ light, dark }) => ({
-        light: {
-          ...light,
-          ...baseOptions,
-          ...lightOptions,
-        },
-        dark: {
-          ...dark,
-          ...baseOptions,
-          ...darkOptions,
-        },
-      }),
-    );
-    extendedPalettes[paletteId] = swatches;
+    result[swatchId] = extendSwatch(...extendArgs);
   }
-  return extendedPalettes;
+
+  return result as TSwatch;
 };

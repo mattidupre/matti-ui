@@ -1,40 +1,31 @@
+import { type ReactElement, useMemo, useRef, useState } from 'react';
+import type { PaletteOptionsById } from '../../entities';
 import {
-  type ReactElement,
-  useEffect,
-  useMemo,
-  useRef,
-  useContext,
-} from 'react';
-import { mapValues } from 'lodash-es';
-import { DEFAULT_COLORS } from '../../entities';
-import { ColorsContext, type ColorsContextValue } from './entities';
+  ColorsContext,
+  type ColorsContextValue,
+  createSwatchAtoms,
+} from './entities';
 
 type ProviderProps = {
+  initialSwatches?: PaletteOptionsById;
   children: ReactElement;
 };
 
-const BASE_SWATCHES = mapValues(DEFAULT_COLORS, ({ swatches }) => swatches);
+export function ColorsProvider({ children, initialSwatches }: ProviderProps) {
+  const [swatchAtoms] = useState(() => createSwatchAtoms(initialSwatches));
 
-export function ColorsProvider({ children }: ProviderProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  // HERE: Respond to swatches changes and update ref.current inline css vars
+  // const [swatchesAtom] = useState(() => atom(swatchAtoms))
 
-  const parentColors = useContext(ColorsContext) ?? DEFAULT_COLORS;
-
-  const colors = useMemo(
-    () =>
-      // TODO: Extend colors
-      ({ ...parentColors }),
-    [parentColors],
+  const contextValue = useMemo<ColorsContextValue>(
+    () => ({ swatchAtoms }),
+    [swatchAtoms],
   );
 
-  const colorsVariables = useMemo(() => ({}), []);
-
-  useEffect(() => {
-    // TODO: Apply css variables
-  }, [colorsVariables]);
+  const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <ColorsContext.Provider value={colors}>
+    <ColorsContext.Provider value={contextValue}>
       <div ref={ref}>{children}</div>
     </ColorsContext.Provider>
   );

@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { Provider as JotaiProvider } from 'jotai';
 import { ColorsProvider } from '../ColorsProvider';
 
 type ProviderProps = {
@@ -6,5 +7,9 @@ type ProviderProps = {
 };
 
 export function Provider({ children }: ProviderProps) {
-  return <ColorsProvider>{children}</ColorsProvider>;
+  return (
+    <JotaiProvider>
+      <ColorsProvider>{children}</ColorsProvider>
+    </JotaiProvider>
+  );
 }

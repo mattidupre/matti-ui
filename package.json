@@ -59,6 +59,7 @@
     "@types/react": "18.2",
     "eslint": "8",
     "jotai": "^2.8.4",
+    "jotai-scope": "^0.6.0",
     "lodash-es": "^4.17.21",
     "react": "18.2"
   }

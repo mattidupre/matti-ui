@@ -1,6 +1,6 @@
 import { definePalettes } from './definePalettes';
 
-export const BASE_PALETTES = definePalettes({
+export const PALETTE_DEFAULTS = definePalettes({
   site: {
     swatches: {
       fill: { light: { lightness: 0 }, dark: { lightness: 1 } },

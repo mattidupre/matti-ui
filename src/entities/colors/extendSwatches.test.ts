@@ -1,8 +1,8 @@
 import { test, expect } from 'vitest';
 import { extendSwatches } from './extendSwatches';
-import { BASE_PALETTES } from './config';
+import { PALETTE_DEFAULTS } from './config';
 
-const SWATCHES = BASE_PALETTES['primary'].swatches;
+const SWATCHES = PALETTE_DEFAULTS['primary'].swatches;
 
 const EXPECTED_RESULT = {
   '100': {

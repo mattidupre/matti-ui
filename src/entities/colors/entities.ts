@@ -1,5 +1,5 @@
 import type { Simplify, SimplifyDeep } from 'type-fest';
-import type { UI_ENVIRONMENT } from '@config';
+import { UI_ENVIRONMENT } from '@config';
 
 export type LightOrDarkOrBase<T extends Record<PropertyKey, any>> = Simplify<
   T & {
@@ -19,6 +19,10 @@ export type ColorOptions = Partial<Pick<ColorConfig, 'chroma' | 'hue'>>;
 type PalettesStatic = typeof UI_ENVIRONMENT.colors.palettes;
 
 export type PaletteId = keyof PalettesStatic;
+
+export const PALETTE_IDS = Object.freeze(
+  Object.keys(typeof UI_ENVIRONMENT.colors.palettes),
+) as ReadonlyArray<PaletteId>;
 
 export type SwatchId<TPaletteId extends PaletteId = PaletteId> =
   PalettesStatic[TPaletteId]['swatchIds'][number];
@@ -86,5 +90,47 @@ export type PaletteOptionsById = {
   [TPaletteId in PaletteIdConfigurable]?: SwatchOptionsById<TPaletteId>;
 };
 
-export type ColorToken =
-  (typeof UI_ENVIRONMENT)['colors']['tokenNames'][number];
+export const COLOR_TOKENS = Object.freeze(
+  UI_ENVIRONMENT.colors.tokenNamesTuple,
+);
+
+export type ColorToken<
+  TPaletteId extends PaletteId = PaletteId,
+  TSwatchId extends SwatchId<TPaletteId> = SwatchId<TPaletteId>,
+> = (typeof COLOR_TOKENS)[number] & `${TPaletteId}.${TSwatchId}`;
+
+export const colorToken = <
+  TPaletteId extends PaletteId,
+  TSwatchId extends SwatchId<TPaletteId>,
+>(
+  paletteId: TPaletteId,
+  swatchId: TSwatchId,
+) =>
+  (UI_ENVIRONMENT.colors.tokenNames[paletteId] as Record<SwatchId, unknown>)[
+    swatchId
+  ] as ColorToken<TPaletteId, TSwatchId>;
+
+export const isColorToken = (value: any): value is ColorToken =>
+  COLOR_TOKENS.includes(value);
+
+export function assertColorToken(value: any): asserts value is ColorToken {
+  if (!isColorToken(value)) {
+    throw new TypeError(`Invalid color token "${value}".`);
+  }
+}
+
+export type ParseColorToken<TToken extends ColorToken> =
+  TToken extends `${infer TPaletteId extends PaletteId}.${infer TSwatchId extends SwatchId}`
+    ? TSwatchId extends SwatchId<TPaletteId>
+      ? {
+          paletteId: TPaletteId;
+          swatchId: TSwatchId;
+        }
+      : never
+    : never;
+
+export const parseColorToken = <TToken extends ColorToken>(token: TToken) => {
+  assertColorToken(token);
+  const [paletteId, swatchId] = token.split('.');
+  return { paletteId, swatchId } as ParseColorToken<TToken>;
+};

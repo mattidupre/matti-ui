@@ -1,9 +1,9 @@
 import { test, expect } from 'vitest';
 import { merge } from 'lodash-es';
 import { extendPalette } from './extendPalette';
-import { BASE_PALETTES } from './config';
+import { PALETTE_DEFAULTS } from './config';
 
-const PALETTE = BASE_PALETTES.fill;
+const PALETTE = PALETTE_DEFAULTS.fill;
 
 test(extendPalette, () => {
   expect.soft(extendPalette(PALETTE, {})).toStrictEqual(PALETTE);

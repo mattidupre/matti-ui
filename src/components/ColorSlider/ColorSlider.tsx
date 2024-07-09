@@ -1,0 +1,82 @@
+import { useCallback, useMemo, useRef, memo } from 'react';
+import { mapValues } from 'lodash-es';
+import type { ColorConfig } from '../../entities';
+import { ColorValueSlider } from './lib/ColorValueSlider';
+import { COLOR_DEFAULTS, COLOR_LABELS } from './entities';
+
+type ColorKey = keyof ColorConfig;
+
+type ColorSliderProps = {
+  label: string;
+  isDisabled?: boolean;
+  onChange: (value: ColorConfig) => void;
+  value?: ColorConfig;
+  defaultValue?: ColorConfig;
+  pick: ColorKey | ReadonlyArray<ColorKey>;
+};
+
+const COLOR_KEYS = Object.keys(COLOR_DEFAULTS) as ReadonlyArray<ColorKey>;
+
+const parseColorKeys = (
+  colorKeys: ColorSliderProps['pick'],
+): ReadonlyArray<ColorKey> => {
+  const pickArray = Array.isArray(colorKeys) ? colorKeys : [colorKeys];
+  return COLOR_KEYS.filter((key) => pickArray.includes(key));
+};
+
+export const ColorSlider = memo(function ColorSlider({
+  label,
+  isDisabled,
+  onChange,
+  value,
+  defaultValue,
+  pick = COLOR_KEYS,
+}: ColorSliderProps) {
+  const labels = useMemo(
+    () => mapValues(COLOR_LABELS, (colorLabel) => `${label} ${colorLabel}`),
+    [label],
+  );
+
+  const colorKeys = useMemo(() => parseColorKeys(pick), [pick]);
+
+  const valueRef = useRef<ColorConfig>(value ?? defaultValue ?? COLOR_DEFAULTS);
+  const handleChange = useCallback(
+    (color: Partial<ColorConfig>) => {
+      valueRef.current = {
+        ...valueRef.current,
+        ...color,
+      };
+      onChange(valueRef.current);
+    },
+    [onChange],
+  );
+
+  const callbacks = useMemo(
+    () =>
+      Object.fromEntries(
+        colorKeys.map((colorKey) => [
+          colorKey,
+          (value: number) => handleChange({ [colorKey]: value }),
+        ]),
+      ),
+    [colorKeys, handleChange],
+  );
+
+  return (
+    <>
+      <span>{label}</span>
+      <br />
+      {colorKeys.map((pickKey) => (
+        <ColorValueSlider
+          label={labels[pickKey]}
+          onChange={callbacks[pickKey]}
+          key={pickKey}
+          pick={pickKey}
+          value={value?.[pickKey]}
+          defaultValue={defaultValue?.[pickKey]}
+          isDisabled={isDisabled}
+        />
+      ))}
+    </>
+  );
+});

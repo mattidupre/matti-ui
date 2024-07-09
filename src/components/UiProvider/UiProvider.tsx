@@ -6,7 +6,7 @@ type ProviderProps = {
   children: ReactElement;
 };
 
-export function Provider({ children }: ProviderProps) {
+export function UiProvider({ children }: ProviderProps) {
   return (
     <JotaiProvider>
       <ColorsProvider>{children}</ColorsProvider>

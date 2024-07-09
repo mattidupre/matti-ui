@@ -4,8 +4,6 @@ import { defineConfig } from '@pandacss/dev';
 import { UI_ENVIRONMENT } from './ui.config.js';
 import { mapValues } from 'lodash-es';
 
-console.log(UI_ENVIRONMENT.colors.cssVariablesWrapped);
-
 export default defineConfig({
   presets: [],
 

@@ -11,6 +11,8 @@ type ProviderProps = {
   children: ReactElement;
 };
 
+// TODO: Verify Jotai is working in isolation.
+
 export function ColorsProvider({ children, initialSwatches }: ProviderProps) {
   const [swatchAtoms] = useState(() => createSwatchAtoms(initialSwatches));
 

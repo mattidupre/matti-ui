@@ -79,7 +79,7 @@ export default defineFlatConfig([
       '@pandacss/no-debug': 'error',
       '@pandacss/no-dynamic-styling': 'error',
       '@pandacss/no-escape-hatch': 'off',
-      '@pandacss/no-hardcoded-color': 'error',
+      '@pandacss/no-hardcoded-color': 'off',
       '@pandacss/no-important': 'off',
       '@pandacss/no-invalid-token-paths': 'error',
       '@pandacss/no-invalid-nesting': 'error',

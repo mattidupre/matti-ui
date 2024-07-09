@@ -1,15 +1,17 @@
 import '../src/index.css';
 import type { Preview } from '@storybook/react';
+import { UiProvider } from '../src/components';
+import { createElement } from 'react';
+
+// TODO: https://storybook.js.org/docs/addons/addon-types#toolbars
+// TODO: context.globals.theme || 'light';
 
 const preview: Preview = {
-  parameters: {
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
+  decorators: [
+    (Story, context) => {
+      return createElement(UiProvider, { children: createElement(Story) });
     },
-  },
+  ],
 };
 
 export default preview;

@@ -39,14 +39,15 @@ export const ColorSlider = memo(function ColorSlider({
 
   const colorKeys = useMemo(() => parseColorKeys(pick), [pick]);
 
-  const valueRef = useRef<ColorConfig>(value ?? defaultValue ?? COLOR_DEFAULTS);
+  const colorRef = useRef<ColorConfig>(value ?? defaultValue ?? COLOR_DEFAULTS);
+
   const handleChange = useCallback(
     (color: Partial<ColorConfig>) => {
-      valueRef.current = {
-        ...valueRef.current,
+      colorRef.current = {
+        ...colorRef.current,
         ...color,
       };
-      onChange(valueRef.current);
+      onChange(colorRef.current);
     },
     [onChange],
   );
@@ -72,8 +73,8 @@ export const ColorSlider = memo(function ColorSlider({
           onChange={callbacks[pickKey]}
           key={pickKey}
           pick={pickKey}
-          value={value?.[pickKey]}
-          defaultValue={defaultValue?.[pickKey]}
+          value={value}
+          defaultValue={defaultValue}
           isDisabled={isDisabled}
         />
       ))}

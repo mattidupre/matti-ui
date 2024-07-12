@@ -1,5 +1,5 @@
 import { SWATCH_CSS_VARIABLES_WRAPPED } from './constants';
-import { parseSwatchQuery, type SwatchQuery } from './swatchQuery';
+import { parseSwatchQuery, type SwatchQuery } from './colorQuery';
 import type { Color } from './types';
 
 export const colorValue = ({ lightness, chroma, hue }: Color) =>

@@ -1,6 +1,6 @@
 import { mapValues } from 'lodash-es';
 import type { Color } from './types';
-import type { ColorToken } from './swatchQuery';
+import type { ColorToken } from './colorQuery';
 import { UI_ENVIRONMENT } from '@config';
 
 export const COLORS_ENVIRONMENT = UI_ENVIRONMENT['colors'];

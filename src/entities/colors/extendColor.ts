@@ -1,11 +1,11 @@
 import { merge } from 'lodash-es';
 import { parseLightOrDarkOrBase, type LightOrDarkOrBase } from '../../utils';
 import type { Color, ColorParsed } from './types';
-import { DEFAULT_COLOR } from './constants';
+import { COLOR_DEFAULT } from './constants';
 
 const DEFAULT_COLOR_PARSED: ColorParsed = {
-  light: DEFAULT_COLOR,
-  dark: DEFAULT_COLOR,
+  light: COLOR_DEFAULT,
+  dark: COLOR_DEFAULT,
 };
 
 type PartialColor = LightOrDarkOrBase<Partial<Color>>;
@@ -15,6 +15,5 @@ export const extendColor = (...colors: ReadonlyArray<PartialColor>) => {
   for (const partialColor of colors) {
     merge(color, parseLightOrDarkOrBase(partialColor));
   }
-  console.log(Object.keys(color));
   return color;
 };

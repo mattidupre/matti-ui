@@ -1,5 +1,4 @@
 import { parseLightOrDarkOrBase } from '../../utils';
-import type { PaletteId, SwatchId } from '../colors2';
 import { PALETTE_IDS, SWATCH_IDS_BY_PALETTE_ID } from './constants';
 import type {
   PalettesConfig,
@@ -7,6 +6,7 @@ import type {
   PaletteOptions,
   SwatchOptions,
 } from './types';
+import type { PaletteId, SwatchId } from '.';
 
 type DefineOptions = {
   [TPaletteId in PaletteId]: {

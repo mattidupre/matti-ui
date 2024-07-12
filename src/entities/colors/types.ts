@@ -1,4 +1,4 @@
-import type { LightAndDark, LightOrDarkOrBase } from '../../utils';
+import type { AlsoNumber, LightAndDark, LightOrDarkOrBase } from '../../utils';
 import type { COLORS_ENVIRONMENT } from './constants';
 
 export type Color = {
@@ -16,18 +16,9 @@ type ColorsEnvironment = typeof COLORS_ENVIRONMENT;
 
 export type PaletteId = keyof ColorsEnvironment['palettes'];
 
-export type SwatchId<TPaletteId extends PaletteId = PaletteId> =
-  ColorsEnvironment['palettes'][TPaletteId]['swatchIds'][number];
-
-export type PaletteSwatchId<
-  TPaletteId extends PaletteId = PaletteId,
-  TSwatchId extends SwatchId<TPaletteId> = SwatchId<TPaletteId>,
-> = {
-  [P in TPaletteId as string]: {
-    paletteId: P;
-    swatchId: TSwatchId & SwatchId<P>;
-  };
-}[string];
+export type SwatchId<TPaletteId extends PaletteId = PaletteId> = AlsoNumber<
+  ColorsEnvironment['palettes'][TPaletteId]['swatchIds'][number]
+>;
 
 // CONFIGS
 
@@ -56,6 +47,7 @@ export type SwatchOptions = LightOrDarkOrBase<{
   hue?: number;
 }>;
 
+// eslint-disable-next-line no-autofix/unused-imports/no-unused-vars
 export type PaletteOptions<TPaletteId extends PaletteId = PaletteId> = {
   base: {
     hue?: number;

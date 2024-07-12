@@ -1,29 +1,33 @@
-import type { PaletteId, SwatchQuery } from '../../entities';
-import { usePalette } from './usePalette';
+import type { Color, PaletteId } from '../../entities';
 import { usePaletteInfo } from './usePaletteInfo';
-import { useSwatch } from './useSwatch';
-
-function Swatch({ color }: { color: SwatchQuery }) {
-  const { light, dark } = useSwatch(color);
-  return JSON.stringify(light);
-}
+import { ColorSwatch } from './ColorSwatch';
+import { ColorField } from './ColorField';
 
 type ColorPaletteProps = {
   paletteId: PaletteId;
+  colorScheme?: 'dark' | 'light' | 'auto';
+  adjust?: keyof Color | ReadonlyArray<keyof Color>;
 };
 
-export function ColorPalette({ paletteId }: ColorPaletteProps) {
+export function ColorPalette({
+  paletteId,
+  colorScheme = 'auto',
+  adjust,
+}: ColorPaletteProps) {
   const { paletteName, tokenNames } = usePaletteInfo(paletteId);
-  const { color } = usePalette(paletteId);
   return (
     <div>
-      <h2>{paletteName}</h2>
-      <pre>{JSON.stringify(color, undefined, 2)}</pre>
-      <div>
-        {tokenNames.map((tokenName) => (
-          <Swatch key={tokenName} color={tokenName} />
-        ))}
-      </div>
+      <h2>
+        {paletteName} {colorScheme}
+      </h2>
+      {adjust && <ColorField paletteId={paletteId} pick={adjust} />}
+      {tokenNames.map((tokenName) => (
+        <ColorSwatch
+          key={tokenName}
+          color={tokenName}
+          colorScheme={colorScheme}
+        />
+      ))}
     </div>
   );
 }

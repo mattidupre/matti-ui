@@ -1,4 +1,5 @@
-export * from './colorToken';
+export * from './colorAtoms';
+export * from './colorValue';
 export * from './config';
 export * from './constants';
 export * from './extendColor';

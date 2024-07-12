@@ -1,4 +1,3 @@
-import { selectFlagSelf } from '../../entities';
 import { sva } from '@styled-system/css';
 
 export const styles = sva({
@@ -33,7 +32,7 @@ export const styles = sva({
       backgroundColor: 'currentColor',
       top: '50%',
       cursor: 'pointer',
-      [selectFlagSelf('isDragging')]: {
+      ['&[data-dragging]']: {
         width: '1.5rem',
         height: '1.5rem',
       },

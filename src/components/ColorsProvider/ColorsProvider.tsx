@@ -1,9 +1,12 @@
 import { useContext, useState, type ReactElement } from 'react';
-import { PALETTE_IDS } from '../../entities';
-import type { PalettesOptions } from '../../entities';
+import {
+  PALETTE_IDS,
+  type PalettesOptions,
+  type ColorAtoms,
+  createPaletteAtoms,
+} from '../../entities';
 import { ColorsElement } from './lib/ColorsElement';
 import { ColorAtomsContext } from './lib/ColorAtomsContext';
-import { type ColorAtoms, createPaletteAtoms } from './lib/paletteAtoms';
 
 type ProviderProps = {
   defaultColors?: PalettesOptions;

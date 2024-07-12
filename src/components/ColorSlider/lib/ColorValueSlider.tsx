@@ -1,15 +1,14 @@
 import { memo } from 'react';
-import type { ColorConfig } from '../../../entities';
+import { type Color, COLOR_LABELS } from '../../../entities';
 import { Slider } from '../../Slider';
-import { COLOR_LABELS } from '../entities';
 
 type ColorValueSliderProps = {
   label: string;
   isDisabled?: boolean;
   onChange: (value: number) => void;
-  value?: ColorConfig;
-  defaultValue?: ColorConfig;
-  pick: keyof ColorConfig;
+  value?: Color;
+  defaultValue?: Color;
+  pick: keyof Color;
 };
 
 export const ColorValueSlider = memo(function ColorValueSlider({

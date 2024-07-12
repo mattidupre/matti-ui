@@ -59,9 +59,3 @@ export const flag = <TFlag extends FlagOptionsKey>(flagKey: TFlag) => {
   assertFlagOptionsKey(flagKey);
   return DATA_ATTRIBUTE_FLAGS[flagKey];
 };
-
-export const selectFlagSelf = <TFlag extends FlagOptionsKey>(flagKey: TFlag) =>
-  `&[${flag(flagKey)}]` as const;
-
-export const selectFlagChild = <TFlag extends FlagOptionsKey>(flagKey: TFlag) =>
-  `[${flag(flagKey)}] &` as const;

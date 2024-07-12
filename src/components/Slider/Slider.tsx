@@ -35,11 +35,11 @@ export function Slider({
     defaultValue,
     isDisabled,
     onChange,
-    orientation: 'horizontal',
     maxValue,
     minValue,
     step: Math.abs((maxValue - minValue) / stops),
     numberFormatter: useNumberFormatter(),
+    orientation: 'horizontal',
   };
 
   const state = useSliderState(sliderOptions);

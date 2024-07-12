@@ -1,39 +1,7 @@
-import { parseLightOrDarkOrBase } from '../../utils';
-import type { PaletteId, SwatchId } from '../colors2';
-import { PALETTE_IDS, SWATCH_IDS_BY_PALETTE_ID } from './constants';
-import type {
-  PalettesConfig,
-  PaletteConfig,
-  PaletteOptions,
-  SwatchOptions,
-} from './types';
+import type { PalettesOptions } from './entities';
+import { defineColorsConfig } from './lib/defineColorsConfig';
 
-type DefineOptions = {
-  [TPaletteId in PaletteId]: {
-    base: PaletteOptions['base'];
-    swatches: Record<SwatchId<TPaletteId>, SwatchOptions>;
-  };
-};
-
-const definePalettesConfig = (options: DefineOptions): PalettesConfig => {
-  const palettesConfig = {} as Record<string, PaletteConfig>;
-  for (const paletteId of PALETTE_IDS) {
-    const { base, swatches } = options[paletteId];
-    const paletteConfig = {
-      base: { ...base },
-      swatches: {},
-    } as PaletteConfig;
-    for (const swatchId of SWATCH_IDS_BY_PALETTE_ID[paletteId]) {
-      paletteConfig.swatches[swatchId] = parseLightOrDarkOrBase(
-        swatches[swatchId as keyof typeof swatches],
-      );
-    }
-    palettesConfig[paletteId] = paletteConfig;
-  }
-  return palettesConfig as PalettesConfig;
-};
-
-export const PALETTE_CONFIGS_BASE = definePalettesConfig({
+export const PALETTES_OPTIONS_DEFAULT: PalettesOptions = {
   site: {
     base: { hue: 0 },
     swatches: {
@@ -93,7 +61,7 @@ export const PALETTE_CONFIGS_BASE = definePalettesConfig({
     },
   },
   form: {
-    base: { chroma: 0 },
+    base: { hue: 0, chroma: 0 },
     swatches: {
       fill: {},
       background: {},
@@ -102,4 +70,6 @@ export const PALETTE_CONFIGS_BASE = definePalettesConfig({
       highlight: {},
     },
   },
-});
+};
+
+export const PALETTES_CONFIG = defineColorsConfig(PALETTES_OPTIONS_DEFAULT);

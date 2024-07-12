@@ -4,8 +4,8 @@ import { createCssVariable, wrapCssVariable } from './css.js';
 
 /**
  * @typedef {ReadonlyArray<{
- *   id: string;
- *   name: string;
+ *   paletteId: string;
+ *   paletteName: string;
  *   swatchIds: ReadonlyArray<string>;
  * }>} ColorsOptions
  */
@@ -14,7 +14,7 @@ import { createCssVariable, wrapCssVariable } from './css.js';
  * @typedef {TTuple extends readonly [
  *   infer TPalette extends ColorsOptions[number], ...infer TRest extends ColorsOptions
  * ]
- *     ? [...TResult, TPalette['id'], ...ColorsToPaletteIds<TRest, TResult>]
+ *     ? [...TResult, TPalette['paletteId'], ...ColorsToPaletteIds<TRest, TResult>]
  *     : []
  * } ColorsToPaletteIds
  * @template {ColorsOptions} TTuple
@@ -25,31 +25,18 @@ import { createCssVariable, wrapCssVariable } from './css.js';
  * @type {<const T extends ColorsOptions>(colors: T) => ColorsToPaletteIds<T>}
  */
 const colorsToPaletteIds = (colors) =>
-  /** @type {any} */ (colors.map(({ id }) => id));
+  /** @type {any} */ (colors.map(({ paletteId }) => paletteId));
 
 /**
- * @type {<const T extends ColorsOptions>(colors: T) => {
- *   [P in (T extends ReadonlyArray<infer V extends ColorsOptions[number]>
- *     ? V
- *     : never
- *   ) as P['id']]: P
- * }}
- */
-const colorsToPalettes = (colors) =>
-  /** @type {any} */ (
-    Object.fromEntries(colors.map((palette) => [palette.id, palette]))
-  );
-
-/**
- * @type {<TId extends string, TSwatch extends string>(id: TId, swatch: TSwatch) =>
- *   `${TId}.${TSwatch}`
+ * @type {<TPaletteId extends string, TSwatchId extends string>(paletteId: TPaletteId, swatchId: TSwatchId) =>
+ *   `${TPaletteId}.${TSwatchId}`
  * }
  */
 const createColorTokenName = (id, swatch) => `${id}.${swatch}`;
 
 /**
- * @type {<TId extends string, TSwatch extends string>(id: TId, swatch: TSwatch) =>
- *   ReturnType<typeof createCssVariable<`${TId}-${TSwatch}`>>
+ * @type {<TId extends string, TSwatchId extends string>(paletteId: TId, swatchId: TSwatchId) =>
+ *   ReturnType<typeof createCssVariable<`${TId}-${TSwatchId}`>>
  * }
  */
 const createColorTokenVariable = (id, swatch) =>
@@ -78,7 +65,7 @@ const createColorTokenVariable = (id, swatch) =>
  *   ...infer TRest extends ColorsOptions,
  * ]
  *   ? ColorsToTokenNamesTuple<TRest, [...TResult, ...CreateTokenNames<
- *       TPalette['id'],
+ *       TPalette['paletteId'],
  *       TPalette['swatchIds']
  *     >]>
  *   : TResult
@@ -94,9 +81,9 @@ const createColorTokenVariable = (id, swatch) =>
  */
 const colorsToTokenNamesTuple = (colors) =>
   /** @type {any} */ (
-    colors.flatMap((palette) =>
-      palette.swatchIds.flatMap((swatchName) =>
-        createColorTokenName(palette.id, swatchName),
+    colors.flatMap(({ swatchIds, paletteId }) =>
+      swatchIds.flatMap((swatchName) =>
+        createColorTokenName(paletteId, swatchName),
       ),
     )
   );
@@ -106,20 +93,20 @@ const colorsToTokenNamesTuple = (colors) =>
  * [P in (T extends ReadonlyArray<infer V extends ColorsOptions[number]>
  *   ? V
  *   : never
- * ) as P['id']]: {
+ * ) as P['paletteId']]: {
  *   [S in P['swatchIds'][number]]:
- *     ReturnType<typeof createColorTokenName<P['id'], S>>
+ *     ReturnType<typeof createColorTokenName<P['paletteId'], S>>
  * }}}
  */
 const colorsToTokenNames = (colors) =>
   /** @type {any} */ (
     Object.fromEntries(
-      colors.map(({ id, swatchIds }) => [
-        id,
+      colors.map(({ paletteId, swatchIds }) => [
+        paletteId,
         Object.fromEntries(
           swatchIds.map((swatchId) => [
             swatchId,
-            createColorTokenName(id, swatchId),
+            createColorTokenName(paletteId, swatchId),
           ]),
         ),
       ]),
@@ -131,18 +118,20 @@ const colorsToTokenNames = (colors) =>
  * [P in (T extends ReadonlyArray<infer V extends ColorsOptions[number]>
  *   ? V
  *   : never
- * ) as P['id']]: {
+ * ) as P['paletteId']]: {
  *   [S in P['swatchIds'][number]]:
- *     ReturnType<typeof createColorTokenVariable<P['id'], S>>
+ *     ReturnType<typeof createColorTokenVariable<P['paletteId'], S>>
  * }}}
  */
 const colorsToCssVariables = (colors) => {
   /** @type {Record<string, Record<string, string>>} */
   const cssVariables = {};
-  for (const { id, swatchIds } of colors) {
-    cssVariables[id] = {};
+  for (const { paletteId, swatchIds } of colors) {
+    cssVariables[paletteId] = {};
     for (const swatchName of swatchIds) {
-      cssVariables[id][swatchName] = createCssVariable(`${id}-${swatchName}`);
+      cssVariables[paletteId][swatchName] = createCssVariable(
+        `${paletteId}-${swatchName}`,
+      );
     }
   }
   return /** @type {any} */ (cssVariables);
@@ -153,26 +142,51 @@ const colorsToCssVariables = (colors) => {
  * [P in (T extends ReadonlyArray<infer V extends ColorsOptions[number]>
  *   ? V
  *   : never
- * ) as P['id']]: {
+ * ) as P['paletteId']]: {
  *   [S in P['swatchIds'][number]]:
  *     ReturnType<typeof wrapCssVariable<
- *       ReturnType<typeof createColorTokenVariable<P['id'], S>>
+ *       ReturnType<typeof createColorTokenVariable<P['paletteId'], S>>
  *     >>
  * }}}
  */
 const colorsToCssVariablesWrapped = (colors) => {
   /** @type {Record<string, Record<string, string>>} */
   const cssVariables = {};
-  for (const { id, swatchIds } of colors) {
-    cssVariables[id] = {};
+  for (const { paletteId, swatchIds } of colors) {
+    cssVariables[paletteId] = {};
     for (const swatchName of swatchIds) {
-      cssVariables[id][swatchName] = wrapCssVariable(
-        createCssVariable(`${id}-${swatchName}`),
+      cssVariables[paletteId][swatchName] = wrapCssVariable(
+        createCssVariable(`${paletteId}-${swatchName}`),
       );
     }
   }
   return /** @type {any} */ (cssVariables);
 };
+
+/**
+ * @type {<const T extends ColorsOptions>(colors: T) => {
+ *   [P in (T extends ReadonlyArray<infer V extends ColorsOptions[number]>
+ *     ? V
+ *     : never
+ *   ) as P['paletteId']]: P & {
+ *     tokenNames: CreateTokenNames<P['paletteId'], P['swatchIds']>
+ *   }
+ * }}
+ */
+const colorsToPalettes = (colors) =>
+  /** @type {any} */ (
+    Object.fromEntries(
+      colors.map((palette) => [
+        palette.paletteId,
+        {
+          ...palette,
+          tokenNames: palette.swatchIds.map((swatchId) =>
+            createColorTokenName(palette.paletteId, swatchId),
+          ),
+        },
+      ]),
+    )
+  );
 
 /**
  * @type {<const T extends ColorsOptions>(colors: T) => {

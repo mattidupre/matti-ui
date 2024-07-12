@@ -1,18 +1,18 @@
 import { useCallback, useMemo, useRef, memo } from 'react';
 import { mapValues } from 'lodash-es';
-import type { ColorConfig } from '../../entities';
+import type { Color } from '../../entities';
 import { ColorValueSlider } from './lib/ColorValueSlider';
 import { COLOR_DEFAULTS, COLOR_LABELS } from './entities';
 
-type ColorKey = keyof ColorConfig;
+type ColorKey = keyof Color;
 
 type ColorSliderProps = {
   label: string;
   isDisabled?: boolean;
-  onChange: (value: ColorConfig) => void;
-  value?: ColorConfig;
-  defaultValue?: ColorConfig;
-  pick: ColorKey | ReadonlyArray<ColorKey>;
+  onChange: (value: Color) => void;
+  value?: Color;
+  defaultValue?: Color;
+  pick?: ColorKey | ReadonlyArray<ColorKey>;
 };
 
 const COLOR_KEYS = Object.keys(COLOR_DEFAULTS) as ReadonlyArray<ColorKey>;
@@ -39,10 +39,10 @@ export const ColorSlider = memo(function ColorSlider({
 
   const colorKeys = useMemo(() => parseColorKeys(pick), [pick]);
 
-  const colorRef = useRef<ColorConfig>(value ?? defaultValue ?? COLOR_DEFAULTS);
+  const colorRef = useRef<Color>(value ?? defaultValue ?? COLOR_DEFAULTS);
 
   const handleChange = useCallback(
-    (color: Partial<ColorConfig>) => {
+    (color: Partial<Color>) => {
       colorRef.current = {
         ...colorRef.current,
         ...color,

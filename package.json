@@ -54,6 +54,7 @@
     "build-storybook": "storybook build",
     "lint": "eslint ./src/**/*",
     "prepare": "panda codegen",
+    "panda": "panda",
     "test": "vitest"
   },
   "dependencies": {

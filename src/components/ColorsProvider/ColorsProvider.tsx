@@ -1,35 +1,41 @@
-import { type ReactElement, useMemo, useRef, useState } from 'react';
-import type { PaletteOptionsById } from '../../entities';
-import {
-  ColorsContext,
-  type ColorsContextValue,
-  createSwatchAtoms,
-} from './entities';
+import { useContext, useState, type ReactElement } from 'react';
+import { PALETTE_IDS } from '../../entities';
+import type { PalettesOptions } from '../../entities';
+import { ColorsElement } from './lib/ColorsElement';
+import { ColorAtomsContext } from './lib/ColorAtomsContext';
+import { type ColorAtoms, createPaletteAtoms } from './lib/paletteAtoms';
 
 type ProviderProps = {
-  initialSwatches?: PaletteOptionsById;
+  defaultColors?: PalettesOptions;
   children: ReactElement;
 };
 
 // TODO: Verify Jotai is working in isolation.
 
-export function ColorsProvider({ children, initialSwatches }: ProviderProps) {
-  const [swatchAtoms] = useState(() => createSwatchAtoms(initialSwatches));
-
-  // HERE: Respond to swatches changes and update ref.current inline css vars
-  // const [swatchesAtom] = useState(() => atom(swatchAtoms))
-
-  const contextValue = useMemo<ColorsContextValue>(
-    () => ({ swatchAtoms }),
-    [swatchAtoms],
+export function ColorsProvider({
+  defaultColors = {},
+  children,
+}: ProviderProps) {
+  const parentContext = useContext(ColorAtomsContext);
+  const [colorAtomsContextValue] = useState(
+    () =>
+      Object.fromEntries(
+        PALETTE_IDS.map((paletteId) => {
+          if (defaultColors[paletteId]) {
+            return [
+              paletteId,
+              createPaletteAtoms(paletteId, defaultColors[paletteId]),
+            ];
+          } else if (parentContext?.[paletteId]) {
+            return [paletteId, parentContext[paletteId]] as const;
+          }
+          return [paletteId, createPaletteAtoms(paletteId)] as const;
+        }),
+      ) as ColorAtoms,
   );
-
-  const ref = useRef<HTMLDivElement>(null);
-
   return (
-    <ColorsContext.Provider value={contextValue}>
-      <div ref={ref}>{children}</div>
-    </ColorsContext.Provider>
+    <ColorAtomsContext.Provider value={colorAtomsContextValue}>
+      <ColorsElement>{children}</ColorsElement>
+    </ColorAtomsContext.Provider>
   );
-  //
 }

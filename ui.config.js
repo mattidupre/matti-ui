@@ -2,6 +2,8 @@
 
 import { defineUiEnvironment } from './environment/defineUiEnvironment';
 
+export { PREFIX as UI_PREFIX } from './environment/constants';
+
 export const UI_ENVIRONMENT = defineUiEnvironment({
   breakpoints: [
     {
@@ -27,23 +29,23 @@ export const UI_ENVIRONMENT = defineUiEnvironment({
   ],
   colors: [
     {
-      id: 'site',
-      name: 'Site',
+      paletteId: 'site',
+      paletteName: 'Site',
       swatchIds: ['fill', 'background', 'browser'],
     },
     {
-      id: 'fill',
-      name: 'Fill',
+      paletteId: 'fill',
+      paletteName: 'Fill',
       swatchIds: ['100', '200', '300', '400', '500'],
     },
     {
-      id: 'background',
-      name: 'Background',
+      paletteId: 'background',
+      paletteName: 'Background',
       swatchIds: ['500', '600', '700', '800', '900'],
     },
     {
-      id: 'primary',
-      name: 'Primary',
+      paletteId: 'primary',
+      paletteName: 'Primary',
       swatchIds: [
         '100',
         '200',
@@ -57,8 +59,8 @@ export const UI_ENVIRONMENT = defineUiEnvironment({
       ],
     },
     {
-      id: 'accent',
-      name: 'Accent',
+      paletteId: 'accent',
+      paletteName: 'Accent',
       swatchIds: [
         '100',
         '200',
@@ -72,8 +74,8 @@ export const UI_ENVIRONMENT = defineUiEnvironment({
       ],
     },
     {
-      id: 'form',
-      name: 'Form',
+      paletteId: 'form',
+      paletteName: 'Form',
       swatchIds: ['fill', 'background', 'disabled', 'outline', 'highlight'],
     },
   ],

@@ -1,14 +1,14 @@
-import type { SwatchPartial, ColorConfig, SwatchConfig } from './entities';
+import type { SwatchOptions, Color, ColorParsed } from '../entities';
 
-const DEFAULT_COLOR: ColorConfig = {
+const DEFAULT_COLOR: Color = {
   lightness: 0,
   chroma: 0,
   hue: 0,
 };
 
-export const extendSwatch = (
-  ...args: ReadonlyArray<undefined | SwatchPartial>
-): SwatchConfig => {
+export const parseColor = (
+  ...args: ReadonlyArray<undefined | SwatchOptions>
+): ColorParsed => {
   const result = {
     light: { ...DEFAULT_COLOR },
     dark: { ...DEFAULT_COLOR },

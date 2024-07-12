@@ -13,13 +13,13 @@ export const styles = sva({
     track: {
       width: '100%',
       height: '100%',
-      ['&::before']: {
-        content: '',
+      _before: {
+        content: '""',
         display: 'block',
+        position: 'absolute',
         width: '100%',
         height: '4px',
         borderRadius: '2px',
-        position: 'absolute',
         top: '50%',
         left: 0,
         transform: 'translate3d(0px, -50%, 0px)',

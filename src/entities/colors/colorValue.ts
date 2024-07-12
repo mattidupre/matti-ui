@@ -6,8 +6,15 @@ export const colorValue = ({ lightness, chroma, hue }: Color) =>
   `oklch(${lightness} ${chroma} ${hue})`;
 
 export const colorVariable = (query: SwatchQuery): string => {
-  const { paletteId, swatchId } = parseSwatchQuery(query);
-  return (SWATCH_CSS_VARIABLES_WRAPPED[paletteId] as Record<string, string>)[
-    swatchId
-  ];
+  const { paletteId, swatchId, colorScheme } = parseSwatchQuery(query);
+  const variables = (
+    SWATCH_CSS_VARIABLES_WRAPPED[paletteId] as Record<
+      string,
+      Record<string, string>
+    >
+  )[swatchId];
+  if (colorScheme) {
+    return variables[colorScheme];
+  }
+  return `light-dark(${variables.light}, ${variables.dark})`;
 };

@@ -19,7 +19,16 @@ export default defineConfig({
       tokens: {
         colors: {
           ...mapValues(UI_ENVIRONMENT.colors.cssVariablesWrapped, (palette) =>
-            mapValues(palette, (value) => ({ value })),
+            mapValues(
+              /** @type { Record<string, Record<string, string>> } */ (palette),
+              (swatch) => ({
+                DEFAULT: {
+                  value: `light-dark(${swatch.light}, ${swatch.dark})`,
+                },
+                light: { value: swatch.light },
+                dark: { value: swatch.dark },
+              }),
+            ),
           ),
           inherit: { value: 'inherit' },
           initial: { value: 'initial' },

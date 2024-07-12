@@ -4,20 +4,22 @@ import {
   type PaletteAtoms,
   type PaletteId,
   parseSwatchQuery,
-  type ColorAtoms,
+  type PalettesAtoms,
   type SwatchQuery,
 } from '../../../entities';
 
-export const ColorAtomsContext = createContext<undefined | ColorAtoms>(
-  undefined,
-);
+export const ColorAtomsContext = createContext<
+  undefined | { palettes: PalettesAtoms }
+>(undefined);
 
 export const useColorAtomsContext = () =>
   useRequiredContext(ColorAtomsContext, 'ColorAtomsContext');
 
+export const usePalettesAtoms = () => useColorAtomsContext().palettes;
+
 export const usePaletteAtoms = <TPaletteId extends PaletteId>(
   paletteId: TPaletteId,
-): PaletteAtoms<TPaletteId> => useColorAtomsContext()[paletteId];
+): PaletteAtoms<TPaletteId> => useColorAtomsContext().palettes[paletteId];
 
 export const useSwatchAtoms = (query: SwatchQuery) => {
   const { paletteId, swatchId } = parseSwatchQuery(query);

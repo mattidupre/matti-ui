@@ -28,19 +28,36 @@ const colorsToPaletteIds = (colors) =>
   /** @type {any} */ (colors.map(({ paletteId }) => paletteId));
 
 /**
- * @type {<TPaletteId extends string, TSwatchId extends string>(paletteId: TPaletteId, swatchId: TSwatchId) =>
- *   `${TPaletteId}.${TSwatchId}`
+ * @type {<
+ *   TPaletteId extends string,
+ *   TSwatchId extends string,
+ *   TColorScheme extends undefined | 'light' | 'dark' = undefined
+ * >(paletteId: TPaletteId, swatchId: TSwatchId, colorScheme?: TColorScheme) =>
+ *   [TColorScheme] extends [undefined]
+ *     ? `${TPaletteId}.${TSwatchId}`
+ *     : `${TPaletteId}.${TSwatchId}.${TColorScheme}`
  * }
  */
-const createColorTokenName = (id, swatch) => `${id}.${swatch}`;
+const createColorTokenName = (id, swatch, colorScheme) =>
+  /** @type {any} */ (
+    colorScheme ? `${id}.${swatch}.${colorScheme}` : `${id}.${swatch}`
+  );
 
 /**
- * @type {<TId extends string, TSwatchId extends string>(paletteId: TId, swatchId: TSwatchId) =>
- *   ReturnType<typeof createCssVariable<`${TId}-${TSwatchId}`>>
+ * @type {<
+ *   TPaletteId extends string,
+ *   TSwatchId extends string,
+ *   TColorScheme extends undefined | 'light' | 'dark' = undefined
+ * >(paletteId: TPaletteId, swatchId: TSwatchId, colorScheme?: TColorScheme) =>
+ *   ReturnType<typeof createCssVariable<ReturnType<
+ *     typeof createColorTokenName<TPaletteId, TSwatchId, TColorScheme>
+ *   >>>
  * }
  */
-const createColorTokenVariable = (id, swatch) =>
-  createCssVariable(`${id}-${swatch}`);
+export const createColorTokenVariable = (id, swatch, colorScheme) =>
+  /** @type {any} */ (
+    createCssVariable(createColorTokenName(id, swatch, colorScheme))
+  );
 
 /**
  * @typedef {TTuple extends readonly [
@@ -119,19 +136,24 @@ const colorsToTokenNames = (colors) =>
  *   ? V
  *   : never
  * ) as P['paletteId']]: {
- *   [S in P['swatchIds'][number]]:
- *     ReturnType<typeof createColorTokenVariable<P['paletteId'], S>>
+ *   [S in P['swatchIds'][number]]: {
+ *      light: ReturnType<typeof createColorTokenVariable<P['paletteId'], S, 'light'>>
+ *      dark: ReturnType<typeof createColorTokenVariable<P['paletteId'], S, 'dark'>>
+ *   }
  * }}}
  */
 const colorsToCssVariables = (colors) => {
-  /** @type {Record<string, Record<string, string>>} */
+  /** @type {Record<string, Record<string, Record<string, string>>>} */
   const cssVariables = {};
   for (const { paletteId, swatchIds } of colors) {
     cssVariables[paletteId] = {};
     for (const swatchName of swatchIds) {
-      cssVariables[paletteId][swatchName] = createCssVariable(
-        `${paletteId}-${swatchName}`,
-      );
+      cssVariables[paletteId][swatchName] = {};
+      for (const colorScheme of /** @type { const }*/ (['light', 'dark'])) {
+        cssVariables[paletteId][swatchName][colorScheme] = createCssVariable(
+          createColorTokenName(paletteId, swatchName, colorScheme),
+        );
+      }
     }
   }
   return /** @type {any} */ (cssVariables);
@@ -143,21 +165,28 @@ const colorsToCssVariables = (colors) => {
  *   ? V
  *   : never
  * ) as P['paletteId']]: {
- *   [S in P['swatchIds'][number]]:
- *     ReturnType<typeof wrapCssVariable<
- *       ReturnType<typeof createColorTokenVariable<P['paletteId'], S>>
- *     >>
+ *   [S in P['swatchIds'][number]]: {
+ *     light: ReturnType<typeof wrapCssVariable<
+ *       ReturnType<typeof createColorTokenVariable<P['paletteId'], S, 'light'>>
+ *     >>;
+ *     dark: ReturnType<typeof wrapCssVariable<
+ *       ReturnType<typeof createColorTokenVariable<P['paletteId'], S, 'dark'>>
+ *     >>;
+ *   }
  * }}}
  */
 const colorsToCssVariablesWrapped = (colors) => {
-  /** @type {Record<string, Record<string, string>>} */
+  /** @type {Record<string, Record<string, Record<string, string>>>} */
   const cssVariables = {};
   for (const { paletteId, swatchIds } of colors) {
     cssVariables[paletteId] = {};
     for (const swatchName of swatchIds) {
-      cssVariables[paletteId][swatchName] = wrapCssVariable(
-        createCssVariable(`${paletteId}-${swatchName}`),
-      );
+      cssVariables[paletteId][swatchName] = {};
+      for (const colorScheme of ['light', 'dark']) {
+        cssVariables[paletteId][swatchName][colorScheme] = wrapCssVariable(
+          createCssVariable(`${paletteId}.${swatchName}.${colorScheme}`),
+        );
+      }
     }
   }
   return /** @type {any} */ (cssVariables);

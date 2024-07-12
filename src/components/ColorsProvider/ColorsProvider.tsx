@@ -2,7 +2,7 @@ import { useContext, useState, type ReactElement } from 'react';
 import {
   PALETTE_IDS,
   type PalettesOptions,
-  type ColorAtoms,
+  type PalettesAtoms,
   createPaletteAtoms,
 } from '../../entities';
 import { ColorsElement } from './lib/ColorsElement';
@@ -20,22 +20,21 @@ export function ColorsProvider({
   children,
 }: ProviderProps) {
   const parentContext = useContext(ColorAtomsContext);
-  const [colorAtomsContextValue] = useState(
-    () =>
-      Object.fromEntries(
-        PALETTE_IDS.map((paletteId) => {
-          if (defaultColors[paletteId]) {
-            return [
-              paletteId,
-              createPaletteAtoms(paletteId, defaultColors[paletteId]),
-            ];
-          } else if (parentContext?.[paletteId]) {
-            return [paletteId, parentContext[paletteId]] as const;
-          }
-          return [paletteId, createPaletteAtoms(paletteId)] as const;
-        }),
-      ) as ColorAtoms,
-  );
+  const [colorAtomsContextValue] = useState(() => ({
+    palettes: Object.fromEntries(
+      PALETTE_IDS.map((paletteId) => {
+        if (defaultColors[paletteId]) {
+          return [
+            paletteId,
+            createPaletteAtoms(paletteId, defaultColors[paletteId]),
+          ];
+        } else if (parentContext?.palettes?.[paletteId]) {
+          return [paletteId, parentContext.palettes[paletteId]] as const;
+        }
+        return [paletteId, createPaletteAtoms(paletteId)] as const;
+      }),
+    ) as PalettesAtoms,
+  }));
   return (
     <ColorAtomsContext.Provider value={colorAtomsContextValue}>
       <ColorsElement>{children}</ColorsElement>

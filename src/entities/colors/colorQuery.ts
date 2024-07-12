@@ -73,18 +73,13 @@ export type InferColorScheme<T> =
     ? TColorScheme
     : never;
 
-export type SwatchQuery<TColorScheme extends ColorScheme = ColorScheme> = [
-  TColorScheme,
-] extends [never]
-  ? _SwatchQueryWithoutScheme
-  : Simplify<
-      | _SwatchQueryWithScheme<PaletteId, SwatchId, TColorScheme>
-      | _SwatchQueryWithoutScheme
-    >;
+export type SwatchQuery = Simplify<
+  _SwatchQueryWithScheme | _SwatchQueryWithoutScheme
+>;
 
-export type SwatchQueryWithScheme = SwatchQuery<ColorScheme>;
+export type SwatchQueryWithScheme = _SwatchQueryWithScheme;
 
-export type SwatchQueryWithoutScheme = SwatchQuery<never>;
+export type SwatchQueryWithoutScheme = _SwatchQueryWithoutScheme;
 
 export type PaletteSwatchId = _PaletteSwatchIdWithoutScheme;
 
@@ -111,6 +106,22 @@ export type ColorToken<
             ? _ColorTokenWithoutScheme<TPaletteId, TSwatchId>
             : never;
 
+type ParseSearchQuery<TQuery extends SwatchQuery> = Record<string, string> &
+  {
+    [TPaletteId in InferPaletteId<TQuery> as string]: Simplify<
+      {
+        paletteId: TPaletteId;
+        swatchId: SwatchId<TPaletteId> & InferSwatchId<TQuery>;
+      } & ([InferColorScheme<TQuery>] extends [never]
+        ? {
+            colorScheme: undefined;
+          }
+        : {
+            colorScheme: InferColorScheme<TQuery>;
+          })
+    >;
+  }[string];
+
 export const parseSwatchQuery = <const TQuery extends SwatchQuery>(
   query: TQuery,
 ) => {
@@ -131,20 +142,11 @@ export const parseSwatchQuery = <const TQuery extends SwatchQuery>(
 
   // TODO: Add assertion.
 
-  return { paletteId, swatchId, colorScheme } as {
-    [TPaletteId in InferPaletteId<TQuery> as string]: Simplify<
-      {
-        paletteId: TPaletteId;
-        swatchId: SwatchId<TPaletteId> & InferSwatchId<TQuery>;
-      } & (InferColorScheme<TQuery> extends ColorScheme
-        ? {
-            colorScheme: InferColorScheme<TQuery>;
-          }
-        : {
-            colorScheme: undefined;
-          })
-    >;
-  }[string];
+  return {
+    paletteId,
+    swatchId,
+    colorScheme,
+  } as unknown as ParseSearchQuery<TQuery>;
 };
 
 export const createColorToken = <const TQuery extends SwatchQuery>(

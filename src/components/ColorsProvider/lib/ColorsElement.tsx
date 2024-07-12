@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
+import { useCssVariables } from '../useCssVariables';
 
 type ColorsElementProps = {
   children?: ReactNode;
 };
 
 export function ColorsElement({ children }: ColorsElementProps) {
-  return <div>{children}</div>;
+  // Children will not re-render.
+  return <div style={useCssVariables()}>{children}</div>;
 }

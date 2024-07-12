@@ -36,8 +36,12 @@ export function ColorSwatch({ color, colorScheme }: ColorSwatchProps) {
           : undefined;
 
   return (
-    <pre className={style()} style={{ backgroundColor: colorVariable(color) }}>
-      {swatchValue}
-    </pre>
+    <div
+      style={{
+        backgroundColor: 'var(--matti-ui-primary\\.500\\.dark)',
+      }}
+    >
+      <pre>{swatchValue}</pre>
+    </div>
   );
 }

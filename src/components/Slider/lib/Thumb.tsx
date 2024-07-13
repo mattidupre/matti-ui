@@ -1,30 +1,52 @@
-import type { SliderState } from 'react-stately';
 import { useSliderThumb, VisuallyHidden } from 'react-aria';
-import { type RefObject, useRef } from 'react';
+import { type ReactNode, useCallback, useContext, useRef } from 'react';
+import clsx from 'clsx';
+import { useSetAtom } from 'jotai';
 import { flagsToDataAttributes } from '../../../entities';
+import { SliderContext } from '../entities';
+import { css } from '@styled-system/css';
+
+const styles = css({
+  top: '50%',
+  height: '100%',
+  aspectRatio: '1',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
 
 type ThumbProps = {
   className?: string;
-  state: SliderState;
-  trackRef: RefObject<Element>;
-  index: number;
+  overlay?: ReactNode;
 };
 
-export function Thumb({ className, state, trackRef, index }: ThumbProps) {
+export function Thumb({ overlay, className }: ThumbProps) {
+  const { sliderState, trackRef, sliderAtom } = useContext(SliderContext);
+  const setSliderAtom = useSetAtom(sliderAtom);
+
   const inputRef = useRef(null);
   const { thumbProps, inputProps, isDragging, isDisabled, isFocused } =
     useSliderThumb(
       {
-        index,
+        index: 0,
         trackRef,
         inputRef,
+        onFocus: useCallback(
+          () => setSliderAtom({ isFocused: true }),
+          [setSliderAtom],
+        ),
+        onBlur: useCallback(
+          () => setSliderAtom({ isFocused: false }),
+          [setSliderAtom],
+        ),
       },
-      state,
+      sliderState,
     );
 
   return (
     <div
-      className={className}
+      className={clsx(styles, className)}
       {...thumbProps}
       {...flagsToDataAttributes({
         isDisabled,
@@ -32,6 +54,7 @@ export function Thumb({ className, state, trackRef, index }: ThumbProps) {
         isFocused,
       })}
     >
+      {overlay}
       <VisuallyHidden>
         <input ref={inputRef} {...inputProps} />
       </VisuallyHidden>

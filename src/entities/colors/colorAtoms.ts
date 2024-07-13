@@ -9,9 +9,9 @@ import type {
 } from './types';
 import { PALETTE_CONFIGS_BASE } from './config';
 import { PALETTE_IDS, SWATCH_IDS_BY_PALETTE_ID } from './constants';
-import { extendColor } from './extendColor';
+import { extendColor } from './lib/extendColor';
 import { colorValue } from './colorValue';
-import { createColorVariable } from './colorVariable';
+import { createColorVariable } from './lib/colorVariable';
 import type { SwatchQueryWithScheme } from './colorQuery';
 
 type SwatchValueAll = SwatchOptions & {

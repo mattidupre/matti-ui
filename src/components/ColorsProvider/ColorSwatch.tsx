@@ -1,10 +1,4 @@
-import type { ColorToken, SwatchQuery } from '../../entities';
-import {
-  PALETTE_IDS,
-  COLOR_TOKENS_ALL,
-  createColorToken,
-  colorVariable,
-} from '../../entities';
+import type { SwatchQuery } from '../../entities';
 import { useSwatch } from './useSwatch';
 import { cva } from '@styled-system/css';
 

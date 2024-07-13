@@ -4,7 +4,7 @@ import {
   type InferPaletteId,
   type InferSwatchId,
   type InferColorScheme,
-} from './colorQuery';
+} from '../colorQuery';
 import { createColorTokenVariable } from '@environment/colors';
 
 export type ColorVariable<TQuery extends SwatchQueryWithScheme> = ReturnType<

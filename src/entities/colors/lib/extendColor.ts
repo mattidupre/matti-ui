@@ -1,7 +1,7 @@
 import { merge } from 'lodash-es';
-import { parseLightOrDarkOrBase, type LightOrDarkOrBase } from '../../utils';
-import type { Color, ColorParsed } from './types';
-import { COLOR_DEFAULT } from './constants';
+import { parseLightOrDarkOrBase, type LightOrDarkOrBase } from '../../../utils';
+import type { Color, ColorParsed } from '../types';
+import { COLOR_DEFAULT } from '../constants';
 
 const DEFAULT_COLOR_PARSED: ColorParsed = {
   light: COLOR_DEFAULT,

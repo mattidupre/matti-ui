@@ -31,7 +31,7 @@ export const UI_ENVIRONMENT = defineUiEnvironment({
     {
       paletteId: 'site',
       paletteName: 'Site',
-      swatchIds: ['fill', 'background', 'browser'],
+      swatchIds: ['fill', 'background'],
     },
     {
       paletteId: 'fill',

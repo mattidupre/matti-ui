@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, memo } from 'react';
+import { useCallback, useMemo, memo, useState } from 'react';
 import { mapValues } from 'lodash-es';
 import { type Color, COLOR_DEFAULT, COLOR_LABELS } from '../../entities';
 import { ColorValueSlider } from './lib/ColorValueSlider';
@@ -31,6 +31,12 @@ export const ColorSlider = memo(function ColorSlider({
   defaultValue,
   pick = COLOR_KEYS,
 }: ColorSliderProps) {
+  const [isControlled] = useState(defaultValue === undefined);
+  const [valueState, setValueState] = useState<Color>(
+    (isControlled ? value : defaultValue) ?? COLOR_DEFAULT,
+  );
+  const color = value ?? valueState;
+
   const labels = useMemo(
     () => mapValues(COLOR_LABELS, (colorLabel) => `${label} ${colorLabel}`),
     [label],
@@ -38,17 +44,18 @@ export const ColorSlider = memo(function ColorSlider({
 
   const colorKeys = useMemo(() => parseColorKeys(pick), [pick]);
 
-  const colorRef = useRef<Color>(value ?? defaultValue ?? COLOR_DEFAULT);
-
   const handleChange = useCallback(
-    (color: Partial<Color>) => {
-      colorRef.current = {
-        ...colorRef.current,
+    (value: Partial<Color>) => {
+      const newColor = {
         ...color,
+        ...value,
       };
-      onChange(colorRef.current);
+      if (!isControlled) {
+        setValueState(newColor);
+      }
+      onChange(newColor);
     },
-    [onChange],
+    [color, isControlled, onChange],
   );
 
   const callbacks = useMemo(
@@ -64,19 +71,19 @@ export const ColorSlider = memo(function ColorSlider({
 
   return (
     <>
-      <span>{label}</span>
       <br />
-      {colorKeys.map((pickKey) => (
-        <ColorValueSlider
-          label={labels[pickKey]}
-          onChange={callbacks[pickKey]}
-          key={pickKey}
-          pick={pickKey}
-          value={value}
-          defaultValue={defaultValue}
-          isDisabled={isDisabled}
-        />
-      ))}
+      {colorKeys.map((pickKey) => {
+        return (
+          <ColorValueSlider
+            label={labels[pickKey]}
+            onChange={callbacks[pickKey]}
+            key={pickKey}
+            pick={pickKey}
+            color={color}
+            isDisabled={isDisabled}
+          />
+        );
+      })}
     </>
   );
 });

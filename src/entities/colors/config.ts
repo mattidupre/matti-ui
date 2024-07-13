@@ -39,15 +39,12 @@ export const PALETTE_CONFIGS_BASE = definePalettesConfig({
     swatches: {
       fill: { light: { lightness: 0 }, dark: { lightness: 1 } },
       background: { light: { lightness: 1 }, dark: { lightness: 0 } },
-      browser: {
-        /* extends: 'primary.500' */
-      },
     },
   },
   fill: {
     base: { chroma: 0 },
     swatches: {
-      '100': { light: { lightness: 1 } },
+      '100': { light: { lightness: 1 }, dark: { lightness: 0 } },
       '200': {},
       '300': {},
       '400': {},

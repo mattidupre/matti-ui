@@ -17,9 +17,7 @@ export function ColorPalette({
   const { paletteName, tokenNames } = usePaletteInfo(paletteId);
   return (
     <div>
-      <h2>
-        {paletteName} {colorScheme}
-      </h2>
+      <h2>{paletteName}</h2>
       {adjust && <ColorField paletteId={paletteId} pick={adjust} />}
       {tokenNames.map((tokenName) => (
         <ColorSwatch

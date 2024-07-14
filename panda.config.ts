@@ -1,5 +1,3 @@
-// @ts-check
-
 import { defineConfig } from '@pandacss/dev';
 import { mapSwatchesToColorTokens } from './shared/entities';
 import { UI_PREFIX } from './shared/constants';

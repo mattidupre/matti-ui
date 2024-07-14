@@ -22,14 +22,13 @@ export function ColorPalette({
       {adjust && <ColorField paletteId={paletteId} pick={adjust} />}
       {useMemo(
         () =>
-          mapSwatches(({ colorToken }) => (
-            <ColorSwatch
-              key={colorToken}
-              color={colorToken}
-              colorScheme={colorScheme}
-            />
-          )),
-        [colorScheme],
+          mapSwatches(
+            ({ colorToken, paletteId: thisPaletteId }) =>
+              paletteId === thisPaletteId && (
+                <ColorSwatch key={colorToken} color={colorToken} />
+              ),
+          ),
+        [paletteId],
       )}
     </div>
   );

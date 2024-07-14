@@ -1,21 +1,12 @@
-import { useCallback } from 'react';
-import { useAtomCallback } from 'jotai/utils';
+import { useAtomValue } from 'jotai';
 import { usePalettesAtoms } from './lib/ColorAtomsContext';
 
 export const useCssVariables = () => {
-  // Expected to not change.
-  const palettesAtoms = usePalettesAtoms();
-  return useAtomCallback(
-    useCallback(
-      (get) =>
-        Object.assign(
-          {} as Record<string, string>,
-          ...Object.values(palettesAtoms).map(({ cssVariablesAtom }) =>
-            get(cssVariablesAtom),
-          ),
-        ),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [],
+  return Object.assign(
+    {},
+    ...Object.values(usePalettesAtoms()).map(({ cssVariablesAtom }) =>
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useAtomValue(cssVariablesAtom),
     ),
-  );
+  ) as Record<string, string>;
 };

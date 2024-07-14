@@ -1,33 +1,32 @@
-import type { SwatchQuery } from '../../../shared';
+import { type SwatchQuery, parseSwatchQuery } from '../../../shared';
 import { useSwatch } from './useSwatch';
 
 type ColorSwatchProps = {
   color: SwatchQuery;
-  colorScheme?: 'all' | 'light' | 'dark' | 'auto';
 };
 
-export function ColorSwatch({ color, colorScheme }: ColorSwatchProps) {
+export function ColorSwatch({ color }: ColorSwatchProps) {
+  const { colorToken, colorScheme } = parseSwatchQuery(color);
   const { lightValue, darkValue, value } = useSwatch(color);
-
-  if (colorScheme === 'all') {
-    throw new Error('TODO');
-  }
 
   const swatchValue =
     colorScheme === 'light'
       ? lightValue
       : colorScheme === 'dark'
         ? darkValue
-        : colorScheme === 'auto'
+        : colorScheme === undefined
           ? value
           : undefined;
 
   return (
     <div
-      style={{
-        backgroundColor: 'var(--matti-ui-primary\\.500\\.dark)',
-      }}
+      style={
+        {
+          // backgroundColor: colorVariable(color),
+        }
+      }
     >
+      {<pre>{colorToken}</pre>}
       <pre>{swatchValue}</pre>
     </div>
   );

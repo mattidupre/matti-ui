@@ -22,6 +22,12 @@ export type ColorConfig = LightAndDark<Oklch>;
 const { colorTokens, palettesById, swatchesByPaletteId, swatchesByColorToken } =
   COLORS_CONFIG;
 
+const ALL_PALETTES = Object.values(palettesById) as ReadonlyArray<PaletteAny>;
+
+const ALL_SWATCHES = ALL_PALETTES.flatMap(({ swatches }) =>
+  Object.values(swatches),
+) as ReadonlyArray<SwatchAny>;
+
 export type PaletteId = keyof typeof swatchesByPaletteId;
 
 export type SwatchId<TPaletteId extends PaletteId = PaletteId> =
@@ -152,6 +158,14 @@ export const forEachPalette = (callback: (palette: PaletteAny) => unknown) => {
   }
 };
 
+export const mapPalettes = <T>(callback: (palette: PaletteAny) => T) => {
+  const result: Array<T> = [];
+  for (const palette of ALL_PALETTES) {
+    result.push(callback(palette));
+  }
+  return result;
+};
+
 export const mapPalettesToIds = <T>(callback: (palette: PaletteAny) => T) => {
   const result: Record<string, unknown> = {};
   for (const palette of Object.values(palettesById)) {
@@ -161,14 +175,14 @@ export const mapPalettesToIds = <T>(callback: (palette: PaletteAny) => T) => {
 };
 
 export const forEachSwatch = (callback: (swatch: SwatchAny) => unknown) => {
-  for (const swatch of Object.values(swatchesByColorToken)) {
+  for (const swatch of ALL_SWATCHES) {
     callback(swatch);
   }
 };
 
 export const mapSwatches = <T>(callback: (swatch: SwatchAny) => T) => {
   const result: Array<T> = [];
-  for (const swatch of Object.values(swatchesByColorToken)) {
+  for (const swatch of ALL_SWATCHES) {
     result.push(callback(swatch));
   }
   return result;
@@ -176,7 +190,7 @@ export const mapSwatches = <T>(callback: (swatch: SwatchAny) => T) => {
 
 export const mapSwatchesToIds = <T>(callback: (swatch: SwatchAny) => T) => {
   const result: Record<string, Record<string, unknown>> = {};
-  for (const swatch of Object.values(swatchesByColorToken)) {
+  for (const swatch of ALL_SWATCHES) {
     result[swatch.paletteId] ??= {};
     result[swatch.paletteId][swatch.swatchId] = callback(swatch);
   }
@@ -187,7 +201,7 @@ export const mapSwatchesToColorTokens = <T>(
   callback: (swatch: SwatchAny) => T,
 ) => {
   const result: Record<string, unknown> = {};
-  for (const swatch of Object.values(swatchesByColorToken)) {
+  for (const swatch of ALL_SWATCHES) {
     result[swatch.colorToken] = callback(swatch);
   }
   return result as Record<(typeof colorTokens)[number], T>;

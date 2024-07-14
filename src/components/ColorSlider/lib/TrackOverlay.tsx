@@ -6,7 +6,7 @@ type TrackOverlayProps = {
   color: Color;
 };
 
-export function TrackOverlay({ pick, color }: TrackOverlayProps) {
+export function TrackOverlay({ color }: TrackOverlayProps) {
   const { value } = useSlider();
   return <div style={{ backgroundColor: colorValue(color) }}>HERE {value}</div>;
 }

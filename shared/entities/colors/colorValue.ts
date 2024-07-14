@@ -15,13 +15,13 @@ export const colorValue = (value: Color | LightAndDark<Color>): string => {
 };
 
 export const colorVariable = (query: SwatchQuery) => {
-  const { ColorScheme } = parseSwatchQuery(query);
+  const { colorScheme } = parseSwatchQuery(query);
   const {
     cssVariableWrapped,
     cssVariableWrappedLight,
     cssVariableWrappedDark,
   } = getSwatchConfig(query);
-  switch (ColorScheme) {
+  switch (colorScheme) {
     case 'light': {
       return cssVariableWrappedLight;
     }

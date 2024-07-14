@@ -1,11 +1,5 @@
-import type { SwatchQuery } from '../../entities';
+import type { SwatchQuery } from '../../../shared';
 import { useSwatch } from './useSwatch';
-import { cva } from '@styled-system/css';
-
-const style = cva({
-  base: {},
-  variants: {},
-});
 
 type ColorSwatchProps = {
   color: SwatchQuery;
@@ -13,8 +7,7 @@ type ColorSwatchProps = {
 };
 
 export function ColorSwatch({ color, colorScheme }: ColorSwatchProps) {
-  const { swatchLightValue, swatchDarkValue, swatchLightDarkValue } =
-    useSwatch(color);
+  const { lightValue, darkValue, value } = useSwatch(color);
 
   if (colorScheme === 'all') {
     throw new Error('TODO');
@@ -22,11 +15,11 @@ export function ColorSwatch({ color, colorScheme }: ColorSwatchProps) {
 
   const swatchValue =
     colorScheme === 'light'
-      ? swatchLightValue
+      ? lightValue
       : colorScheme === 'dark'
-        ? swatchDarkValue
+        ? darkValue
         : colorScheme === 'auto'
-          ? swatchLightDarkValue
+          ? value
           : undefined;
 
   return (

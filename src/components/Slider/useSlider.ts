@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { useContext, useMemo } from 'react';
-import { flagsToDataAttributes } from '../../entities';
+import { flagsToDataAttributes } from '../../../shared';
 import { SliderContext, type UseSliderValue } from './entities';
 
 export const useSlider = () => {

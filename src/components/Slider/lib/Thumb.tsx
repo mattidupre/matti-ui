@@ -2,9 +2,9 @@ import { useSliderThumb, VisuallyHidden } from 'react-aria';
 import { type ReactNode, useCallback, useContext, useRef } from 'react';
 import clsx from 'clsx';
 import { useSetAtom } from 'jotai';
-import { flagsToDataAttributes } from '../../../entities';
+import { flagsToDataAttributes } from '../../../../shared';
 import { SliderContext } from '../entities';
-import { css } from '@styled-system/css';
+import { css } from '../../../../styled-system/css';
 
 const styles = css({
   top: '50%',

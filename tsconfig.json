@@ -10,14 +10,8 @@
     "moduleResolution": "Bundler",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
-    "baseUrl": "./src",
-    "outDir": "./dist",
-    "experimentalDecorators": true,
-    "paths": {
-      "@styled-system/*": ["../styled-system/*"],
-      "@environment/*": ["../environment/*"],
-      "@config": ["../ui.config.js"]
-    }
+    "baseUrl": ".",
+    "experimentalDecorators": true
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*", "./shared/**/*"]
 }

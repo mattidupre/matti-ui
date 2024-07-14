@@ -10,6 +10,7 @@ import {
 } from 'react';
 import clsx from 'clsx';
 import { atom, useSetAtom } from 'jotai';
+import { css } from '../../../styled-system/css';
 import { Thumb } from './lib/Thumb';
 import {
   type SliderAtomValue,
@@ -19,7 +20,6 @@ import {
 import { TrackOverlay } from './lib/TrackOverlay';
 import { Track } from './lib/Track';
 import { ThumbOverlay } from './lib/ThumbOverlay';
-import { css } from '@styled-system/css';
 
 const styles = css({
   display: 'block',

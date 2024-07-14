@@ -1,4 +1,5 @@
-import type { Color, PaletteId } from '../../entities';
+import { useMemo } from 'react';
+import { mapSwatches, type Color, type PaletteId } from '../../../shared';
 import { usePaletteInfo } from './usePaletteInfo';
 import { ColorSwatch } from './ColorSwatch';
 import { ColorField } from './ColorField';
@@ -14,18 +15,22 @@ export function ColorPalette({
   colorScheme = 'auto',
   adjust,
 }: ColorPaletteProps) {
-  const { paletteName, tokenNames } = usePaletteInfo(paletteId);
+  const { paletteName } = usePaletteInfo(paletteId);
   return (
     <div>
       <h2>{paletteName}</h2>
       {adjust && <ColorField paletteId={paletteId} pick={adjust} />}
-      {tokenNames.map((tokenName) => (
-        <ColorSwatch
-          key={tokenName}
-          color={tokenName}
-          colorScheme={colorScheme}
-        />
-      ))}
+      {useMemo(
+        () =>
+          mapSwatches(({ colorToken }) => (
+            <ColorSwatch
+              key={colorToken}
+              color={colorToken}
+              colorScheme={colorScheme}
+            />
+          )),
+        [colorScheme],
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useSlider } from '../useSlider';
-import { css } from '@styled-system/css';
+import { css } from '../../../../styled-system/css';
 
 const style = css({
   display: 'block',

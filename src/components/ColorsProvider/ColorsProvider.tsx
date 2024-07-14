@@ -1,15 +1,15 @@
 import { useContext, useState, type ReactElement } from 'react';
 import {
-  PALETTE_IDS,
-  type PalettesOptions,
-  type PalettesAtoms,
   createPaletteAtoms,
-} from '../../entities';
+  mapPalettesToIds,
+  type PaletteConfig,
+  type PaletteId,
+} from '../../../shared';
 import { ColorsElement } from './lib/ColorsElement';
 import { ColorAtomsContext } from './lib/ColorAtomsContext';
 
 type ProviderProps = {
-  defaultColors?: PalettesOptions;
+  defaultColors?: Partial<Record<PaletteId, PaletteConfig['base']>>;
   children: ReactElement;
 };
 
@@ -21,19 +21,14 @@ export function ColorsProvider({
 }: ProviderProps) {
   const parentContext = useContext(ColorAtomsContext);
   const [colorAtomsContextValue] = useState(() => ({
-    palettes: Object.fromEntries(
-      PALETTE_IDS.map((paletteId) => {
-        if (defaultColors[paletteId]) {
-          return [
-            paletteId,
-            createPaletteAtoms(paletteId, defaultColors[paletteId]),
-          ];
-        } else if (parentContext?.palettes?.[paletteId]) {
-          return [paletteId, parentContext.palettes[paletteId]] as const;
-        }
-        return [paletteId, createPaletteAtoms(paletteId)] as const;
-      }),
-    ) as PalettesAtoms,
+    palettes: mapPalettesToIds(({ paletteId }) => {
+      if (defaultColors[paletteId]) {
+        return createPaletteAtoms(paletteId, defaultColors[paletteId]);
+      } else if (parentContext?.palettes?.[paletteId]) {
+        return parentContext.palettes[paletteId];
+      }
+      return createPaletteAtoms(paletteId);
+    }),
   }));
   return (
     <ColorAtomsContext.Provider value={colorAtomsContextValue}>

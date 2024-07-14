@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { InputDecorator } from '../../helpers/storybook';
+import { InputDecorator } from '../../../shared';
 import { Slider } from './Slider';
 
 export default {

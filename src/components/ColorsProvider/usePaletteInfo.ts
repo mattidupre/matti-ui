@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
-import { type PaletteId, PALETTES } from '../../entities';
+import { type PaletteId, getPaletteConfig } from '../../../shared';
 
 export const usePaletteInfo = (paletteId: PaletteId) =>
-  useMemo(() => globalThis.structuredClone(PALETTES[paletteId]), [paletteId]);
+  useMemo(
+    () => globalThis.structuredClone(getPaletteConfig(paletteId)),
+    [paletteId],
+  );

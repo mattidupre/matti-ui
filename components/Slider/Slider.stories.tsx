@@ -1,22 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { InputDecorator, COLOR_DEFAULTS } from '../../../shared';
-import { ColorSlider } from './ColorSlider';
+import { InputDecorator } from '../../shared';
+import { Slider } from './Slider';
 
 export default {
-  component: ColorSlider,
+  component: Slider,
   decorators: [InputDecorator],
   args: {
+    label: 'Slider',
     onChange: action('onChange'),
-    label: 'ColorSlider',
   },
-} satisfies Meta<typeof ColorSlider>;
+} satisfies Meta<typeof Slider>;
 
-type Story = StoryObj<typeof ColorSlider>;
+type Story = StoryObj<typeof Slider>;
 
 export const Controlled: Story = {
   args: {
-    value: COLOR_DEFAULTS,
+    value: 0,
   },
   argTypes: {
     defaultValue: { table: { disable: true } },
@@ -25,7 +25,7 @@ export const Controlled: Story = {
 
 export const Uncontrolled: Story = {
   args: {
-    defaultValue: COLOR_DEFAULTS,
+    defaultValue: 0.2,
   },
   argTypes: {
     value: { table: { disable: true } },

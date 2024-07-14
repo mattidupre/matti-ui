@@ -8,7 +8,7 @@ export default defineConfig({
   preflight: true,
   eject: false,
 
-  include: ['./src/**/*.{js,jsx,ts,tsx}'],
+  include: ['./components/**/*.{js,jsx,ts,tsx}'],
   exclude: [],
   outdir: 'styled-system',
   theme: {

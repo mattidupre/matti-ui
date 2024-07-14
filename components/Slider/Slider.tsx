@@ -10,7 +10,7 @@ import {
 } from 'react';
 import clsx from 'clsx';
 import { atom, useSetAtom } from 'jotai';
-import { css } from '../../../styled-system/css';
+import { css } from '../../styled-system/css';
 import { Thumb } from './lib/Thumb';
 import {
   type SliderAtomValue,

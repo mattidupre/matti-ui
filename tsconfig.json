@@ -13,5 +13,5 @@
     "baseUrl": ".",
     "experimentalDecorators": true
   },
-  "include": ["./src/**/*", "./shared/**/*"]
+  "include": ["./components/**/*", "./shared/**/*", "./panda/**/*"]
 }

@@ -2,7 +2,10 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import { pathFromRoot } from '../paths';
 
 export default {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: [
+    '../components/**/*.mdx',
+    '../components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+  ],
   addons: [
     // 'storybook-addon-jotai',
     '@storybook/addon-links',

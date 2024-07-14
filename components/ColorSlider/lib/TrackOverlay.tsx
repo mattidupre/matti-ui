@@ -1,4 +1,4 @@
-import { colorValue, type Color } from '../../../../shared/entities';
+import { colorValue, type Color } from '../../../shared/entities';
 import { useSlider } from '../../Slider';
 
 type TrackOverlayProps = {

@@ -6,7 +6,7 @@ import {
   parseSwatchQuery,
   type SwatchQuery,
   type SwatchAtom,
-} from '../../../../shared';
+} from '../../../shared';
 
 export const ColorAtomsContext = createContext<
   | undefined

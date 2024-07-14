@@ -20,7 +20,7 @@ export const ColorPaletteStory: Story = {
   name: 'ColorPalette',
   args: {
     paletteId: 'primary',
-    adjust: ['hue', 'chroma', 'lightness'],
+    adjust: ['hue', 'chroma'],
   },
   argTypes: {},
 };

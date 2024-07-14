@@ -6,7 +6,7 @@ import { defineFlatConfig } from 'eslint-define-config';
 
 const REACT_VERSION = '18.2';
 const INCLUDES = EXTENSIONS.map((ext) => `**/*.${ext}`);
-const IGNORES = ['*', '!src/', '!shared/'];
+const IGNORES = ['*', '!components/', '!panda/', '!shared/'];
 
 /** @type { Record<string, string> } */
 const PLUGINS = {

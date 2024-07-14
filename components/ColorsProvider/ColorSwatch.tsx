@@ -1,4 +1,8 @@
-import { type SwatchQuery, parseSwatchQuery } from '../../../shared';
+import {
+  type SwatchQuery,
+  colorVariable,
+  parseSwatchQuery,
+} from '../../shared';
 import { useSwatch } from './useSwatch';
 
 type ColorSwatchProps = {
@@ -26,6 +30,14 @@ export function ColorSwatch({ color }: ColorSwatchProps) {
         }
       }
     >
+      <div
+        style={{
+          display: 'inline-block',
+          width: 64,
+          height: 64,
+          backgroundColor: colorVariable(color),
+        }}
+      />
       {<pre>{colorToken}</pre>}
       <pre>{swatchValue}</pre>
     </div>

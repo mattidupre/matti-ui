@@ -19,8 +19,7 @@ export type ColorOption = LightOrDarkOrBase<Oklch>;
 
 export type ColorConfig = LightAndDark<Oklch>;
 
-const { colorTokens, palettesById, swatchesByPaletteId, swatchesByColorToken } =
-  COLORS_CONFIG;
+const { colorTokens, palettesById, swatchesByPaletteId } = COLORS_CONFIG;
 
 const ALL_PALETTES = Object.values(palettesById) as ReadonlyArray<PaletteAny>;
 

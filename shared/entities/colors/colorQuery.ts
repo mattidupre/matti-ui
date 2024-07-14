@@ -1,9 +1,6 @@
 import { isObject } from 'lodash-es';
 import type { Simplify } from 'type-fest';
-import { COLORS_CONFIG } from '../../config';
-import type { PaletteId, SwatchConfig, SwatchId } from '.';
-
-const { palettesById, swatchesByPaletteId } = COLORS_CONFIG;
+import type { PaletteId, SwatchId } from '.';
 
 type ColorScheme = 'light' | 'dark';
 

@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { useMemo } from 'react';
-import type { PaletteId } from '../../../shared';
+import type { PaletteId } from '../../shared';
 import { usePaletteAtoms } from './lib/ColorAtomsContext';
 import { usePaletteInfo } from '.';
 

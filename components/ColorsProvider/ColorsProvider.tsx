@@ -4,7 +4,7 @@ import {
   mapPalettesToIds,
   type PaletteConfig,
   type PaletteId,
-} from '../../../shared';
+} from '../../shared';
 import { ColorsElement } from './lib/ColorsElement';
 import { ColorAtomsContext } from './lib/ColorAtomsContext';
 

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, memo, useState } from 'react';
 import { mapValues } from 'lodash-es';
-import { type Color, COLOR_DEFAULTS, COLOR_LABELS } from '../../../shared';
+import { type Color, COLOR_DEFAULTS, COLOR_LABELS } from '../../shared';
 import { ColorValueSlider } from './lib/ColorValueSlider';
 
 type ColorKey = keyof Color;

@@ -1,6 +1,6 @@
 import { type ComponentProps, useCallback, useState } from 'react';
 import { ColorSlider } from '../ColorSlider';
-import { extendColor, type Color, type PaletteId } from '../../../shared';
+import { extendColor, type Color, type PaletteId } from '../../shared';
 import { usePalette } from './usePalette';
 
 type ColorFieldProps = {
@@ -11,7 +11,7 @@ type ColorFieldProps = {
 export function ColorField({ paletteId, pick }: ColorFieldProps) {
   const { color, setColor } = usePalette(paletteId);
 
-  const [defaultColor] = useState(() => extendColor(color));
+  const [defaultColor] = useState(() => extendColor({ lightness: 0.5 }, color));
 
   const handlePaletteChange = useCallback(
     (value: Color) => {

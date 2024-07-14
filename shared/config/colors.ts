@@ -3,7 +3,90 @@ import { defineColors } from './lib/defineColors';
 // https://leonardocolor.io/
 // https://uxdesign.cc/creating-contrast-based-themes-with-leonardo-32b6219a090f
 
+const COLOR_SWATCHES = [
+  {
+    id: '100',
+    color: {
+      light: { lightness: 0.9 },
+      dark: { lightness: 0.1 },
+    },
+  },
+  {
+    id: '200',
+    color: {
+      light: { lightness: 0.8 },
+      dark: { lightness: 0.2 },
+    },
+  },
+  {
+    id: '300',
+    color: {
+      light: { lightness: 0.7 },
+      dark: { lightness: 0.3 },
+    },
+  },
+  {
+    id: '400',
+    color: {
+      light: { lightness: 0.6 },
+      dark: { lightness: 0.4 },
+    },
+  },
+  {
+    id: '500',
+    color: {
+      light: { lightness: 0.5 },
+      dark: { lightness: 0.5 },
+    },
+  },
+  {
+    id: '600',
+    color: {
+      light: { lightness: 0.4 },
+      dark: { lightness: 0.6 },
+    },
+  },
+  {
+    id: '700',
+    color: {
+      light: { lightness: 0.3 },
+      dark: { lightness: 0.7 },
+    },
+  },
+  {
+    id: '800',
+    color: {
+      light: { lightness: 0.2 },
+      dark: { lightness: 0.8 },
+    },
+  },
+  {
+    id: '900',
+    color: {
+      light: { lightness: 0.1 },
+      dark: { lightness: 0.9 },
+    },
+  },
+] as const satisfies ReadonlyArray<{
+  id: string;
+  color: { light: { lightness: number }; dark: { lightness: number } };
+}>;
+
 export const COLORS_CONFIG = defineColors([
+  {
+    id: 'primary',
+    name: 'Primary',
+    isAdjustable: true,
+    base: { hue: 0 },
+    swatches: COLOR_SWATCHES,
+  },
+  {
+    id: 'accent',
+    name: 'Accent',
+    isAdjustable: true,
+    base: { hue: 120 },
+    swatches: COLOR_SWATCHES,
+  },
   {
     id: 'site',
     name: 'Site',
@@ -35,35 +118,35 @@ export const COLORS_CONFIG = defineColors([
       {
         id: '100',
         color: {
-          light: { lightness: 1 },
+          light: { lightness: 0.1 },
           dark: { lightness: 0 },
         },
       },
       {
         id: '200',
         color: {
-          light: { lightness: 1 },
+          light: { lightness: 0.2 },
           dark: { lightness: 0 },
         },
       },
       {
         id: '300',
         color: {
-          light: { lightness: 1 },
+          light: { lightness: 0.3 },
           dark: { lightness: 0 },
         },
       },
       {
         id: '400',
         color: {
-          light: { lightness: 1 },
+          light: { lightness: 0.4 },
           dark: { lightness: 0 },
         },
       },
       {
         id: '500',
         color: {
-          light: { lightness: 1 },
+          light: { lightness: 0.5 },
           dark: { lightness: 0 },
         },
       },
@@ -75,148 +158,6 @@ export const COLORS_CONFIG = defineColors([
     isAdjustable: false,
     base: { chroma: 0 },
     swatches: [
-      {
-        id: '500',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '600',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '700',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '800',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '900',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-    ],
-  },
-  {
-    id: 'primary',
-    name: 'Primary',
-    isAdjustable: true,
-    base: { hue: 0 },
-    swatches: [
-      {
-        id: '100',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '200',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '300',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '400',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '500',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '600',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '700',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '800',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '900',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-    ],
-  },
-  {
-    id: 'accent',
-    name: 'Accent',
-    isAdjustable: true,
-    base: { hue: 120 },
-    swatches: [
-      {
-        id: '100',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '200',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '300',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: '400',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
       {
         id: '500',
         color: {

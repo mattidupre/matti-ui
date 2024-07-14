@@ -1,7 +1,7 @@
 import { type ComponentProps, memo } from 'react';
 import type { Simplify } from 'type-fest';
 import { Slider } from '../../Slider';
-import { OKLCH_BOUNDS, type Color, COLOR_LABELS } from '../../../../shared';
+import { OKLCH_BOUNDS, type Color, COLOR_LABELS } from '../../../shared';
 import { TrackOverlay } from './TrackOverlay';
 
 type SliderProps = ComponentProps<typeof Slider>;

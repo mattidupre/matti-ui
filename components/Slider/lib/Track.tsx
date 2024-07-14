@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { useSlider } from 'react-aria';
 import clsx from 'clsx';
 import { SliderContext } from '../entities';
-import { css } from '../../../../styled-system/css';
+import { css } from '../../../styled-system/css';
 
 const style = css({
   display: 'block',

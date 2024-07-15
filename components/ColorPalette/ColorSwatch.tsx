@@ -1,6 +1,21 @@
 import { type SwatchQuery, parseSwatchQuery } from '../../shared';
-import { getColorVariableWrapped } from './lib/pandaTokens';
-import { useSwatch } from './useSwatch';
+import { sva } from '../../styled-system/css';
+import { getColorVariableWrapped } from '../entities/tokens';
+import { useSwatch } from '../ColorsProvider';
+
+const swatchRecipe = sva({
+  slots: ['swatch', 'box'],
+  base: {
+    swatch: {
+      width: '32rem',
+    },
+    box: {
+      display: 'block',
+      width: '2rem',
+      height: '2rem',
+    },
+  },
+});
 
 type ColorSwatchProps = {
   color: SwatchQuery;
@@ -20,13 +35,11 @@ export function ColorSwatch({ color }: ColorSwatchProps) {
           : undefined;
 
   return (
-    <div style={{ backgroundColor: getColorVariableWrapped(colorToken) }}>
+    <div className={swatchRecipe().swatch}>
       <div
+        className={swatchRecipe().box}
         style={{
-          display: 'inline-block',
-          width: 64,
-          height: 64,
-          backgroundColor: value,
+          backgroundColor: getColorVariableWrapped(colorToken),
         }}
       />
       {<pre>{colorToken}</pre>}

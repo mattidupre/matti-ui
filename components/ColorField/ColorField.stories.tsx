@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ColorsProvider } from './ColorsProvider';
-import { ColorPalette } from './ColorPalette';
+import { ColorsProvider } from '../ColorsProvider';
+import { ColorField } from './ColorField';
 
 export default {
-  component: ColorPalette,
+  component: ColorField,
   decorators: [
     (Story) => (
       <ColorsProvider>
@@ -12,12 +12,11 @@ export default {
     ),
   ],
   args: {},
-} satisfies Meta<typeof ColorPalette>;
+} satisfies Meta<typeof ColorField>;
 
-type Story = StoryObj<typeof ColorPalette>;
+type Story = StoryObj<typeof ColorField>;
 
-export const ColorPaletteStory: Story = {
-  name: 'ColorPalette',
+export const ColorFieldStory: Story = {
   args: {
     paletteId: 'primary',
     adjust: ['hue', 'chroma'],

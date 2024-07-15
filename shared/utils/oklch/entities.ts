@@ -1,5 +1,3 @@
-import { merge } from 'lodash-es';
-import { parse } from 'culori';
 import {
   parseLightOrDarkOrBase,
   type LightAndDark,

@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { mapSwatches, type Color, type PaletteId } from '../../shared';
-import { usePaletteInfo } from './usePaletteInfo';
-import { ColorSwatch } from './ColorSwatch';
-import { ColorField } from './ColorField';
+import { usePaletteInfo } from '../ColorsProvider/usePaletteInfo';
+import { ColorField } from '../ColorField';
+import { ColorSwatch } from '.';
 
 type ColorKeys = keyof Pick<Color, 'chroma' | 'hue'>;
 
@@ -19,7 +19,7 @@ export function ColorPalette({ paletteId, adjust }: ColorPaletteProps) {
       <h2>{paletteName}</h2>
       <div>
         {adjust && isAdjustable && (
-          <ColorField paletteId={paletteId} pick={adjust} />
+          <ColorField paletteId={paletteId} adjust={adjust} />
         )}
         {useMemo(
           () =>

@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { mapSwatches } from '../../shared';
+import { getColorVariable } from '../entities';
 import { useSwatchAtom } from './lib/ColorAtomsContext';
-import { getColorVariable } from './lib/pandaTokens';
 
 export const useCssVariables = () =>
   Object.fromEntries(

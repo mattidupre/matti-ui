@@ -1,2 +1,2 @@
 export * from './ColorPalette';
-export * from './ColorSwatch';
+export * from './lib/ColorSwatch';

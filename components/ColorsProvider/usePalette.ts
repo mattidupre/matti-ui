@@ -1,11 +1,10 @@
 import { useAtom } from 'jotai';
 import { useMemo } from 'react';
-import type { PaletteId } from '../../shared';
+import { type PaletteId, getPaletteConfig } from '../../shared';
 import { usePaletteAtoms } from './lib/ColorAtomsContext';
-import { usePaletteInfo } from '.';
 
 export const usePalette = (paletteId: PaletteId) => {
-  const paletteInfo = usePaletteInfo(paletteId);
+  const paletteInfo = getPaletteConfig(paletteId);
   const { paletteBaseAtom } = usePaletteAtoms(paletteId);
   const [color, setColor] = useAtom(paletteBaseAtom);
   return useMemo(

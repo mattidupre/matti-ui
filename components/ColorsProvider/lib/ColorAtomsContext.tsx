@@ -16,8 +16,6 @@ export const ColorAtomsContext = createContext<
 export const useColorAtomsContext = () =>
   useRequiredContext(ColorAtomsContext, 'ColorAtomsContext');
 
-export const usePalettesAtoms = () => useColorAtomsContext().palettes;
-
 export const usePaletteAtoms = <TPaletteId extends PaletteId>(
   paletteId: TPaletteId,
 ): PaletteAtoms<TPaletteId> => useColorAtomsContext().palettes[paletteId];

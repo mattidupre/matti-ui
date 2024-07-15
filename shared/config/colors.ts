@@ -126,35 +126,35 @@ export const COLORS_CONFIG = defineColors([
         id: '100',
         color: {
           light: { lightness: 0.1 },
-          dark: { lightness: 0 },
+          dark: { lightness: 0.5 },
         },
       },
       {
         id: '200',
         color: {
           light: { lightness: 0.2 },
-          dark: { lightness: 0 },
+          dark: { lightness: 0.4 },
         },
       },
       {
         id: '300',
         color: {
           light: { lightness: 0.3 },
-          dark: { lightness: 0 },
+          dark: { lightness: 0.3 },
         },
       },
       {
         id: '400',
         color: {
           light: { lightness: 0.4 },
-          dark: { lightness: 0 },
+          dark: { lightness: 0.2 },
         },
       },
       {
         id: '500',
         color: {
           light: { lightness: 0.5 },
-          dark: { lightness: 0 },
+          dark: { lightness: 0.1 },
         },
       },
     ],
@@ -168,36 +168,36 @@ export const COLORS_CONFIG = defineColors([
       {
         id: '500',
         color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
+          light: { lightness: 0.5 },
+          dark: { lightness: 0.5 },
         },
       },
       {
         id: '600',
         color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
+          light: { lightness: 0.6 },
+          dark: { lightness: 0.6 },
         },
       },
       {
         id: '700',
         color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
+          light: { lightness: 0.7 },
+          dark: { lightness: 0.7 },
         },
       },
       {
         id: '800',
         color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
+          light: { lightness: 0.8 },
+          dark: { lightness: 0.2 },
         },
       },
       {
         id: '900',
         color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
+          light: { lightness: 0.9 },
+          dark: { lightness: 0.1 },
         },
       },
     ],

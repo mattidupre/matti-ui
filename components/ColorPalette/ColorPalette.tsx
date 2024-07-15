@@ -1,25 +1,32 @@
 import { useMemo } from 'react';
-import { mapSwatches, type Color, type PaletteId } from '../../shared';
-import { usePaletteInfo } from '../ColorsProvider/usePaletteInfo';
+import { mapSwatches, type PaletteId, getPaletteConfig } from '../../shared';
 import { ColorField } from '../ColorField';
+import { css } from '../../styled-system/css';
+import { usePaletteGamut } from '../ColorsProvider/usePaletteGamut';
 import { ColorSwatch } from '.';
-
-type ColorKeys = keyof Pick<Color, 'chroma' | 'hue'>;
 
 type ColorPaletteProps = {
   paletteId: PaletteId;
-  colorScheme?: 'dark' | 'light' | 'auto';
-  adjust?: ColorKeys | ReadonlyArray<ColorKeys>;
+  colorScheme?: 'light' | 'dark';
 };
 
-export function ColorPalette({ paletteId, adjust }: ColorPaletteProps) {
-  const { paletteName, isAdjustable } = usePaletteInfo(paletteId);
+export function ColorPalette({ paletteId }: ColorPaletteProps) {
+  const { paletteName, isAdjustable } = getPaletteConfig(paletteId);
+  const { isInGamut } = usePaletteGamut(paletteId);
   return (
-    <div>
+    <div
+      className={css({
+        width: '20rem',
+        px: '2rem',
+        py: '2rem',
+        backgroundColor: 'background.900',
+      })}
+    >
       <h2>{paletteName}</h2>
+      <pre>{isInGamut ? 'In gamut' : 'Not in gamut'}</pre>
       <div>
-        {adjust && isAdjustable && (
-          <ColorField paletteId={paletteId} adjust={adjust} />
+        {isAdjustable && (
+          <ColorField paletteId={paletteId} adjust={['chroma', 'hue']} />
         )}
         {useMemo(
           () =>

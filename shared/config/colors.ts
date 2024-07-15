@@ -5,66 +5,73 @@ import { defineColors } from './lib/defineColors';
 
 const COLOR_SWATCHES = [
   {
+    id: '50',
+    color: {
+      dark: { lightness: 0.03 },
+      light: { lightness: 0.97 },
+    },
+  },
+  {
     id: '100',
     color: {
-      light: { lightness: 0.9 },
       dark: { lightness: 0.1 },
+      light: { lightness: 0.9 },
     },
   },
   {
     id: '200',
     color: {
-      light: { lightness: 0.8 },
       dark: { lightness: 0.2 },
+      light: { lightness: 0.8 },
     },
   },
   {
     id: '300',
     color: {
-      light: { lightness: 0.7 },
       dark: { lightness: 0.3 },
+      light: { lightness: 0.7 },
     },
   },
   {
     id: '400',
     color: {
-      light: { lightness: 0.6 },
       dark: { lightness: 0.4 },
+      light: { lightness: 0.6 },
     },
   },
   {
     id: '500',
     color: {
-      light: { lightness: 0.5 },
       dark: { lightness: 0.5 },
+      light: { lightness: 0.5 },
     },
   },
   {
     id: '600',
     color: {
-      light: { lightness: 0.4 },
       dark: { lightness: 0.6 },
+      light: { lightness: 0.4 },
     },
   },
   {
     id: '700',
     color: {
-      light: { lightness: 0.3 },
       dark: { lightness: 0.7 },
+      light: { lightness: 0.3 },
     },
   },
   {
     id: '800',
     color: {
-      light: { lightness: 0.2 },
       dark: { lightness: 0.8 },
+      light: { lightness: 0.2 },
     },
   },
   {
     id: '900',
     color: {
-      light: { lightness: 0.1 },
       dark: { lightness: 0.9 },
+      light: { lightness: 0.1 },
     },
   },
 ] as const satisfies ReadonlyArray<{
@@ -77,14 +84,14 @@ export const COLORS_CONFIG = defineColors([
     id: 'primary',
     name: 'Primary',
     isAdjustable: true,
-    base: { hue: 0 },
+    base: { hue: 0, chroma: 0.5 },
     swatches: COLOR_SWATCHES,
   },
   {
     id: 'accent',
     name: 'Accent',
     isAdjustable: true,
-    base: { hue: 120 },
+    base: { hue: 120, chroma: 0.5 },
     swatches: COLOR_SWATCHES,
   },
   {

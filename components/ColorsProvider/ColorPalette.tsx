@@ -17,19 +17,21 @@ export function ColorPalette({ paletteId, adjust }: ColorPaletteProps) {
   return (
     <div>
       <h2>{paletteName}</h2>
-      {adjust && isAdjustable && (
-        <ColorField paletteId={paletteId} pick={adjust} />
-      )}
-      {useMemo(
-        () =>
-          mapSwatches(
-            ({ colorToken, paletteId: thisPaletteId }) =>
-              paletteId === thisPaletteId && (
-                <ColorSwatch key={colorToken} color={colorToken} />
-              ),
-          ),
-        [paletteId],
-      )}
+      <div>
+        {adjust && isAdjustable && (
+          <ColorField paletteId={paletteId} pick={adjust} />
+        )}
+        {useMemo(
+          () =>
+            mapSwatches(
+              ({ colorToken, paletteId: thisPaletteId }) =>
+                paletteId === thisPaletteId && (
+                  <ColorSwatch key={colorToken} color={colorToken} />
+                ),
+            ),
+          [paletteId],
+        )}
+      </div>
     </div>
   );
 }

@@ -19,7 +19,13 @@ export type ColorOption = LightOrDarkOrBase<Oklch>;
 
 export type ColorConfig = LightAndDark<Oklch>;
 
-const { colorTokens, palettesById, swatchesByPaletteId } = COLORS_CONFIG;
+const {
+  paletteIds,
+  colorTokens,
+  palettesById,
+  swatchesByPaletteId,
+  swatchIdsByPaletteId,
+} = COLORS_CONFIG;
 
 const ALL_PALETTES = Object.values(palettesById) as ReadonlyArray<PaletteAny>;
 
@@ -29,10 +35,36 @@ const ALL_SWATCHES = ALL_PALETTES.flatMap(({ swatches }) =>
 
 export type PaletteId = keyof typeof swatchesByPaletteId;
 
+export const isPaletteId = (value: any): value is PaletteId =>
+  paletteIds.includes(value);
+
 export type SwatchId<TPaletteId extends PaletteId = PaletteId> =
   TPaletteId extends unknown
     ? keyof (typeof swatchesByPaletteId)[TPaletteId]
     : never;
+
+export const isPaletteSwatchId = <TPaletteId extends PaletteId>(
+  paletteId: TPaletteId,
+  value: any,
+): value is SwatchId<TPaletteId> =>
+  (swatchIdsByPaletteId[paletteId] as Array<string>).includes(value);
+
+export type PaletteSwatchIdObject = {
+  [TPaletteId in PaletteId as string]: {
+    paletteId: TPaletteId;
+    swatchId: SwatchId<TPaletteId>;
+  };
+}[string];
+
+export const isPaletteSwatchIdObject = (
+  value: any,
+): value is PaletteSwatchIdObject => {
+  if (value === null || typeof value !== 'object') {
+    return false;
+  }
+  const { paletteId, swatchId } = value;
+  return isPaletteId(paletteId) && isPaletteSwatchId(paletteId, swatchId);
+};
 
 type _SwatchAny = {
   [TPaletteId in keyof typeof swatchesByPaletteId as string]: {
@@ -87,9 +119,22 @@ export type InferPaletteSwatchIds<
   T extends RecordPartialPaletteSwatchIds<unknown>,
 > = T extends RecordPartialPaletteSwatchIds<infer TResult> ? TResult : never;
 
-export const getPaletteConfig = <const TPaletteId extends PaletteId>(
-  paletteId: TPaletteId,
-) => palettesById[paletteId];
+export type GetPalette<TQuery extends PaletteId | SwatchQuery> =
+  (typeof palettesById)[TQuery extends PaletteId
+    ? TQuery
+    : TQuery extends SwatchQuery
+      ? ParseSwatchQuery<TQuery>['paletteId']
+      : never];
+
+export const getPaletteConfig = <const TQuery extends PaletteId | SwatchQuery>(
+  query: TQuery,
+): GetPalette<TQuery> => {
+  if (isPaletteId(query)) {
+    return palettesById[query] as GetPalette<TQuery>;
+  }
+  const { paletteId } = parseSwatchQuery(query);
+  return palettesById[paletteId] as GetPalette<TQuery>;
+};
 
 type _GetSwatch<
   TPaletteId extends PaletteId,

@@ -30,6 +30,13 @@ export const wrapCssVariable = <T extends CssVariable>(value: T) => {
   return `var(${value})` as const;
 };
 
+export const unwrapCssVariable = <T extends CssVariable | CssVariableWrapped>(
+  value: T,
+) => {
+  const [, result] = /^var\((.*?)\)$/.exec(value) ?? [];
+  return result ?? value;
+};
+
 export const createCssVariableWrapped = <
   T extends string,
   TColorScheme extends 'light' | 'dark' | undefined = undefined,

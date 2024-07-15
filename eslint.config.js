@@ -5,8 +5,8 @@ import { resolveFromRoot, PATHS, EXTENSIONS } from './paths.js';
 import { defineFlatConfig } from 'eslint-define-config';
 
 const REACT_VERSION = '18.2';
-const INCLUDES = EXTENSIONS.map((ext) => `**/*.${ext}`);
-const IGNORES = ['*', '!components/', '!panda/', '!shared/'];
+const INCLUDES = [`{components,panda,shared}/**/*.{${EXTENSIONS.join(',')}}`];
+const IGNORES = [];
 
 /** @type { Record<string, string> } */
 const PLUGINS = {
@@ -34,6 +34,8 @@ const ESLINT_PLUGINS = Object.fromEntries(
     ]),
   ),
 );
+
+console.log(PATHS.panda);
 
 export default defineFlatConfig([
   {
@@ -79,7 +81,7 @@ export default defineFlatConfig([
       '@pandacss/no-debug': 'error',
       '@pandacss/no-dynamic-styling': 'error',
       '@pandacss/no-escape-hatch': 'off',
-      '@pandacss/no-hardcoded-color': 'off',
+      '@pandacss/no-hardcoded-color': 'error',
       '@pandacss/no-important': 'off',
       '@pandacss/no-invalid-token-paths': 'error',
       '@pandacss/no-invalid-nesting': 'error',

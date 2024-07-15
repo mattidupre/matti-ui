@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@pandacss/preset-base':
+    specifier: ^0.42.0
+    version: 0.42.0
+  '@pandacss/preset-panda':
+    specifier: ^0.42.0
+    version: 0.42.0
   '@types/react':
     specifier: '18.2'
     version: 18.2.79
@@ -2561,6 +2567,12 @@ packages:
       '@pandacss/types': 0.41.0
     dev: true
 
+  /@pandacss/preset-base@0.42.0:
+    resolution: {integrity: sha512-zQJBlb6Cw6+pO6ICn3inVKyK1luC0H32WCLWRfOO6JwwK8RrLe1NaPenc2zJD/4XNdtmLO0LYTrIM/ozgHF9/Q==}
+    dependencies:
+      '@pandacss/types': 0.42.0
+    dev: false
+
   /@pandacss/preset-panda@0.40.1:
     resolution: {integrity: sha512-rNw+mfU3rhQzOgUkKTZqQ6y0qRMua5Z8AVuWUrSPYCERsxmbdAVrdoOfkCjiZ+Kf+nWGumlDca9IWxI5vYlSMw==}
     dependencies:
@@ -2572,6 +2584,12 @@ packages:
     dependencies:
       '@pandacss/types': 0.41.0
     dev: true
+
+  /@pandacss/preset-panda@0.42.0:
+    resolution: {integrity: sha512-AcJJsRN2oGG58NZ/LEsJLff9Nbh9ho8EC7hTaP8OwNCmxJupscBhFX76Xtq1krwSzf0EaFeOM0Vztfj/se5WIA==}
+    dependencies:
+      '@pandacss/types': 0.42.0
+    dev: false
 
   /@pandacss/shared@0.40.1:
     resolution: {integrity: sha512-FBI2AaaYQZoA7TU/qa9z4FVGU3eQDC/cXobTOzmvewpVb+kFSjPo9hralYAViq+5EFRAJOFM7NMqQH0Enitjnw==}
@@ -2606,6 +2624,10 @@ packages:
   /@pandacss/types@0.41.0:
     resolution: {integrity: sha512-WGFxRozTK+6lQOk1nPfJ1H/5wJyT0mm68rIMNX8dtDAbessPdKZAz0orgIJ9INijbdPRtFUWlDTrJ4F0MgD2dA==}
     dev: true
+
+  /@pandacss/types@0.42.0:
+    resolution: {integrity: sha512-+qTXEjoXwd4IlquhHqrZzFwsXjY0VA12RMTahMLPnph/IoXegqpWM7Si0443SVNylpwuY+54BZ5tHFACiiqzXQ==}
+    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}

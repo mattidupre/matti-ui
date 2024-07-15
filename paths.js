@@ -23,7 +23,7 @@ export const pathFromRoot = (partialPath) =>
 export const PATHS = {
   node_modules: pathFromRoot('node_modules'),
   tsconfig: pathFromRoot(TSCONFIG_PATH),
-  panda: pathFromRoot('panda.config.js'),
+  panda: pathFromRoot('panda.config.ts'),
   tsbase: path.resolve(
     path.dirname(pathFromRoot(TSCONFIG_PATH)),
     TSCONFIG_JSON.compilerOptions.baseUrl,

@@ -1,6 +1,11 @@
 import { isObject } from 'lodash-es';
 import type { Simplify } from 'type-fest';
-import type { PaletteId, SwatchId } from '.';
+import {
+  isPaletteId,
+  isPaletteSwatchId,
+  type PaletteId,
+  type SwatchId,
+} from '.';
 
 type ColorScheme = 'light' | 'dark';
 
@@ -174,15 +179,6 @@ export type ParseSwatchQuery<TQuery extends SwatchQuery> =
     colorToken: ColorToken<TQuery>;
   };
 
-// export const swatchQueryToColorToken = <const TQuery extends SwatchQuery>(
-//   query: TQuery,
-// ): ColorToken<TQuery> => {
-//   if (typeof query === 'string') {
-//     return query as ColorToken<TQuery>;
-//   }
-//   return objectToColorToken(query) as ColorToken<TQuery>;
-// };
-
 export const parseSwatchQuery = <const TQuery extends SwatchQuery>(
   query: TQuery,
 ) => {
@@ -192,4 +188,16 @@ export const parseSwatchQuery = <const TQuery extends SwatchQuery>(
     ...object,
     colorToken: objectToColorToken(object),
   } as unknown as ParseSwatchQuery<TQuery>;
+};
+
+export const isSwatchQuery = (value: any): value is SwatchQuery => {
+  const { paletteId, swatchId } = swatchQueryToObject(value as ColorToken);
+  return isPaletteId(paletteId) && isPaletteSwatchId(paletteId, swatchId);
+};
+
+export const isColorToken = (value: any): value is ColorToken => {
+  if (typeof value !== 'string') {
+    return false;
+  }
+  return isSwatchQuery(value);
 };

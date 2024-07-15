@@ -1,8 +1,5 @@
-import {
-  type SwatchQuery,
-  colorVariable,
-  parseSwatchQuery,
-} from '../../shared';
+import { type SwatchQuery, parseSwatchQuery } from '../../shared';
+import { getColorVariableWrapped } from './lib/pandaTokens';
 import { useSwatch } from './useSwatch';
 
 type ColorSwatchProps = {
@@ -23,19 +20,13 @@ export function ColorSwatch({ color }: ColorSwatchProps) {
           : undefined;
 
   return (
-    <div
-      style={
-        {
-          // backgroundColor: colorVariable(color),
-        }
-      }
-    >
+    <div style={{ backgroundColor: getColorVariableWrapped(colorToken) }}>
       <div
         style={{
           display: 'inline-block',
           width: 64,
           height: 64,
-          backgroundColor: colorVariable(color),
+          backgroundColor: value,
         }}
       />
       {<pre>{colorToken}</pre>}

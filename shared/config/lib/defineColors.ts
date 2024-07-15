@@ -155,6 +155,7 @@ export const defineColors = <
       const colorToken = createColorToken(paletteId, swatchId);
       const colorTokenLight = createColorToken(paletteId, swatchId, 'light');
       const colorTokenDark = createColorToken(paletteId, swatchId, 'dark');
+
       const swatch = {
         paletteId,
         swatchId,

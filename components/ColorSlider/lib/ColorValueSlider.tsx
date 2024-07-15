@@ -29,7 +29,7 @@ export const ColorValueSlider = memo(function ColorValueSlider({
         value={color?.[pick]}
         minValue={OKLCH_BOUNDS[pick][0]}
         maxValue={OKLCH_BOUNDS[pick][1]}
-        trackOverlay={<TrackOverlay pick={pick} color={color} />}
+        // trackOverlay={<TrackOverlay pick={pick} color={color} />}
       />
     </>
   );

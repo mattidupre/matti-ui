@@ -1,35 +1,34 @@
-import type { LightAndDark } from '../../utils';
 import {
-  parseSwatchQuery,
-  type SwatchQuery,
-  getSwatchConfig,
-  type Color,
-} from '.';
+  extendOklchLightDark,
+  oklchToString,
+  type PartialOkclhLightDark,
+} from '../../utils';
+import type { SwatchQuery } from './colorQuery';
+import { getPaletteConfig, getSwatchConfig } from './entities';
 
-export const colorValue = (value: Color | LightAndDark<Color>): string => {
-  if ('light' in value && 'dark' in value) {
-    return `light-dark(${colorValue(value.light)}, ${colorValue(value.dark)})`;
-  }
-  const { lightness, chroma, hue } = value;
-  return `oklch(${lightness} ${chroma} ${hue})` as const;
-};
-
-export const colorVariable = (query: SwatchQuery) => {
-  const { colorScheme } = parseSwatchQuery(query);
-  const {
-    cssVariableWrapped,
-    cssVariableWrappedLight,
-    cssVariableWrappedDark,
-  } = getSwatchConfig(query);
+export const colorValue = (
+  color: PartialOkclhLightDark,
+  colorScheme?: 'light' | 'dark',
+) => {
+  const parsedColor = extendOklchLightDark(color);
   switch (colorScheme) {
     case 'light': {
-      return cssVariableWrappedLight;
+      return oklchToString(parsedColor.light);
     }
     case 'dark': {
-      return cssVariableWrappedDark;
+      return oklchToString(parsedColor.dark);
     }
     case undefined: {
-      return cssVariableWrapped;
+      return oklchToString(color);
     }
   }
+};
+
+export const swatchDefaultValue = (
+  swatch: SwatchQuery,
+  colorScheme?: 'light' | 'dark',
+) => {
+  const { base } = getPaletteConfig(swatch);
+  const { color } = getSwatchConfig(swatch);
+  return colorValue(extendOklchLightDark(base, color), colorScheme);
 };

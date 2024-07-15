@@ -60,6 +60,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@pandacss/preset-base": "^0.42.0",
+    "@pandacss/preset-panda": "^0.42.0",
     "@types/react": "18.2",
     "clsx": "^2.1.1",
     "culori": "^4.0.1",

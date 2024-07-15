@@ -2,7 +2,6 @@ import { atom, type Atom } from 'jotai';
 import type { Simplify } from 'type-fest';
 import {
   getPaletteConfig,
-  getSwatchConfig,
   colorValue,
   extendColorConfig,
   type ColorConfig,
@@ -35,29 +34,13 @@ export const createPaletteAtoms = <TPaletteId extends PaletteId>(
           ...colorObject,
           colorToken,
           value: colorValue(colorObject),
-          lightValue: colorValue(colorObject.light),
-          darkValue: colorValue(colorObject.dark),
+          lightValue: colorValue(colorObject, 'light'),
+          darkValue: colorValue(colorObject, 'dark'),
         } satisfies SwatchAtomValue;
       }) satisfies SwatchAtom,
   );
-  const swatchAtomsArray: ReadonlyArray<SwatchAtom> =
-    Object.values(swatchAtoms);
-  const cssVariablesAtom = atom<Record<string, string>>((get) =>
-    swatchAtomsArray.reduce(
-      (result, swatchAtom) => {
-        const { value, lightValue, darkValue, colorToken } = get(swatchAtom);
-        const { cssVariable, cssVariableLight, cssVariableDark } =
-          getSwatchConfig(colorToken);
-        result[cssVariable] = value;
-        result[cssVariableLight] = lightValue;
-        result[cssVariableDark] = darkValue;
-        return result;
-      },
-      {} as Record<string, string>,
-    ),
-  );
 
-  return { paletteBaseAtom, swatchAtoms, cssVariablesAtom };
+  return { paletteBaseAtom, swatchAtoms };
 };
 
 export type PaletteAtoms<TPaletteId extends PaletteId = PaletteId> =

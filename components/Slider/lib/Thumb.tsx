@@ -10,7 +10,6 @@ const styles = css({
   top: '50%',
   height: '100%',
   aspectRatio: '1',
-  cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

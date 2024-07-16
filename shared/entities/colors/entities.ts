@@ -232,7 +232,9 @@ export const mapSwatches = <T>(callback: (swatch: SwatchAny) => T) => {
   return result;
 };
 
-export const mapSwatchesToIds = <T>(callback: (swatch: SwatchAny) => T) => {
+export const mapSwatchesToPaletteIds = <T>(
+  callback: (swatch: SwatchAny) => T,
+) => {
   const result: Record<string, Record<string, unknown>> = {};
   for (const swatch of ALL_SWATCHES) {
     result[swatch.paletteId] ??= {};

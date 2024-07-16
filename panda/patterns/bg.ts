@@ -1,12 +1,11 @@
 import type { PatternConfig } from '@pandacss/dev';
 
-export const backgroundColor = {
+export const bg = {
   defaultValues: {},
   properties: {
     color: { type: 'token', value: 'colors' },
   },
   transform(props) {
-    const { color, ...rest } = props;
-    return { backgroundColor: color, ...rest };
+    return props;
   },
 } as const satisfies PatternConfig;

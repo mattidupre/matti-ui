@@ -9,6 +9,7 @@ const style = css({
   transform: 'scale(80%)',
   transitionProperty: 'transform',
   transitionDuration: '0.125s',
+  cursor: 'pointer',
   ['&[data-dragging]']: {
     transform: 'scale(100%)',
   },

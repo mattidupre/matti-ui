@@ -1,6 +1,6 @@
-import { defineDataAttributes } from './lib/defineDataAttributes';
+import { defineDataAttributesConfig } from './lib/defineDataAttributesConfig';
 
-export const DATA_ATTRIBUTES_CONFIG = defineDataAttributes({
+export const DATA_ATTRIBUTES_CONFIG = defineDataAttributesConfig({
   flags: {
     isColorSchemeLight: 'data-color-scheme-light',
     isColorSchemeDark: 'data-color-scheme-dark',

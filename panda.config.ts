@@ -1,13 +1,24 @@
 import { defineConfig } from '@pandacss/dev';
 import {
-  mapSwatchesToIds,
+  mapSwatches,
+  mapSwatchesToPaletteIds,
   mapPalettesToIds,
   swatchDefaultValue,
 } from './shared/entities';
-import { UI_PREFIX } from './shared/constants';
+import { UI_PREFIX, COLOR_SCHEME_CONFIG } from './shared';
+import { globalCss } from './panda/globalCss';
 import * as patterns from './panda/patterns';
+import * as recipes from './panda/recipes';
 
-const COLORS = mapSwatchesToIds(({ colorToken }) => {
+const COLOR_TOKENS_ALL = mapSwatches(
+  ({ colorToken, colorTokenLight, colorTokenDark }) => [
+    colorToken,
+    colorTokenLight,
+    colorTokenDark,
+  ],
+).flat();
+
+const COLORS = mapSwatchesToPaletteIds(({ colorToken }) => {
   return {
     DEFAULT: { value: swatchDefaultValue(colorToken) },
     light: { value: swatchDefaultValue(colorToken, 'light') },
@@ -19,50 +30,50 @@ export default defineConfig({
   include: ['./components/**/*.{js,jsx,ts,tsx}'],
   exclude: [],
   outdir: 'styled-system',
+  prefix: UI_PREFIX,
 
   presets: [],
-  preflight: true,
   eject: false,
 
-  // prefix: UI_PREFIX,
+  preflight: true,
+  jsxFramework: 'react',
+  jsxFactory: 'styled',
+
+  globalCss,
+
+  staticCss: {
+    css: [
+      {
+        properties: {
+          color: COLOR_TOKENS_ALL,
+          backgroundColor: COLOR_TOKENS_ALL,
+        },
+        conditions: ['light', 'dark'],
+        responsive: true,
+      },
+    ],
+  },
+
   patterns,
+
   theme: {
-    // 👇🏻 Define your tokens here
     extend: {
+      recipes,
       tokens: {
         colors: COLORS,
       },
-      // semanticTokens: {
-      //   colors: COLORS,
-      // },
-      // semanticTokens: {
-      //   colors: COLORS,
-      // },
+      semanticTokens: {
+        colors: {
+          currentColor: { value: 'currentColor' },
+        },
+      },
     },
-    //   semanticTokens: {
-    //     colors: {
-    //       extend: {
-    //         accent: {
-    //           '500': {
-    //             value: 'red',
-    //           },
-    //         },
-    //         // ...mapSwatchesToIds(
-    //         //   ({
-    //         //     cssVariableWrapped,
-    //         //     cssVariableWrappedLight,
-    //         //     cssVariableWrappedDark,
-    //         //   }) => {
-    //         //     return { value: cssVariableWrapped };
-    //         //     // return {
-    //         //     //   DEFAULT: { value: cssVariableWrapped },
-    //         //     //   light: { value: cssVariableWrappedLight },
-    //         //     //   dark: { value: cssVariableWrappedDark },
-    //         //     // };
-    //         //   },
-    //         // ),
-    //       },
-    //     },
-    //   },
+  },
+
+  conditions: {
+    extend: {
+      light: `&.${COLOR_SCHEME_CONFIG.className.light}, .${COLOR_SCHEME_CONFIG.className.light} &`,
+      dark: `&.${COLOR_SCHEME_CONFIG.className.dark}, .${COLOR_SCHEME_CONFIG.className.dark} &`,
+    },
   },
 });

@@ -1,4 +1,4 @@
-import { defineColors } from './lib/defineColors';
+import { defineColorsConfig } from './lib/defineColorsConfig';
 
 // https://leonardocolor.io/
 // https://uxdesign.cc/creating-contrast-based-themes-with-leonardo-32b6219a090f
@@ -79,7 +79,7 @@ const COLOR_SWATCHES = [
   color: { light: { lightness: number }; dark: { lightness: number } };
 }>;
 
-export const COLORS_CONFIG = defineColors([
+export const COLORS_CONFIG = defineColorsConfig([
   {
     id: 'primary',
     name: 'Primary',

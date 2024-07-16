@@ -128,7 +128,7 @@ type InferPalettesConfig<TOptions extends ReadonlyArray<DefinePaletteOptions>> =
     }[string];
   };
 
-export const defineColors = <
+export const defineColorsConfig = <
   const TOptions extends ReadonlyArray<DefinePaletteOptions>,
 >(
   options: TOptions,

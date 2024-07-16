@@ -56,7 +56,7 @@
     "lint": "eslint ./{components,panda,shared}/**/*",
     "prepare": "panda codegen",
     "panda": "panda",
-    "test": "vitest",
+    "test": "vitest --typecheck",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

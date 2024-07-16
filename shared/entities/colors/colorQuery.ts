@@ -165,8 +165,6 @@ const swatchQueryToObject = <const TQuery extends SwatchQuery>(
     throw new TypeError('Invalid color query.');
   }
 
-  // TODO: Add assertion.
-
   return {
     paletteId,
     swatchId,

@@ -11,13 +11,13 @@ type ColorSliderProps = {
   onChange: (value: Color) => void;
   value?: Color;
   defaultValue?: Color;
-  pick?: ColorKey | ReadonlyArray<ColorKey>;
+  adjust?: ColorKey | ReadonlyArray<ColorKey>;
 };
 
 const COLOR_KEYS = Object.keys(COLOR_DEFAULTS) as ReadonlyArray<ColorKey>;
 
 const parseColorKeys = (
-  colorKeys: ColorSliderProps['pick'],
+  colorKeys: ColorSliderProps['adjust'],
 ): ReadonlyArray<ColorKey> => {
   const pickArray = Array.isArray(colorKeys) ? colorKeys : [colorKeys];
   return COLOR_KEYS.filter((key) => pickArray.includes(key));
@@ -29,7 +29,7 @@ export const ColorSlider = memo(function ColorSlider({
   onChange,
   value,
   defaultValue,
-  pick = COLOR_KEYS,
+  adjust: pick = COLOR_KEYS,
 }: ColorSliderProps) {
   const [isControlled] = useState(defaultValue === undefined);
   const [valueState, setValueState] = useState<Color>(

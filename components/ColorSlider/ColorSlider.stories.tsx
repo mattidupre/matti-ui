@@ -7,8 +7,17 @@ export default {
   component: ColorSlider,
   decorators: [InputDecorator],
   args: {
-    onChange: action('onChange'),
     label: 'ColorSlider',
+    adjust: ['hue', 'chroma'],
+    onChange: action('onChange'),
+  },
+  argTypes: {
+    adjust: {
+      control: {
+        type: 'inline-check',
+      },
+      options: ['hue', 'chroma'],
+    },
   },
 } satisfies Meta<typeof ColorSlider>;
 

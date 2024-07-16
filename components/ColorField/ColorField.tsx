@@ -5,10 +5,15 @@ import { usePalette } from '../ColorsProvider';
 
 type ColorFieldProps = {
   paletteId: PaletteId;
-  adjust?: ComponentProps<typeof ColorSlider>['pick'];
-};
+  onChange?: ComponentProps<typeof ColorSlider>['onChange'];
+} & Pick<ComponentProps<typeof ColorSlider>, 'label' | 'adjust'>;
 
-export function ColorField({ paletteId, adjust }: ColorFieldProps) {
+export function ColorField({
+  paletteId,
+  adjust,
+  onChange,
+  ...props
+}: ColorFieldProps) {
   const { baseColor, setBaseColor } = usePalette(paletteId);
 
   const defaultColor = useMemo(
@@ -16,20 +21,21 @@ export function ColorField({ paletteId, adjust }: ColorFieldProps) {
     [baseColor],
   );
 
-  const handlePaletteChange = useCallback(
+  const handleChange = useCallback(
     (value: Color) => {
       setBaseColor(value);
+      onChange?.(value);
     },
-    [setBaseColor],
+    [onChange, setBaseColor],
   );
 
   return (
     <ColorSlider
+      {...props}
       key={paletteId}
-      label="Palette"
       defaultValue={defaultColor}
-      pick={adjust}
-      onChange={handlePaletteChange}
+      adjust={adjust}
+      onChange={handleChange}
     />
   );
 }

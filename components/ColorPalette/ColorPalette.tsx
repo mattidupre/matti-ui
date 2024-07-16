@@ -26,7 +26,7 @@ export function ColorPalette({ paletteId, colorScheme }: ColorPaletteProps) {
           width: '[20rem]',
           px: '2rem',
           py: '2rem',
-          backgroundColor: 'grey.100',
+          backgroundColor: 'grey.200',
         })}
       >
         <h2>{paletteName}</h2>

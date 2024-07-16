@@ -61,12 +61,14 @@ export default defineConfig({
       semanticTokens: {
         colors: {
           ...Object.fromEntries(
-            mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
-              colorToken,
-              {
-                value: `light-dark({colors.${colorTokenLight}}, {colors.${colorTokenDark}})`,
-              },
-            ]),
+            mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => {
+              return [
+                colorToken,
+                {
+                  value: `light-dark({colors.${colorTokenLight}}, {colors.${colorTokenDark}})`,
+                },
+              ];
+            }),
           ),
           currentColor: { value: 'currentColor' },
         },

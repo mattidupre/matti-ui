@@ -1,4 +1,4 @@
-import { type ComponentProps, useCallback, useState } from 'react';
+import { type ComponentProps, useCallback, useMemo } from 'react';
 import { ColorSlider } from '../ColorSlider';
 import { extendColor, type Color, type PaletteId } from '../../shared';
 import { usePalette } from '../ColorsProvider';
@@ -9,25 +9,27 @@ type ColorFieldProps = {
 };
 
 export function ColorField({ paletteId, adjust }: ColorFieldProps) {
-  const { color, setColor } = usePalette(paletteId);
+  const { baseColor, setBaseColor } = usePalette(paletteId);
 
-  const [defaultColor] = useState(() => extendColor({ lightness: 0.5 }, color));
+  const defaultColor = useMemo(
+    () => extendColor({ lightness: 0.5 }, baseColor),
+    [baseColor],
+  );
 
   const handlePaletteChange = useCallback(
     (value: Color) => {
-      setColor(value);
+      setBaseColor(value);
     },
-    [setColor],
+    [setBaseColor],
   );
 
   return (
-    <>
-      <ColorSlider
-        label="Palette"
-        defaultValue={defaultColor}
-        pick={adjust}
-        onChange={handlePaletteChange}
-      />
-    </>
+    <ColorSlider
+      key={paletteId}
+      label="Palette"
+      defaultValue={defaultColor}
+      pick={adjust}
+      onChange={handlePaletteChange}
+    />
   );
 }

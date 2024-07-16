@@ -7,8 +7,10 @@ export const globalCss = defineGlobalStyles({
   },
   [`.${COLOR_SCHEME_CONFIG.className.light}`]: {
     colorScheme: 'light',
+    color: 'grey.900',
   },
   [`.${COLOR_SCHEME_CONFIG.className.dark}`]: {
     colorScheme: 'dark',
+    color: 'grey.900',
   },
 });

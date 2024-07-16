@@ -4,10 +4,6 @@ import {
   type LightOrDarkOrBase,
   type LightAndDark,
   type TuplePluck,
-  type CssVariable,
-  type CssVariableWrapped,
-  createCssVariable,
-  createCssVariableWrapped,
 } from '../../utils';
 import type { Color } from '../../entities/colors';
 

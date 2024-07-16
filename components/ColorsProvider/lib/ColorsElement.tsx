@@ -26,7 +26,7 @@ export function ColorsElement({ children }: ColorsElementProps) {
 
       const baseValue = `light-dark(${[
         getColorVariableWrapped(colorTokenLight),
-        getColorVariableWrapped(colorTokenLight),
+        getColorVariableWrapped(colorTokenDark),
       ].join(', ')})`;
 
       return [

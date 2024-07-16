@@ -27,6 +27,10 @@ const {
   swatchIdsByPaletteId,
 } = COLORS_CONFIG;
 
+export const ALL_PALETTE_IDS = Object.freeze([
+  ...paletteIds,
+]) as typeof paletteIds;
+
 const ALL_PALETTES = Object.values(palettesById) as ReadonlyArray<PaletteAny>;
 
 const ALL_SWATCHES = ALL_PALETTES.flatMap(({ swatches }) =>

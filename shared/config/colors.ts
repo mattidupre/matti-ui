@@ -95,154 +95,17 @@ export const COLORS_CONFIG = defineColorsConfig([
     swatches: COLOR_SWATCHES,
   },
   {
-    id: 'site',
-    name: 'Site',
-    isAdjustable: false,
-    base: { hue: 0 },
-    swatches: [
-      {
-        id: 'fill',
-        color: {
-          light: { lightness: 0 },
-          dark: { lightness: 1 },
-        },
-      },
-      {
-        id: 'background',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-    ],
+    id: 'neutral',
+    name: 'Neutral',
+    isAdjustable: true,
+    base: { hue: 200, chroma: 0.02 },
+    swatches: COLOR_SWATCHES,
   },
   {
-    id: 'fill',
-    name: 'Fill',
+    id: 'grey',
+    name: 'Grey',
     isAdjustable: false,
-    base: { chroma: 0 },
-    swatches: [
-      {
-        id: '100',
-        color: {
-          light: { lightness: 0.1 },
-          dark: { lightness: 0.5 },
-        },
-      },
-      {
-        id: '200',
-        color: {
-          light: { lightness: 0.2 },
-          dark: { lightness: 0.4 },
-        },
-      },
-      {
-        id: '300',
-        color: {
-          light: { lightness: 0.3 },
-          dark: { lightness: 0.3 },
-        },
-      },
-      {
-        id: '400',
-        color: {
-          light: { lightness: 0.4 },
-          dark: { lightness: 0.2 },
-        },
-      },
-      {
-        id: '500',
-        color: {
-          light: { lightness: 0.5 },
-          dark: { lightness: 0.1 },
-        },
-      },
-    ],
-  },
-  {
-    id: 'background',
-    name: 'Background',
-    isAdjustable: false,
-    base: { chroma: 0 },
-    swatches: [
-      {
-        id: '500',
-        color: {
-          light: { lightness: 0.5 },
-          dark: { lightness: 0.5 },
-        },
-      },
-      {
-        id: '600',
-        color: {
-          light: { lightness: 0.6 },
-          dark: { lightness: 0.6 },
-        },
-      },
-      {
-        id: '700',
-        color: {
-          light: { lightness: 0.7 },
-          dark: { lightness: 0.7 },
-        },
-      },
-      {
-        id: '800',
-        color: {
-          light: { lightness: 0.8 },
-          dark: { lightness: 0.2 },
-        },
-      },
-      {
-        id: '900',
-        color: {
-          light: { lightness: 0.9 },
-          dark: { lightness: 0.1 },
-        },
-      },
-    ],
-  },
-  {
-    id: 'form',
-    name: 'Form',
-    isAdjustable: false,
-    base: { chroma: 0 },
-    swatches: [
-      {
-        id: 'fill',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: 'background',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: 'disabled',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: 'outline',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-      {
-        id: 'highlight',
-        color: {
-          light: { lightness: 1 },
-          dark: { lightness: 0 },
-        },
-      },
-    ],
+    base: {},
+    swatches: COLOR_SWATCHES,
   },
 ]);

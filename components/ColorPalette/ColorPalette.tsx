@@ -1,8 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { mapSwatches, type PaletteId, getPaletteConfig } from '../../shared';
 import { ColorField } from '../ColorField';
 import { css } from '../../styled-system/css';
 import { usePaletteGamut } from '../ColorsProvider/usePaletteGamut';
+import { ColorSchemeProvider } from '../ColorSchemeProvider';
+import { usePaletteHandle } from '../ColorsProvider';
 import { ColorSwatch } from '.';
 
 type ColorPaletteProps = {
@@ -10,35 +12,55 @@ type ColorPaletteProps = {
   colorScheme?: 'light' | 'dark';
 };
 
-export function ColorPalette({ paletteId }: ColorPaletteProps) {
-  const { paletteName, isAdjustable } = getPaletteConfig(paletteId);
+export function ColorPalette({ paletteId, colorScheme }: ColorPaletteProps) {
+  const { paletteName, isAdjustable, resetBaseColor } =
+    usePaletteHandle(paletteId);
   const { isInGamut } = usePaletteGamut(paletteId);
+
+  const [keyState, setKeyState] = useState(0);
+
   return (
-    <div
-      className={css({
-        width: '20rem',
-        px: '2rem',
-        py: '2rem',
-        backgroundColor: 'background.900',
-      })}
-    >
-      <h2>{paletteName}</h2>
-      <pre>{isInGamut ? 'In gamut' : 'Not in gamut'}</pre>
-      <div>
-        {isAdjustable && (
-          <ColorField paletteId={paletteId} adjust={['chroma', 'hue']} />
-        )}
-        {useMemo(
-          () =>
-            mapSwatches(
-              ({ colorToken, paletteId: thisPaletteId }) =>
-                paletteId === thisPaletteId && (
-                  <ColorSwatch key={colorToken} color={colorToken} />
-                ),
-            ),
-          [paletteId],
-        )}
+    <ColorSchemeProvider colorScheme={colorScheme}>
+      <div
+        className={css({
+          width: '[20rem]',
+          px: '2rem',
+          py: '2rem',
+          backgroundColor: 'grey.100',
+        })}
+      >
+        <h2>{paletteName}</h2>
+        <pre>{isInGamut ? 'In gamut' : 'Not in gamut'}</pre>
+        <div>
+          {isAdjustable && (
+            <>
+              <ColorField
+                paletteId={paletteId}
+                adjust={['chroma', 'hue']}
+                key={keyState}
+              />
+              <button
+                onClick={() => {
+                  resetBaseColor();
+                  setKeyState((n) => n + 1);
+                }}
+              >
+                Reset
+              </button>
+            </>
+          )}
+          {useMemo(
+            () =>
+              mapSwatches(
+                ({ colorToken, paletteId: thisPaletteId }) =>
+                  paletteId === thisPaletteId && (
+                    <ColorSwatch key={colorToken} color={colorToken} />
+                  ),
+              ),
+            [paletteId],
+          )}
+        </div>
       </div>
-    </div>
+    </ColorSchemeProvider>
   );
 }

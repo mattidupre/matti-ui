@@ -9,7 +9,7 @@ import { ColorSchemeContext, colorSchemePreferenceAtom } from './entities';
 
 type ColorSchemeProviderProps = {
   colorScheme?: 'light' | 'dark';
-  children: ReactElement;
+  children: ReactElement | ReadonlyArray<ReactElement>;
 };
 
 export function ColorSchemeProvider({

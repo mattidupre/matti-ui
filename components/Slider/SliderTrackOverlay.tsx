@@ -1,7 +1,7 @@
-import { useSlider } from '../useSlider';
-import { css } from '../../../styled-system/css';
+import { css } from '../../styled-system/css';
+import { useSlider } from './useSlider';
 
-const style = css({
+export const sliderTrackOverlayClassName = css({
   display: 'block',
   position: 'absolute',
   width: '100%',
@@ -13,7 +13,7 @@ const style = css({
   backgroundColor: 'currentColor',
 });
 
-export function TrackOverlay() {
+export function SliderTrackOverlay() {
   const { dataAttributes } = useSlider();
-  return <div className={style} {...dataAttributes} />;
+  return <div className={sliderTrackOverlayClassName} {...dataAttributes} />;
 }

@@ -17,9 +17,9 @@ import {
   SliderContext,
   type SliderContextValue,
 } from './entities';
-import { TrackOverlay } from './lib/TrackOverlay';
+import { SliderTrackOverlay } from './SliderTrackOverlay';
 import { Track } from './lib/Track';
-import { ThumbOverlay } from './lib/ThumbOverlay';
+import { SliderThumbOverlay } from './SliderThumbOverlay';
 
 const styles = css({
   display: 'block',
@@ -39,18 +39,14 @@ type SliderProps = {
   stops?: number;
   value?: number;
   defaultValue?: number;
-  trackClassName?: string;
-  trackRef?: RefObject<HTMLDivElement>;
   trackOverlay?: ReactElement;
-  thumbClassName?: string;
-  thumbRef?: RefObject<HTMLDivElement>;
   thumbOverlay?: ReactElement;
 };
 
 export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
   {
-    trackOverlay = <TrackOverlay />,
-    thumbOverlay = <ThumbOverlay />,
+    trackOverlay = <SliderTrackOverlay />,
+    thumbOverlay = <SliderThumbOverlay />,
     className,
     label,
     value,
@@ -60,16 +56,10 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
     stops = 100,
     minValue = 0,
     maxValue = 1,
-    thumbClassName,
-    thumbRef: thumbRefProp,
-    trackClassName,
-    trackRef: trackRefProp,
   },
   sliderRef,
 ) {
-  const trackRefDefault = useRef(null);
-  const trackRef: NonNullable<SliderProps['trackRef']> =
-    trackRefProp ?? trackRefDefault;
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const [sliderAtom] = useState((): SliderContextValue['sliderAtom'] => {
     const primitive = atom<SliderAtomValue>({
@@ -88,9 +78,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
   });
   const setSliderAtom = useSetAtom(sliderAtom);
 
-  const thumbRefDefault = useRef(null);
-  const thumbRef: NonNullable<SliderProps['thumbRef']> =
-    thumbRefProp ?? thumbRefDefault;
+  const thumbRef = useRef<HTMLDivElement>(null);
 
   const sliderOptions: SliderStateOptions<number> = {
     label,
@@ -128,8 +116,8 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
       }}
     >
       <div className={clsx(styles, className)} ref={sliderRef}>
-        <Track className={trackClassName} overlay={trackOverlay}>
-          <Thumb className={thumbClassName} overlay={thumbOverlay} />
+        <Track overlay={trackOverlay}>
+          <Thumb overlay={thumbOverlay} />
         </Track>
       </div>
     </SliderContext.Provider>

@@ -1,7 +1,7 @@
-import { useSlider } from '../useSlider';
-import { css } from '../../../styled-system/css';
+import { css } from '../../styled-system/css';
+import { useSlider } from './useSlider';
 
-const style = css({
+export const sliderThumbOverlayClassName = css({
   width: '75%',
   height: '75%',
   borderRadius: '50%',
@@ -18,7 +18,7 @@ const style = css({
   },
 });
 
-export function ThumbOverlay() {
+export function SliderThumbOverlay() {
   const { dataAttributes } = useSlider();
-  return <div className={style} {...dataAttributes} />;
+  return <div className={sliderThumbOverlayClassName} {...dataAttributes} />;
 }

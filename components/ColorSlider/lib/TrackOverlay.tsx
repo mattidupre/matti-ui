@@ -1,5 +1,5 @@
 import { colorValue, type Color } from '../../../shared/entities';
-import { useSlider } from '../../Slider';
+import { sliderTrackOverlayClassName } from '../../Slider';
 
 type TrackOverlayProps = {
   pick: keyof Color;
@@ -7,6 +7,10 @@ type TrackOverlayProps = {
 };
 
 export function TrackOverlay({ color }: TrackOverlayProps) {
-  const { value } = useSlider();
-  return <div style={{ backgroundColor: colorValue(color) }}>HERE {value}</div>;
+  return (
+    <div
+      className={sliderTrackOverlayClassName}
+      style={{ backgroundColor: colorValue(color) }}
+    />
+  );
 }

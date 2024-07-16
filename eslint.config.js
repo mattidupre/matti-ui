@@ -35,8 +35,6 @@ const ESLINT_PLUGINS = Object.fromEntries(
   ),
 );
 
-console.log(PATHS.panda);
-
 export default defineFlatConfig([
   {
     files: INCLUDES,

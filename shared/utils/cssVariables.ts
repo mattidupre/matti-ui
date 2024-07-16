@@ -26,6 +26,13 @@ export type CssVariableWrapped<
   TColorScheme extends 'light' | 'dark' | undefined = undefined,
 > = `var(${CssVariable<T, TColorScheme>})`;
 
+export const escapeCssVariable = (value: CssVariable) => {
+  CSS.escape(value) as CssVariable;
+};
+
+export const unescapeCssVariable = (value: CssVariable | CssVariableWrapped) =>
+  value.replaceAll('\\', '');
+
 export const wrapCssVariable = <T extends CssVariable>(value: T) => {
   return `var(${value})` as const;
 };

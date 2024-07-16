@@ -52,18 +52,6 @@ type InferSwatchConfig<
   colorToken: CreateColorToken<TPaletteId, TOptions['id'], undefined>;
   colorTokenLight: CreateColorToken<TPaletteId, TOptions['id'], 'light'>;
   colorTokenDark: CreateColorToken<TPaletteId, TOptions['id'], 'dark'>;
-  cssVariable: CssVariable<`${TPaletteId}-${TOptions['id']}`>;
-  cssVariableLight: CssVariable<`${TPaletteId}-${TOptions['id']}`, 'light'>;
-  cssVariableDark: CssVariable<`${TPaletteId}-${TOptions['id']}`, 'dark'>;
-  cssVariableWrapped: CssVariableWrapped<`${TPaletteId}-${TOptions['id']}`>;
-  cssVariableWrappedLight: CssVariableWrapped<
-    `${TPaletteId}-${TOptions['id']}`,
-    'light'
-  >;
-  cssVariableWrappedDark: CssVariableWrapped<
-    `${TPaletteId}-${TOptions['id']}`,
-    'dark'
-  >;
   color: LightAndDark<Partial<Pick<Color, 'lightness' | 'chroma'>>>;
 };
 
@@ -162,23 +150,6 @@ export const defineColorsConfig = <
         colorToken,
         colorTokenLight,
         colorTokenDark,
-        cssVariable: createCssVariable(`${paletteId}-${swatchId}`),
-        cssVariableLight: createCssVariable(
-          `${paletteId}-${swatchId}`,
-          'light',
-        ),
-        cssVariableDark: createCssVariable(`${paletteId}-${swatchId}`, 'dark'),
-        cssVariableWrapped: createCssVariableWrapped(
-          `${paletteId}-${swatchId}`,
-        ),
-        cssVariableWrappedLight: createCssVariableWrapped(
-          `${paletteId}-${swatchId}`,
-          'light',
-        ),
-        cssVariableWrappedDark: createCssVariableWrapped(
-          `${paletteId}-${swatchId}`,
-          'dark',
-        ),
         color: parseLightOrDarkOrBase(color),
       } satisfies InferSwatchConfig<string, any>;
       swatchIds.push(swatchId);

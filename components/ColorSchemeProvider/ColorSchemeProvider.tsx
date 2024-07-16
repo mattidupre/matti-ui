@@ -1,10 +1,6 @@
 import { useContext, useMemo, type ReactElement } from 'react';
 import { useAtomValue } from 'jotai';
-import {
-  COLOR_SCHEME_DEFAULT,
-  COLOR_SCHEME_CONFIG,
-  useSystemColorScheme,
-} from '../../shared';
+import { COLOR_SCHEME_CONFIG, useSystemColorScheme } from '../../shared';
 import { ColorSchemeContext, colorSchemePreferenceAtom } from './entities';
 
 type ColorSchemeProviderProps = {
@@ -28,7 +24,7 @@ export function ColorSchemeProvider({
     colorSchemeParent ??
     colorSchemePreference ??
     colorSchemeSystem ??
-    COLOR_SCHEME_DEFAULT;
+    COLOR_SCHEME_CONFIG.colorSchemeSsr;
 
   const contextValue = useMemo(() => ({ colorScheme }), [colorScheme]);
 

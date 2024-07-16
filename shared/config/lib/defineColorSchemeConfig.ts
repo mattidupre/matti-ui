@@ -1,5 +1,5 @@
 type DefineColorSchemeOptions = {
-  defaultColorScheme: 'light' | 'dark';
+  colorSchemeSsr: 'light' | 'dark';
   className: {
     light: string;
     dark: string;

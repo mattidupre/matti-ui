@@ -1,14 +1,19 @@
-import { useContext, useMemo, type ReactElement } from 'react';
+import { type CSSProperties, useContext, useMemo, type ReactNode } from 'react';
 import { useAtomValue } from 'jotai';
 import { COLOR_SCHEME_CONFIG, useSystemColorScheme } from '../../shared';
+import { cx } from '../../styled-system/css';
 import { ColorSchemeContext, colorSchemePreferenceAtom } from './entities';
 
 type ColorSchemeProviderProps = {
-  colorScheme?: 'light' | 'dark';
-  children: ReactElement | ReadonlyArray<ReactElement>;
+  className?: string;
+  style?: CSSProperties;
+  colorScheme?: 'light' | 'dark' | 'invert';
+  children?: ReactNode;
 };
 
 export function ColorSchemeProvider({
+  className,
+  style,
   colorScheme: colorSchemeProp,
   children,
 }: ColorSchemeProviderProps) {
@@ -19,18 +24,27 @@ export function ColorSchemeProvider({
 
   const colorSchemeSystem = useSystemColorScheme();
 
-  const colorScheme =
-    colorSchemeProp ??
+  const colorSchemeInherited =
     colorSchemeParent ??
     colorSchemePreference ??
     colorSchemeSystem ??
     COLOR_SCHEME_CONFIG.colorSchemeSsr;
 
+  const colorScheme =
+    colorSchemeProp === 'invert'
+      ? colorSchemeInherited === 'light'
+        ? 'dark'
+        : 'light'
+      : colorSchemeProp ?? colorSchemeInherited;
+
   const contextValue = useMemo(() => ({ colorScheme }), [colorScheme]);
 
   return (
     <ColorSchemeContext.Provider value={contextValue}>
-      <div className={COLOR_SCHEME_CONFIG.className[colorScheme]}>
+      <div
+        className={cx(COLOR_SCHEME_CONFIG.className[colorScheme], className)}
+        style={style}
+      >
         {children}
       </div>
     </ColorSchemeContext.Provider>

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { getColorVariableWrapped } from '../entities';
+import type { ComponentProps } from 'react';
+import { css } from '../../styled-system/css';
 import { ColorSchemeProvider } from './ColorSchemeProvider';
 
 export default {
@@ -7,38 +8,48 @@ export default {
   argTypes: {
     colorScheme: {
       control: 'radio',
-      options: [undefined, 'light', 'dark'],
+      options: [undefined, 'light', 'dark', 'invert'],
     },
   },
 } satisfies Meta<typeof ColorSchemeProvider>;
 
 type Story = StoryObj<typeof ColorSchemeProvider>;
 
-function Element({ children }: { children: string }) {
+const style = css({
+  padding: '[0.5rem]',
+  margin: '[0.5rem]',
+  outline: '1px solid {colors.neutral.500}',
+  color: 'grey.900',
+  backgroundColor: 'neutral.100',
+});
+
+function Scheme({
+  colorScheme,
+  children,
+}: ComponentProps<typeof ColorSchemeProvider>) {
   return (
-    <div
-      style={{
-        color: getColorVariableWrapped('primary.900'),
-        backgroundColor: getColorVariableWrapped('background.900'),
-      }}
-    >
+    <ColorSchemeProvider colorScheme={colorScheme} className={style}>
+      <pre>Color Scheme: {colorScheme}</pre>
       {children}
-    </div>
+    </ColorSchemeProvider>
   );
 }
 
 export const ColorSchemeProviderStory: Story = {
   render: function Render(props) {
     return (
-      <ColorSchemeProvider {...props}>
-        <Element>Dynamic</Element>
-        <ColorSchemeProvider colorScheme="light">
-          <Element>Nested Light</Element>
-        </ColorSchemeProvider>
-        <ColorSchemeProvider colorScheme="dark">
-          <Element>Nested Dark</Element>
-        </ColorSchemeProvider>
-      </ColorSchemeProvider>
+      <div className={style}>
+        <pre>System</pre>
+        <Scheme {...props}>
+          {
+            <>
+              <Scheme colorScheme="invert" />
+              <Scheme colorScheme="light" />
+              <Scheme colorScheme="dark" />
+            </>
+          }
+        </Scheme>
+      </div>
     );
   },
 };

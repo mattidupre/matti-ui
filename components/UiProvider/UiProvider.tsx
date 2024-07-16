@@ -7,6 +7,8 @@ type ProviderProps = {
   children: ReactElement;
 };
 
+// TODO: Verify Jotai is working in isolation.
+
 export function UiProvider({ children }: ProviderProps) {
   return (
     <JotaiProvider>

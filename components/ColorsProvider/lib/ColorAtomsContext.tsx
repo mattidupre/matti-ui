@@ -8,9 +8,12 @@ import {
   type SwatchAtom,
 } from '../../../shared';
 
+export type ColorAtomsContextValue = {
+  palettes: { [TPaletteId in PaletteId]: PaletteAtoms<TPaletteId> };
+};
+
 export const ColorAtomsContext = createContext<
-  | undefined
-  | { palettes: { [TPaletteId in PaletteId]: PaletteAtoms<TPaletteId> } }
+  undefined | ColorAtomsContextValue
 >(undefined);
 
 export const useColorAtomsContext = () =>

@@ -1,10 +1,5 @@
 import { defineConfig } from '@pandacss/dev';
-import {
-  mapSwatches,
-  mapSwatchesToPaletteIds,
-  mapPalettesToIds,
-  swatchDefaultValue,
-} from './shared/entities';
+import { mapSwatches, swatchDefaultValue } from './shared/entities';
 import { UI_PREFIX, COLOR_SCHEME_CONFIG } from './shared';
 import { globalCss } from './panda/globalCss';
 import * as patterns from './panda/patterns';
@@ -17,14 +12,6 @@ const COLOR_TOKENS_ALL = mapSwatches(
     colorTokenDark,
   ],
 ).flat();
-
-const COLORS = mapSwatchesToPaletteIds(({ colorToken }) => {
-  return {
-    DEFAULT: { value: swatchDefaultValue(colorToken) },
-    light: { value: swatchDefaultValue(colorToken, 'light') },
-    dark: { value: swatchDefaultValue(colorToken, 'dark') },
-  };
-});
 
 export default defineConfig({
   include: ['./components/**/*.{js,jsx,ts,tsx}'],
@@ -60,10 +47,26 @@ export default defineConfig({
     extend: {
       recipes,
       tokens: {
-        colors: COLORS,
+        colors: Object.fromEntries(
+          mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
+            [
+              colorTokenLight,
+              { value: swatchDefaultValue(colorToken, 'light') },
+            ],
+            [colorTokenDark, { value: swatchDefaultValue(colorToken, 'dark') }],
+          ]).flat(),
+        ),
       },
       semanticTokens: {
         colors: {
+          ...Object.fromEntries(
+            mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
+              colorToken,
+              {
+                value: `light-dark({colors.${colorTokenLight}}, {colors.${colorTokenDark}})`,
+              },
+            ]),
+          ),
           currentColor: { value: 'currentColor' },
         },
       },

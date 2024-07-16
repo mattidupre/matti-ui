@@ -13,12 +13,12 @@ export function ColorsElement({ children }: ColorsElementProps) {
     mapSwatches(({ colorToken }) => {
       // Because these are static values, hook order is preserved.
       // eslint-disable-next-line react-hooks/rules-of-hooks, no-undef
-      const { value, lightValue, darkValue } = useAtomValue(
+      const { lightValue, darkValue } = useAtomValue(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSwatchAtom(colorToken),
       );
       return [
-        [getColorVariable(colorToken), value],
+        // color token without color scheme is derived from light-dark()
         [getColorVariable(`${colorToken}.light`), lightValue],
         [getColorVariable(`${colorToken}.dark`), darkValue],
       ];

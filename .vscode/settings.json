@@ -1,6 +1,5 @@
 {
   "eslint.useFlatConfig": true,
-  "rewrap.onSave": true,
   "editor.codeActionsOnSave": ["source.fixAll.eslint"],
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.tsdk": "node_modules/typescript/lib",

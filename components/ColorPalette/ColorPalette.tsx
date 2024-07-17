@@ -35,6 +35,7 @@ export function ColorPalette({ paletteId, colorScheme }: ColorPaletteProps) {
           {isAdjustable && (
             <>
               <ColorField
+                label={`Adjust ${paletteName}`}
                 paletteId={paletteId}
                 adjust={['chroma', 'hue']}
                 key={keyState}

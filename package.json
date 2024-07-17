@@ -60,6 +60,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/merriweather": "^5.0.13",
+    "@fontsource/open-sans": "^5.0.28",
     "@pandacss/preset-base": "^0.42.0",
     "@pandacss/preset-panda": "^0.42.0",
     "@types/react": "18.2",

@@ -25,7 +25,7 @@ export default defineConfig({
   preflight: true,
   jsxFramework: 'react',
   jsxFactory: 'styled',
-  strictTokens: true,
+  // strictTokens: true,
 
   globalCss,
 

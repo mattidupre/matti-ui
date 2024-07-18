@@ -1,16 +1,14 @@
 import { defineRecipe } from '@pandacss/dev';
-import {
-  TYPOGRAPHY_CSS_VARIABLES_WRAPPED,
-  TYPOGRAPHY_VARIANT_IDS,
-} from '../../shared';
+import { mapTypographyVariantsToIds } from '../../shared';
 
 export const typography = defineRecipe({
   className: 'typography',
-  base: {},
   variants: {
-    variant: TYPOGRAPHY_CSS_VARIABLES_WRAPPED,
+    variant: {
+      ...mapTypographyVariantsToIds(({ variantId }) => ({
+        typography: variantId,
+      })),
+    },
   },
-  defaultVariants: {
-    variant: TYPOGRAPHY_VARIANT_IDS[0],
-  },
-});
+  staticCss: [{ variant: ['*'] }],
+} as const);

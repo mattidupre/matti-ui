@@ -28,22 +28,19 @@ export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
       variantName: 'Content',
     },
   ],
+  defaultThemeId: 'mixed',
   themes: [
     {
       themeName: 'Mixed Typography',
       themeId: 'mixed',
       variants: {
         heading1: {
-          fontId: 'open-sans',
-          fontFamily: 'Open Sans',
-          fontFallback: ['sans-serif'],
+          fontId: 'merriweather',
           fontWeight: 400,
-          fontStyle: 'normal',
+          fontStyle: 'italic',
         },
         content: {
           fontId: 'merriweather',
-          fontFamily: 'Merriweather',
-          fontFallback: ['serif'],
           fontWeight: 400,
           fontStyle: 'normal',
         },

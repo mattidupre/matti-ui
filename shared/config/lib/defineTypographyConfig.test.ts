@@ -18,10 +18,15 @@ test(defineTypographyConfig, () => {
   for (const [themeId, theme] of Object.entries(themesById)) {
     for (const [variantId, variant] of Object.entries(theme.variants)) {
       expect.soft(variantIds).toContain(variantId);
-      expect
-        .soft(variant)
-        .toEqual(expect.objectContaining({ themeId, variantId }));
+      expect.soft(variant).toEqual(
+        expect.objectContaining({
+          themeId,
+          variantId,
+          cssVariables: expect.objectContaining({}),
+        }),
+      );
       expect.soft(new Set(variantKeys)).toEqual(new Set(Object.keys(variant)));
     }
   }
+  // TODO: Default value
 });

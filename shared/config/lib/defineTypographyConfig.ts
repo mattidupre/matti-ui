@@ -1,16 +1,10 @@
-import type { SimplifyDeep } from 'type-fest';
+import type { Simplify, SimplifyDeep } from 'type-fest';
 import { mapValues } from 'lodash-es';
-import type { TupleRecord, TuplePluck } from '../../utils';
-
-type FontConfig = {
-  fontId: string;
-  fontFamily: string;
-};
-
-type VariantConfig = {
-  variantId: string;
-  variantName: string;
-};
+import {
+  type TupleRecord,
+  type TuplePluck,
+  defineCssVariable,
+} from '../../utils';
 
 const TYPOGRAPHY_VARIANT_KEYS = [
   'themeId',
@@ -20,13 +14,34 @@ const TYPOGRAPHY_VARIANT_KEYS = [
   'fontWeight',
   'fontStyle',
   'fontFamily',
-  'fontFallback',
+  'cssVariables',
 ] as const;
+
+const TYPOGRAPHY_VARIANT_CSS_KEYS = [
+  'fontWeight',
+  'fontStyle',
+  'fontFamily',
+] as const satisfies ReadonlyArray<(typeof TYPOGRAPHY_VARIANT_KEYS)[number]>;
+
+type FontConfig = {
+  fontId: string;
+  fontFamily: string;
+};
+
+type VariantOptions = {
+  variantId: string;
+  variantName: string;
+};
+
+type VariantConfig = VariantOptions & {
+  cssVariables: Record<
+    (typeof TYPOGRAPHY_VARIANT_CSS_KEYS)[number],
+    ReturnType<typeof defineCssVariable>
+  >;
+};
 
 type VariantThemeOptions<TFontId extends string> = {
   fontId: TFontId;
-  fontFamily: string;
-  fontFallback: ReadonlyArray<string>;
   fontWeight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
   fontStyle: 'normal' | 'italic';
 };
@@ -36,6 +51,7 @@ type VariantThemeConfig<
   TVariantId extends string,
   TThemeId extends string,
 > = VariantThemeOptions<TFontId> & {
+  fontFamily: string;
   variantId: TVariantId;
   themeId: TThemeId;
 };
@@ -65,20 +81,23 @@ export const defineTypographyConfig = <
   const TFonts extends ReadonlyArray<{ fontId: string }>,
   const TVariants extends ReadonlyArray<{ variantId: string }>,
   const TThemes extends ReadonlyArray<{ themeId: string }>,
+  const TDefaultThemeId extends TThemes[number]['themeId'],
 >({
   fonts,
   variants,
   themes,
+  defaultThemeId,
 }: {
   // Define more narrow types here instead of in generics prevents inference.
   fonts: TFonts & ReadonlyArray<FontConfig>;
-  variants: TVariants & ReadonlyArray<VariantConfig>;
+  variants: TVariants & ReadonlyArray<VariantOptions>;
   themes: TThemes &
     NoInfer<
       ReadonlyArray<
         ThemeOptions<TFonts[number]['fontId'], TVariants[number]['variantId']>
       >
     >;
+  defaultThemeId: TDefaultThemeId;
 }) => {
   const fontIds: Array<string> = [];
   const fontsById: Record<string, (typeof fonts)[number]> = {};
@@ -89,11 +108,18 @@ export const defineTypographyConfig = <
   }
 
   const variantIds: Array<string> = [];
-  const variantsById: Record<string, (typeof variants)[number]> = {};
+  const variantsById: Record<string, VariantConfig> = {};
   for (const variantOptions of variants) {
     const { variantId } = variantOptions;
     variantIds.push(variantId);
-    variantsById[variantId] = variantOptions;
+    variantsById[variantId] = {
+      ...variantOptions,
+      cssVariables: Object.fromEntries(
+        TYPOGRAPHY_VARIANT_CSS_KEYS.map(
+          (key) => [key, defineCssVariable([variantId, key])] as const,
+        ),
+      ) as VariantConfig['cssVariables'],
+    };
   }
 
   const themeIds: Array<string> = [];
@@ -109,7 +135,6 @@ export const defineTypographyConfig = <
         ...variantsById[variantId],
         ...variantTheme,
         ...fontsById[variantTheme.fontId],
-        fontStyle: variantTheme.fontStyle ?? 'normal',
       })),
     } satisfies ThemeConfig<string, string, string>;
   }
@@ -122,16 +147,19 @@ export const defineTypographyConfig = <
     variantKeys: TYPOGRAPHY_VARIANT_KEYS,
     themeIds,
     themesById,
+    defaultThemeId,
   } as SimplifyDeep<{
     fontIds: TuplePluck<'fontId', TFonts>;
     fontsById: TupleRecord<'fontId', TFonts>;
     variantIds: TuplePluck<'variantId', TVariants>;
-    variantsById: TupleRecord<'variantId', TVariants>;
+    variantsById: TupleRecord<'variantId', TVariants> &
+      Record<TVariants[number]['variantId'], VariantConfig>;
     variantKeys: typeof TYPOGRAPHY_VARIANT_KEYS;
     themeIds: TuplePluck<'themeId', TThemes>;
     themesById: Record<
       TThemes[number]['themeId'],
       ThemeConfig<TFonts[number]['fontId'], TVariants[number]['variantId']>
     >;
+    defaultThemeId: TDefaultThemeId;
   }>;
 };

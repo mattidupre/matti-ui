@@ -1,6 +1,5 @@
-import type { ColorToken } from '../../../shared';
+import { type ColorToken, getSwatchVariable } from '../../../shared';
 import { css } from '../../../styled-system/css';
-import { getColorVariableWrapped } from '../../entities';
 
 const styles = css({
   display: 'block',
@@ -16,7 +15,7 @@ export function ColorSwatchBox({ colorToken }: ColorSwatchBoxProps) {
   return (
     <div
       className={styles}
-      style={{ backgroundColor: getColorVariableWrapped(colorToken) }}
+      style={{ backgroundColor: getSwatchVariable(colorToken).var }}
     />
   );
 }

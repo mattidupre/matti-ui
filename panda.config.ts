@@ -1,13 +1,18 @@
 import { defineConfig } from '@pandacss/dev';
 import {
-  TYPOGRAPHY_VARIANT_DEFAULTS,
+  getTypographyVariant,
+  TYPOGRAPHY_VARIANT_DEFAULT_ID,
   mapSwatches,
   mapTypographyVariants,
   swatchDefaultValue,
+  TYPOGRAPHY_VARIANTS,
+  TYPOGRAPHY_VARIANT_IDS,
+  TYPOGRAPHY_CSS_BY_VARIANT_ID,
 } from './shared/entities';
 import { UI_PREFIX, COLOR_SCHEME_CONFIG } from './shared';
 import { globalCss } from './panda/globalCss';
 import { globalVars } from './panda/globalVars';
+import { plugins } from './panda/plugins';
 import * as patterns from './panda/patterns';
 import * as recipes from './panda/recipes';
 
@@ -29,9 +34,11 @@ export default defineConfig({
   eject: false,
 
   preflight: true,
+  // hash: true,
+  // strictTokens: true,
+
   jsxFramework: 'react',
   jsxFactory: 'styled',
-  // strictTokens: true,
 
   globalCss,
 
@@ -47,26 +54,54 @@ export default defineConfig({
         conditions: ['light', 'dark'],
         responsive: true,
       },
+      {
+        properties: TYPOGRAPHY_VARIANTS.reduce(
+          (result, { cssVariables }) => {
+            for (const [propertyKey, { ref: variableName }] of Object.entries(
+              cssVariables,
+            )) {
+              result[propertyKey] ??= [];
+              result[propertyKey].push(variableName);
+            }
+            return result;
+          },
+          {} as Record<string, Array<string>>,
+        ),
+      },
     ],
   },
 
   patterns,
 
+  utilities: {
+    extend: {
+      typography: {
+        values: TYPOGRAPHY_VARIANT_IDS,
+        transform(variantId, { token }) {
+          return TYPOGRAPHY_CSS_BY_VARIANT_ID[variantId];
+        },
+      },
+    },
+  },
+
   theme: {
     extend: {
       recipes,
       tokens: {
-        // fonts: Object.fromEntries(
-        //   mapTypographyVariants(({ variantId }) => {
-        //     const variant = TYPOGRAPHY_VARIANT_DEFAULTS[variantId];
-        //     return [
-        //       variantId,
-        //       {
-        //         value: [variant.fontFamily, ...variant.fontFallback],
-        //       },
-        //     ];
-        //   }),
-        // ),
+        fonts: Object.fromEntries(
+          mapTypographyVariants(({ variantId }) => {
+            const { fontFamily } = getTypographyVariant(
+              TYPOGRAPHY_VARIANT_DEFAULT_ID,
+              variantId,
+            );
+            return [
+              variantId,
+              {
+                value: fontFamily,
+              },
+            ];
+          }),
+        ),
         colors: Object.fromEntries(
           mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
             [
@@ -101,4 +136,6 @@ export default defineConfig({
       dark: `&.${COLOR_SCHEME_CONFIG.className.dark}, .${COLOR_SCHEME_CONFIG.className.dark} &`,
     },
   },
+
+  plugins,
 });

@@ -27,3 +27,10 @@ export type TupleRecord<
     ? Simplify<TupleRecord<TIdProperty, TRest, TResult & Record<TId, TObject>>>
     : TResult
   : TResult;
+
+export type TupleNonNullable<TTuple extends ReadonlyArray<unknown>> =
+  TTuple extends readonly [infer T, ...infer TRest]
+    ? T extends null | undefined
+      ? TupleNonNullable<TRest>
+      : [T, ...TupleNonNullable<TRest>]
+    : [];

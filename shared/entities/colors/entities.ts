@@ -1,5 +1,10 @@
 import { COLORS_CONFIG } from '../../config';
-import type { LightAndDark, LightOrDarkOrBase, Oklch } from '../../utils';
+import {
+  defineCssVariable,
+  type LightAndDark,
+  type LightOrDarkOrBase,
+  type Oklch,
+} from '../../utils';
 import {
   type ColorToken,
   type ParseSwatchQuery,
@@ -292,4 +297,9 @@ export const mapPaletteSwatchesToColorTokens = <
     ColorToken<{ paletteId: TPaletteId; swatchId: SwatchId<TPaletteId> }>,
     T
   >;
+};
+
+export const getSwatchVariable = (query: SwatchQuery) => {
+  const { paletteId, swatchId, colorScheme } = parseSwatchQuery(query);
+  return defineCssVariable([paletteId, swatchId, colorScheme]);
 };

@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import { useAtomValue } from 'jotai';
-import { mapSwatches } from '../../../shared';
-import { getColorVariable, getColorVariableWrapped } from '../../entities';
+import { mapSwatches, getSwatchVariable } from '../../../shared';
 import { useSwatchAtom } from './ColorAtomsContext';
 
 type ColorsElementProps = {
@@ -17,22 +16,15 @@ export function ColorsElement({ children }: ColorsElementProps) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSwatchAtom(colorToken),
       );
-
-      const baseVariable = getColorVariable(colorToken);
-      const lightVariable = getColorVariable(colorTokenLight);
-      const darkVariable = getColorVariable(colorTokenDark);
-
-      // console.log({ baseVariable, lightVariable, darkVariable });
-
       const baseValue = `light-dark(${[
-        getColorVariableWrapped(colorTokenLight),
-        getColorVariableWrapped(colorTokenDark),
+        getSwatchVariable(colorTokenLight).ref,
+        getSwatchVariable(colorTokenDark).ref,
       ].join(', ')})`;
 
       return [
-        [baseVariable, baseValue],
-        [lightVariable, lightValue],
-        [darkVariable, darkValue],
+        [getSwatchVariable(colorToken).var, baseValue],
+        [getSwatchVariable(colorTokenLight).var, lightValue],
+        [getSwatchVariable(colorTokenDark).var, darkValue],
       ];
     }).flat(),
   );

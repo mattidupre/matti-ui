@@ -1,28 +1,51 @@
-import { defineTypogragraphyConfig } from './lib/defineTypographyConfig';
-import '';
+import { defineTypographyConfig } from './lib/defineTypographyConfig';
+// TODO: Only import styles and weights used.
+// import '@fontsource/merriweather';
+// import '@fontsource/open-sans';
 
 // TODO: https://panda-css.com/docs/guides/fonts
 // TODO: https://fontsource.org/docs/getting-started
+// TODO: Preload vital fonts https://fontsource.org/docs/getting-started/preload
 
-export const TYPOGRAPHY_CONFIG = defineTypogragraphyConfig({
+export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
   fonts: [
-    { fontId: 'font1', fontPath: '/' },
-    { fontId: 'font2', fontPath: '/asdf' },
+    {
+      fontFamily: 'Open Sans',
+      fontId: 'open-sans',
+    },
+    {
+      fontFamily: 'Merriweather',
+      fontId: 'merriweather',
+    },
   ],
   variants: [
-    { variantId: 'variant1', variantName: 'Variant 1' },
-    { variantId: 'variant2', variantName: 'Variant 2' },
+    {
+      variantId: 'heading1',
+      variantName: 'Heading 1',
+    },
+    {
+      variantId: 'content',
+      variantName: 'Content',
+    },
   ],
   themes: [
     {
-      themeName: 'Theme 1',
-      themeId: 'theme1',
+      themeName: 'Mixed Typography',
+      themeId: 'mixed',
       variants: {
-        variant1: {
-          fontId: 'font1',
+        heading1: {
+          fontId: 'open-sans',
+          fontFamily: 'Open Sans',
+          fontFallback: ['sans-serif'],
+          fontWeight: 400,
+          fontStyle: 'normal',
         },
-        variant2: {
-          fontId: 'font1',
+        content: {
+          fontId: 'merriweather',
+          fontFamily: 'Merriweather',
+          fontFallback: ['serif'],
+          fontWeight: 400,
+          fontStyle: 'normal',
         },
       },
     },

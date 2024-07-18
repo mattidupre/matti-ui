@@ -1,1 +1,1 @@
-export * from './bg';
+export {};

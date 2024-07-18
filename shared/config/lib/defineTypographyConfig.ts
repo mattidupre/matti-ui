@@ -4,12 +4,40 @@ import type { TupleRecord, TuplePluck } from '../../utils';
 
 type FontConfig = {
   fontId: string;
-  fontPath: string;
+  fontFamily: string;
 };
 
 type VariantConfig = {
   variantId: string;
   variantName: string;
+};
+
+const TYPOGRAPHY_VARIANT_KEYS = [
+  'themeId',
+  'variantId',
+  'variantName',
+  'fontId',
+  'fontWeight',
+  'fontStyle',
+  'fontFamily',
+  'fontFallback',
+] as const;
+
+type VariantThemeOptions<TFontId extends string> = {
+  fontId: TFontId;
+  fontFamily: string;
+  fontFallback: ReadonlyArray<string>;
+  fontWeight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+  fontStyle: 'normal' | 'italic';
+};
+
+type VariantThemeConfig<
+  TFontId extends string,
+  TVariantId extends string,
+  TThemeId extends string,
+> = VariantThemeOptions<TFontId> & {
+  variantId: TVariantId;
+  themeId: TThemeId;
 };
 
 type ThemeOptions<
@@ -19,25 +47,21 @@ type ThemeOptions<
   themeId: string;
   themeName: string;
   variants: {
-    [V in TVariantId]: {
-      fontId: TFontId;
-    };
+    [V in TVariantId]: VariantThemeOptions<TFontId>;
   };
 };
 
 type ThemeConfig<
   TFontId extends string,
   TVariantId extends string = string,
+  TThemeId extends string = string,
 > = Omit<ThemeOptions<TFontId, TVariantId>, 'variants'> & {
   variants: {
-    [V in TVariantId]: VariantConfig & {
-      fontId: TFontId;
-      font: FontConfig & { fontId: string };
-    };
+    [V in TVariantId]: VariantThemeConfig<TFontId, TVariantId, TThemeId>;
   };
 };
 
-export const defineTypogragraphyConfig = <
+export const defineTypographyConfig = <
   const TFonts extends ReadonlyArray<{ fontId: string }>,
   const TVariants extends ReadonlyArray<{ variantId: string }>,
   const TThemes extends ReadonlyArray<{ themeId: string }>,
@@ -47,9 +71,8 @@ export const defineTypogragraphyConfig = <
   themes,
 }: {
   // Define more narrow types here instead of in generics prevents inference.
-  fonts: TFonts & ReadonlyArray<{ fontId: string; fontPath: string }>;
-  variants: TVariants &
-    ReadonlyArray<{ variantId: string; variantName: string }>;
+  fonts: TFonts & ReadonlyArray<FontConfig>;
+  variants: TVariants & ReadonlyArray<VariantConfig>;
   themes: TThemes &
     NoInfer<
       ReadonlyArray<
@@ -81,12 +104,14 @@ export const defineTypogragraphyConfig = <
     themesById[themeId] = {
       ...themeRest,
       themeId,
-      variants: mapValues(variants, ({ fontId }, variantId) => ({
+      variants: mapValues(variants, (variantTheme, variantId) => ({
+        themeId,
         ...variantsById[variantId],
-        fontId,
-        font: fontsById[fontId],
+        ...variantTheme,
+        ...fontsById[variantTheme.fontId],
+        fontStyle: variantTheme.fontStyle ?? 'normal',
       })),
-    };
+    } satisfies ThemeConfig<string, string, string>;
   }
 
   return {
@@ -94,6 +119,7 @@ export const defineTypogragraphyConfig = <
     fontsById,
     variantIds,
     variantsById,
+    variantKeys: TYPOGRAPHY_VARIANT_KEYS,
     themeIds,
     themesById,
   } as SimplifyDeep<{
@@ -101,6 +127,7 @@ export const defineTypogragraphyConfig = <
     fontsById: TupleRecord<'fontId', TFonts>;
     variantIds: TuplePluck<'variantId', TVariants>;
     variantsById: TupleRecord<'variantId', TVariants>;
+    variantKeys: typeof TYPOGRAPHY_VARIANT_KEYS;
     themeIds: TuplePluck<'themeId', TThemes>;
     themesById: Record<
       TThemes[number]['themeId'],

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "emitDeclarationOnly": false,
+    "incremental": true,
+    "tsBuildInfoFile": "/Users/mattidupre/Repositories/matti-ui/node_modules/.pnpm/vitest@1.6.0/node_modules/vitest/dist/vendor/tsconfig.tmp.tsbuildinfo"
+  },
+  "include": [
+    "./components/**/*",
+    "./shared/**/*",
+    "./panda/**/*"
+  ]
+}

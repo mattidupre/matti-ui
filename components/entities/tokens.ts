@@ -33,30 +33,28 @@ const CSS_VARIABLES_WRAPPED = Object.fromEntries(
 ) as Record<ColorToken, CssVariableWrapped>;
 
 const CSS_VARIABLES_UNWRAPPED = Object.fromEntries(
-  mapSwatches(({ colorToken }) => [
+  mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
     [
-      `${colorToken}`,
+      colorToken,
       unescapeCssVariable(
         unwrapCssVariable(
-          token.var(`colors.${colorToken}` as Token) as CssVariableWrapped,
+          token.var(`colors.${colorToken}`) as CssVariableWrapped,
         ) as CssVariable,
       ),
     ],
     [
-      `${colorToken}.light`,
+      colorTokenLight,
       unescapeCssVariable(
         unwrapCssVariable(
-          token.var(
-            `colors.${colorToken}.light` as Token,
-          ) as CssVariableWrapped,
+          token.var(`colors.${colorTokenLight}`) as CssVariableWrapped,
         ) as CssVariable,
       ),
     ],
     [
-      `${colorToken}.dark`,
+      colorTokenDark,
       unescapeCssVariable(
         unwrapCssVariable(
-          token.var(`colors.${colorToken}.dark` as Token) as CssVariableWrapped,
+          token.var(`colors.${colorTokenDark}`) as CssVariableWrapped,
         ) as CssVariable,
       ),
     ],

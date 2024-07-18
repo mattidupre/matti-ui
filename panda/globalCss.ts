@@ -8,9 +8,9 @@ export const globalCss = defineGlobalStyles({
     backgroundColor: 'light-dark(white, black)',
   },
   [`.${COLOR_SCHEME_CONFIG.className.light}`]: {
-    colorScheme: 'light',
+    colorScheme: 'only light',
   },
   [`.${COLOR_SCHEME_CONFIG.className.dark}`]: {
-    colorScheme: 'dark',
+    colorScheme: 'only dark',
   },
 });

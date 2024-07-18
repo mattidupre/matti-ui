@@ -1,7 +1,13 @@
 import { defineConfig } from '@pandacss/dev';
-import { mapSwatches, swatchDefaultValue } from './shared/entities';
+import {
+  TYPOGRAPHY_VARIANT_DEFAULTS,
+  mapSwatches,
+  mapTypographyVariants,
+  swatchDefaultValue,
+} from './shared/entities';
 import { UI_PREFIX, COLOR_SCHEME_CONFIG } from './shared';
 import { globalCss } from './panda/globalCss';
+import { globalVars } from './panda/globalVars';
 import * as patterns from './panda/patterns';
 import * as recipes from './panda/recipes';
 
@@ -29,6 +35,8 @@ export default defineConfig({
 
   globalCss,
 
+  globalVars,
+
   staticCss: {
     css: [
       {
@@ -48,6 +56,17 @@ export default defineConfig({
     extend: {
       recipes,
       tokens: {
+        // fonts: Object.fromEntries(
+        //   mapTypographyVariants(({ variantId }) => {
+        //     const variant = TYPOGRAPHY_VARIANT_DEFAULTS[variantId];
+        //     return [
+        //       variantId,
+        //       {
+        //         value: [variant.fontFamily, ...variant.fontFallback],
+        //       },
+        //     ];
+        //   }),
+        // ),
         colors: Object.fromEntries(
           mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
             [

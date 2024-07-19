@@ -18,15 +18,19 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
     "@pandacss/dev": "^0.41.0",
+    "@pandacss/eslint-plugin": "^0.1.9",
+    "@storybook/addon-actions": "^8.1.11",
     "@storybook/addon-essentials": "^8.1.11",
     "@storybook/addon-interactions": "^8.1.11",
     "@storybook/addon-links": "^8.1.11",
-    "@storybook/addon-onboarding": "^8.1.11",
     "@storybook/blocks": "^8.1.11",
+    "@storybook/preview-api": "^8.1.11",
     "@storybook/react": "^8.1.11",
     "@storybook/react-vite": "^8.1.11",
     "@storybook/test": "^8.1.11",
     "@stylistic/eslint-plugin": "^2.3.0",
+    "@types/culori": "^2.1.1",
+    "@types/lodash-es": "^4.17.12",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "eslint-define-config": "^2.1.0",
@@ -41,6 +45,7 @@
     "eslint-plugin-unicorn": "^54.0.0",
     "eslint-plugin-unused-imports": "^4.0.0",
     "storybook": "^8.1.11",
+    "type-fest": "^4.21.0",
     "typescript": "^5.4.5",
     "vite": "^5.3.3",
     "vitest": "^1.6.0"
@@ -48,12 +53,28 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "lint": "eslint ./src/**/*",
-    "prepare": "panda codegen"
+    "lint": "eslint ./{components,panda,shared}/**/*",
+    "prepare": "panda codegen",
+    "panda": "panda",
+    "test": "vitest --typecheck",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/merriweather": "^5.0.13",
+    "@fontsource/open-sans": "^5.0.28",
+    "@pandacss/preset-base": "^0.42.0",
+    "@pandacss/preset-panda": "^0.42.0",
     "@types/react": "18.2",
+    "clsx": "^2.1.1",
+    "culori": "^4.0.1",
     "eslint": "8",
-    "react": "18.2"
+    "jotai": "^2.8.4",
+    "jotai-scope": "^0.6.0",
+    "lodash-es": "^4.17.21",
+    "react": "18.2",
+    "react-aria": "^3.33.1",
+    "react-merge-refs": "^2.1.1",
+    "react-stately": "^3.31.1",
+    "storybook-addon-jotai": "^0.0.6"
   }
 }

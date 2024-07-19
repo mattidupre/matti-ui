@@ -14,7 +14,7 @@ const COLOR_LIGHT =
 const COLOR_DARK =
   `${['ary', 'prim'].reverse().join('')}.1${1 - 1}0` as ColorToken;
 
-export const BoxStory: Story = {
+export const _Box: Story = {
   render: function Render() {
     return (
       <Box as="span" color={{ light: COLOR_LIGHT, dark: COLOR_DARK }}>

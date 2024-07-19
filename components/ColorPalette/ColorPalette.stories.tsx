@@ -27,6 +27,4 @@ export default {
 
 type Story = StoryObj<typeof ColorPalette>;
 
-export const ColorPaletteStory: Story = {
-  name: 'ColorPalette',
-};
+export const _ColorPalette: Story = {};

@@ -35,6 +35,22 @@ export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
       themeId: 'mixed',
       variants: {
         heading1: {
+          fontId: 'open-sans',
+          fontWeight: 400,
+          fontStyle: 'italic',
+        },
+        content: {
+          fontId: 'merriweather',
+          fontWeight: 400,
+          fontStyle: 'normal',
+        },
+      },
+    },
+    {
+      themeName: 'Serif Only',
+      themeId: 'serif-only',
+      variants: {
+        heading1: {
           fontId: 'merriweather',
           fontWeight: 400,
           fontStyle: 'italic',

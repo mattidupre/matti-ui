@@ -15,6 +15,8 @@ const {
 
 export type FontId = (typeof fontIds)[number];
 
+export const TYPOGRAPHY_THEME_IDS = themeIds;
+
 export type TypographyThemeId = (typeof themeIds)[number];
 
 export type TypographyVariantId = (typeof variantIds)[number];
@@ -32,7 +34,7 @@ export type TypographyVariant<
     (typeof themesById)[TThemeId]['variants'][TypographyVariantId]
 >;
 
-export const TYPOGRAPHY_VARIANT_DEFAULT_ID = defaultThemeId;
+export const TYPOGRAPHY_THEME_DEFAULT_ID = defaultThemeId;
 
 export const mapTypographyVariants = <T>(
   callback: (variant: TypographyVariantConfig) => T,

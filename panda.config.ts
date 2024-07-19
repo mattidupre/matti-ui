@@ -1,7 +1,7 @@
 import { defineConfig } from '@pandacss/dev';
 import {
   getTypographyVariant,
-  TYPOGRAPHY_VARIANT_DEFAULT_ID,
+  TYPOGRAPHY_THEME_DEFAULT_ID,
   mapSwatches,
   mapTypographyVariants,
   swatchDefaultValue,
@@ -91,7 +91,7 @@ export default defineConfig({
         fonts: Object.fromEntries(
           mapTypographyVariants(({ variantId }) => {
             const { fontFamily } = getTypographyVariant(
-              TYPOGRAPHY_VARIANT_DEFAULT_ID,
+              TYPOGRAPHY_THEME_DEFAULT_ID,
               variantId,
             );
             return [

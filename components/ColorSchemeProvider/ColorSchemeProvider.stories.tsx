@@ -35,7 +35,7 @@ function Scheme({
   );
 }
 
-export const ColorSchemeProviderStory: Story = {
+export const _ColorSchemeProvider: Story = {
   render: function Render(props) {
     return (
       <div className={style}>

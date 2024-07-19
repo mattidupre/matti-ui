@@ -29,4 +29,4 @@ export default {
 
 type Story = StoryObj<typeof ColorField>;
 
-export const ColorFieldStory: Story = {};
+export const _ColorField: Story = {};

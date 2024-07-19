@@ -25,4 +25,4 @@ export default {
 
 type Story = StoryObj<typeof Typography>;
 
-export const TypographyStory: Story = {};
+export const _Typography: Story = {};

@@ -7,6 +7,12 @@ import { defineTypographyConfig } from './lib/defineTypographyConfig';
 // TODO: https://fontsource.org/docs/getting-started
 // TODO: Preload vital fonts https://fontsource.org/docs/getting-started/preload
 
+const UI = {
+  fontId: 'open-sans',
+  fontWeight: 400,
+  fontStyle: 'normal',
+} as const;
+
 export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
   fonts: [
     {
@@ -27,6 +33,10 @@ export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
       variantId: 'content',
       variantName: 'Content',
     },
+    {
+      variantId: 'ui',
+      variantName: 'UI',
+    },
   ],
   defaultThemeId: 'mixed',
   themes: [
@@ -44,6 +54,7 @@ export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
           fontWeight: 400,
           fontStyle: 'normal',
         },
+        ui: UI,
       },
     },
     {
@@ -60,6 +71,7 @@ export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
           fontWeight: 400,
           fontStyle: 'normal',
         },
+        ui: UI,
       },
     },
   ],

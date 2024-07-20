@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
-import { mapSwatches, type PaletteId, getPaletteConfig } from '../../shared';
+import { mapSwatches, type PaletteId } from '../../shared';
 import { ColorField } from '../ColorField';
 import { css } from '../../styled-system/css';
 import { usePaletteGamut } from '../ColorsProvider/usePaletteGamut';
 import { ColorSchemeProvider } from '../ColorSchemeProvider';
 import { usePaletteHandle } from '../ColorsProvider';
+import { IsInGamut } from './lib/IsInGamut';
 import { ColorSwatch } from '.';
 
 type ColorPaletteProps = {
@@ -30,7 +31,7 @@ export function ColorPalette({ paletteId, colorScheme }: ColorPaletteProps) {
         })}
       >
         <h2>{paletteName}</h2>
-        <pre>{isInGamut ? 'In gamut' : 'Not in gamut'}</pre>
+        <IsInGamut isInGamut={isInGamut} />
         <div>
           {isAdjustable && (
             <>

@@ -6,7 +6,6 @@ import { defineCssVariable } from '../utils';
 const {
   fontIds,
   variantIds,
-  variantKeys,
   defaultThemeId,
   variantsById,
   themeIds,

@@ -28,9 +28,11 @@ function Scheme({
   children,
 }: ComponentProps<typeof ColorSchemeProvider>) {
   return (
-    <ColorSchemeProvider colorScheme={colorScheme} className={style}>
-      <pre>Color Scheme: {colorScheme}</pre>
-      {children}
+    <ColorSchemeProvider colorScheme={colorScheme}>
+      <div className={style}>
+        <pre>Color Scheme: {colorScheme ?? 'undefined'}</pre>
+        {children}
+      </div>
     </ColorSchemeProvider>
   );
 }

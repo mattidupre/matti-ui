@@ -1,24 +1,31 @@
-import { type CSSProperties, useContext, useMemo, type ReactNode } from 'react';
+import {
+  type CSSProperties,
+  useContext,
+  useMemo,
+  type ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 import { useAtomValue } from 'jotai';
 import { COLOR_SCHEME_CONFIG, useSystemColorScheme } from '../../shared';
 import { cx } from '../../styled-system/css';
 import { ColorSchemeContext, colorSchemePreferenceAtom } from './entities';
 
+const classNameStrings = COLOR_SCHEME_CONFIG.className;
+
 type ColorSchemeProviderProps = {
-  className?: string;
-  style?: CSSProperties;
   colorScheme?: 'light' | 'dark' | 'invert';
   children?: ReactNode;
 };
 
 export function ColorSchemeProvider({
-  className,
-  style,
   colorScheme: colorSchemeProp,
   children,
 }: ColorSchemeProviderProps) {
-  const { colorScheme: colorSchemeParent } =
-    useContext(ColorSchemeContext) ?? {};
+  const parentContextValue = useContext(ColorSchemeContext);
+  const isRoot = !parentContextValue;
+
+  const { colorScheme: colorSchemeParent } = parentContextValue ?? {};
 
   const colorSchemePreference = useAtomValue(colorSchemePreferenceAtom);
 
@@ -39,14 +46,32 @@ export function ColorSchemeProvider({
 
   const contextValue = useMemo(() => ({ colorScheme }), [colorScheme]);
 
+  const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = isRoot
+      ? globalThis.document?.querySelector(':root')
+      : divRef.current!;
+
+    if (!element) {
+      return;
+    }
+
+    element.classList.add(classNameStrings[colorScheme]);
+    return () => {
+      element.classList.remove(...Object.values(classNameStrings));
+    };
+  }, [colorScheme, isRoot]);
+
+  const wrappedChildren = isRoot ? (
+    children
+  ) : (
+    <div ref={divRef}>{children}</div>
+  );
+
   return (
     <ColorSchemeContext.Provider value={contextValue}>
-      <div
-        className={cx(COLOR_SCHEME_CONFIG.className[colorScheme], className)}
-        style={style}
-      >
-        {children}
-      </div>
+      {wrappedChildren}
     </ColorSchemeContext.Provider>
   );
 }

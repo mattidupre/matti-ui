@@ -7,9 +7,28 @@ import { createElement } from 'react';
 // TODO: context.globals.theme || 'light';
 
 const preview: Preview = {
+  globalTypes: {
+    colorScheme: {
+      description: 'Global color scheme',
+      defaultValue: 'auto',
+      toolbar: {
+        title: 'Color Scheme',
+        icon: 'circlehollow',
+        items: [
+          { value: undefined, title: 'System' },
+          { value: 'light', title: 'Light' },
+          { value: 'dark', title: 'Dark' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
   decorators: [
     (Story, context) => {
-      return createElement(UiProvider, { children: createElement(Story) });
+      return createElement(UiProvider, {
+        colorScheme: context.globals.colorScheme,
+        children: createElement(Story),
+      });
     },
   ],
 };

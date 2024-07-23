@@ -3,7 +3,12 @@ import type { Preview, ArgTypes } from '@storybook/react';
 import { UiProvider } from '../components';
 import { createElement } from 'react';
 
-export const argTypes: ArgTypes = {};
+export const argTypes: ArgTypes = {
+  children: { control: { disable: true } },
+  className: { control: { disable: true } },
+  ref: { control: { disable: true } },
+  style: { control: { disable: true } },
+};
 
 const preview: Preview = {
   globalTypes: {

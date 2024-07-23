@@ -3,10 +3,12 @@
 import typescriptParser from '@typescript-eslint/parser';
 import { resolveFromRoot, PATHS, EXTENSIONS } from './paths.js';
 import { defineFlatConfig } from 'eslint-define-config';
+import * as mdx from 'eslint-plugin-mdx';
 
+const INCLUDES_BASE = `{components,panda,shared}/**/*`;
+const INCLUDES = [`${INCLUDES_BASE}.{${EXTENSIONS.join(',')}}`];
+const INCLUDES_MDX = [`${INCLUDES_BASE}.mdx`];
 const REACT_VERSION = '18.2';
-const INCLUDES = [`{components,panda,shared}/**/*.{${EXTENSIONS.join(',')}}`];
-const IGNORES = [];
 
 /** @type { Record<string, string> } */
 const PLUGINS = {
@@ -17,6 +19,7 @@ const PLUGINS = {
   js: '@eslint/js',
   jsdoc: 'eslint-plugin-jsdoc',
   'no-autofix': 'eslint-plugin-no-autofix',
+  // mdx: 'eslint-plugin-mdx',
   prettier: 'eslint-plugin-prettier',
   react: 'eslint-plugin-react',
   'react-hooks': 'eslint-plugin-react-hooks',
@@ -35,15 +38,36 @@ const ESLINT_PLUGINS = Object.fromEntries(
   ),
 );
 
+/** @type {ReadonlyArray<any>} **/
+const MDX_CONFIG = [
+  {
+    ...mdx.flat,
+    files: INCLUDES_MDX,
+    processor: mdx.createRemarkProcessor({
+      lintCodeBlocks: true,
+      // languageMapper: {},
+    }),
+  },
+  {
+    ...mdx.flatCodeBlocks,
+    files: INCLUDES_MDX,
+    rules: {
+      ...mdx.flatCodeBlocks.rules,
+    },
+  },
+];
+
+
 export default defineFlatConfig([
   {
-    files: INCLUDES,
+    files: [...INCLUDES, ...INCLUDES_MDX],
     plugins: ESLINT_PLUGINS,
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
         project: PATHS.tsconfig,
         ecmaFeatures: { modules: true },
+        extraFileExtensions: ['.mdx'],
       },
       globals: {
         JSX: true,
@@ -70,7 +94,7 @@ export default defineFlatConfig([
       },
     },
   },
-  { ignores: IGNORES },
+  ...MDX_CONFIG,
   {
     files: INCLUDES,
     rules: {

@@ -3,16 +3,12 @@ import { Card } from './Card';
 
 export default {
   component: Card,
-  // args: {},
-  // argTypes: {
-  //   // style: { control: 'object' },
-  // },
+  args: {
+    children: 'Card Content'
+  },
+  argTypes: {}
 } satisfies Meta<typeof Card>;
 
 type Story = StoryObj<typeof Card>;
 
-export const _Card: Story = {
-  render: function Render() {
-    return <Card>Card</Card>;
-  },
-};
+export const _Card: Story = {};

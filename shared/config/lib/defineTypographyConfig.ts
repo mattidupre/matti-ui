@@ -1,4 +1,4 @@
-import type { Simplify, SimplifyDeep } from 'type-fest';
+import type { SimplifyDeep } from 'type-fest';
 import { mapValues } from 'lodash-es';
 import {
   type TupleRecord,

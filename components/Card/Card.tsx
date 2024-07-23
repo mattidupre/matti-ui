@@ -1,14 +1,27 @@
-import type { ReactNode } from 'react';
+import {
+  type RefObject,
+  forwardRef,
+  type CSSProperties,
+  type ReactNode,
+  type Ref,
+} from 'react';
 import { css, cx } from '../../styled-system/css';
 
 type CardProps = {
+  ref?: Ref<HTMLDivElement>;
   className?: string;
-  children: ReactNode;
+  style?: CSSProperties;
+  children?: ReactNode;
 };
 
-export function Card({ children, className }: CardProps) {
+export const Card = forwardRef(function Card(
+  { style, children, className }: CardProps,
+  ref: Ref<HTMLDivElement>,
+) {
   return (
     <div
+      ref={ref as RefObject<HTMLDivElement>}
+      style={style}
       className={cx(
         css({
           padding: 'sm',
@@ -21,4 +34,4 @@ export function Card({ children, className }: CardProps) {
       {children}
     </div>
   );
-}
+});

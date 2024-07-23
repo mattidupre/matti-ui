@@ -3,8 +3,10 @@ import { Card } from './Card';
 
 export default {
   component: Card,
-  args: {},
-  argTypes: {},
+  // args: {},
+  // argTypes: {
+  //   // style: { control: 'object' },
+  // },
 } satisfies Meta<typeof Card>;
 
 type Story = StoryObj<typeof Card>;

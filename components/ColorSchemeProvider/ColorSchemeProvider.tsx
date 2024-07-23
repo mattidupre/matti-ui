@@ -1,14 +1,6 @@
-import {
-  type CSSProperties,
-  useContext,
-  useMemo,
-  type ReactNode,
-  useEffect,
-  useRef,
-} from 'react';
+import { useContext, useMemo, type ReactNode, useEffect, useRef } from 'react';
 import { useAtomValue } from 'jotai';
 import { COLOR_SCHEME_CONFIG, useSystemColorScheme } from '../../shared';
-import { cx } from '../../styled-system/css';
 import { ColorSchemeContext, colorSchemePreferenceAtom } from './entities';
 
 const classNameStrings = COLOR_SCHEME_CONFIG.className;

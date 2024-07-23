@@ -1,10 +1,9 @@
 import '../index.css';
-import type { Preview } from '@storybook/react';
+import type { Preview, ArgTypes } from '@storybook/react';
 import { UiProvider } from '../components';
 import { createElement } from 'react';
 
-// TODO: https://storybook.js.org/docs/addons/addon-types#toolbars
-// TODO: context.globals.theme || 'light';
+export const argTypes: ArgTypes = {};
 
 const preview: Preview = {
   globalTypes: {
@@ -15,7 +14,7 @@ const preview: Preview = {
         title: 'Color Scheme',
         icon: 'circlehollow',
         items: [
-          { value: undefined, title: 'System' },
+          { value: 'system', title: 'System' },
           { value: 'light', title: 'Light' },
           { value: 'dark', title: 'Dark' },
         ],
@@ -25,8 +24,10 @@ const preview: Preview = {
   },
   decorators: [
     (Story, context) => {
+      const { colorScheme } = context.globals;
+
       return createElement(UiProvider, {
-        colorScheme: context.globals.colorScheme,
+        colorScheme: colorScheme === 'system' ? undefined : colorScheme,
         children: createElement(Story),
       });
     },

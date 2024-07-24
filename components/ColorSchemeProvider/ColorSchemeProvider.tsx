@@ -1,69 +1,39 @@
-import { useContext, useMemo, type ReactNode, useEffect, useRef } from 'react';
-import { useAtomValue } from 'jotai';
-import { COLOR_SCHEME_CONFIG, useSystemColorScheme } from '../../shared';
-import { ColorSchemeContext, colorSchemePreferenceAtom } from './entities';
-
-const classNameStrings = COLOR_SCHEME_CONFIG.className;
+import { useContext, type ReactNode } from 'react';
+import { ColorSchemeRootContext } from './entities';
+import { ColorSchemeRootProvider } from './lib/ColorSchemeRootProvider';
+import { ColorSchemeScopedProvider } from './lib/ColorSchemeScopedProvider';
 
 type ColorSchemeProviderProps = {
-  colorScheme?: 'light' | 'dark' | 'invert';
+  defaultColorScheme?: undefined | 'light' | 'dark';
+  onColorSchemeChange?: (colorScheme: undefined | 'light' | 'dark') => void;
+  colorScheme?: undefined | 'light' | 'dark' | 'invert';
   children?: ReactNode;
 };
 
 export function ColorSchemeProvider({
-  colorScheme: colorSchemeProp,
+  defaultColorScheme,
+  onColorSchemeChange,
+  colorScheme,
   children,
 }: ColorSchemeProviderProps) {
-  const parentContextValue = useContext(ColorSchemeContext);
-  const isRoot = !parentContextValue;
+  const isRoot = !useContext(ColorSchemeRootContext);
 
-  const { colorScheme: colorSchemeParent } = parentContextValue ?? {};
+  if (isRoot && colorScheme !== undefined) {
+    throw new Error(`Fixed color scheme cannot be set at the root level.`);
+  } else if (!isRoot && defaultColorScheme !== undefined) {
+    throw new Error(`Default color scheme can only be set at the root level.`);
+  }
 
-  const colorSchemePreference = useAtomValue(colorSchemePreferenceAtom);
-
-  const colorSchemeSystem = useSystemColorScheme();
-
-  const colorSchemeInherited =
-    colorSchemeParent ??
-    colorSchemePreference ??
-    colorSchemeSystem ??
-    COLOR_SCHEME_CONFIG.colorSchemeSsr;
-
-  const colorScheme =
-    colorSchemeProp === 'invert'
-      ? colorSchemeInherited === 'light'
-        ? 'dark'
-        : 'light'
-      : colorSchemeProp ?? colorSchemeInherited;
-
-  const contextValue = useMemo(() => ({ colorScheme }), [colorScheme]);
-
-  const divRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const element = isRoot
-      ? globalThis.document?.querySelector(':root')
-      : divRef.current!;
-
-    if (!element) {
-      return;
-    }
-
-    element.classList.add(classNameStrings[colorScheme]);
-    return () => {
-      element.classList.remove(...Object.values(classNameStrings));
-    };
-  }, [colorScheme, isRoot]);
-
-  const wrappedChildren = isRoot ? (
-    children
+  return isRoot ? (
+    <ColorSchemeRootProvider
+      defaultColorScheme={defaultColorScheme}
+      onColorSchemeChange={onColorSchemeChange}
+    >
+      {children}
+    </ColorSchemeRootProvider>
   ) : (
-    <div ref={divRef}>{children}</div>
-  );
-
-  return (
-    <ColorSchemeContext.Provider value={contextValue}>
-      {wrappedChildren}
-    </ColorSchemeContext.Provider>
+    <ColorSchemeScopedProvider colorScheme={colorScheme}>
+      {children}
+    </ColorSchemeScopedProvider>
   );
 }

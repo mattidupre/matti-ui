@@ -1,7 +1,7 @@
 import '../index.css';
 import type { Preview, ArgTypes } from '@storybook/react';
-import { UiProvider } from '../components';
-import { createElement } from 'react';
+import { UiProvider2 } from '../components';
+import { useGlobalAtom } from '../helpers/storybook';
 
 export const argTypes: ArgTypes = {
   children: { control: { disable: true } },
@@ -14,7 +14,7 @@ const preview: Preview = {
   globalTypes: {
     colorScheme: {
       description: 'Global color scheme',
-      defaultValue: 'auto',
+      defaultValue: 'system',
       toolbar: {
         title: 'Color Scheme',
         icon: 'circlehollow',
@@ -28,13 +28,18 @@ const preview: Preview = {
     },
   },
   decorators: [
-    (Story, context) => {
-      const { colorScheme } = context.globals;
+    (Story) => {
+      const colorSchemeAtom = useGlobalAtom<undefined | 'light' | 'dark'>(
+        ({ colorScheme }) =>
+          colorScheme === 'system' ? undefined : colorScheme,
+        (colorScheme = 'system') => ({ colorScheme }),
+      );
 
-      return createElement(UiProvider, {
-        colorScheme: colorScheme === 'system' ? undefined : colorScheme,
-        children: createElement(Story),
-      });
+      return (
+        <UiProvider2 colorScheme={colorSchemeAtom}>
+          <Story />
+        </UiProvider2>
+      );
     },
   ],
 };

@@ -5,7 +5,7 @@ import { resolveFromRoot, PATHS, EXTENSIONS } from './paths.js';
 import { defineFlatConfig } from 'eslint-define-config';
 import * as mdx from 'eslint-plugin-mdx';
 
-const INCLUDES_BASE = `{components,panda,shared}/**/*`;
+const INCLUDES_BASE = `{components,helpers,panda,shared}/**/*`;
 const INCLUDES = [`${INCLUDES_BASE}.{${EXTENSIONS.join(',')}}`];
 const INCLUDES_MDX = [`${INCLUDES_BASE}.mdx`];
 const REACT_VERSION = '18.2';
@@ -56,7 +56,6 @@ const MDX_CONFIG = [
     },
   },
 ];
-
 
 export default defineFlatConfig([
   {
@@ -356,7 +355,7 @@ export default defineFlatConfig([
       'unicorn/prefer-string-slice': 'error',
       'unicorn/prefer-string-starts-ends-with': 'error',
       'unicorn/prefer-string-trim-start-end': 'error',
-      'unicorn/prefer-switch': 'error',
+      'unicorn/prefer-switch': 'off',
       'unicorn/prefer-ternary': 'error',
       'unicorn/prefer-top-level-await': 'off',
       'unicorn/prefer-type-error': 'error',

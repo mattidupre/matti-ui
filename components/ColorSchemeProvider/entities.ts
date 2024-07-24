@@ -1,14 +1,13 @@
-import { atom } from 'jotai';
 import { createContext } from 'react';
 
-export const colorSchemePreferenceAtom = atom<undefined | 'light' | 'dark'>(
-  undefined,
-);
+export const ColorSchemeRootContext = createContext<
+  | undefined
+  | {
+      colorScheme: 'light' | 'dark';
+      setColorScheme: (colorScheme: undefined | 'light' | 'dark') => void;
+    }
+>(undefined);
 
-type ColorSchemeContextValue = {
-  colorScheme: 'light' | 'dark';
-};
-
-export const ColorSchemeContext = createContext<
-  undefined | ColorSchemeContextValue
+export const ColorSchemeScopedContext = createContext<
+  undefined | { colorScheme: 'light' | 'dark' }
 >(undefined);

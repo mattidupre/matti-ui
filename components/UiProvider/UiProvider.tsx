@@ -5,6 +5,20 @@ import { ColorsProvider } from '../ColorsProvider';
 import { ColorSchemeProvider } from '../ColorSchemeProvider';
 import { TypographyProvider } from '../TypographyProvider';
 
+// const channel = addons.getChannel();
+// function GlobalsProvider({ children }: { children: ReactNode }) {
+//   useEffect(() => {
+//     const callback = ({ globals }) => {
+//       console.log('HERE', globals);
+//     };
+//     channel.addListener(UPDATE_GLOBALS, callback);
+//     return () => {
+//       channel.removeListener(UPDATE_GLOBALS, callback);
+//     };
+//   }, []);
+//   return children;
+// }
+
 type UiProviderProps = Omit<
   Simplify<
     UnionToIntersection<

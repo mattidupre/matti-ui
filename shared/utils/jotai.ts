@@ -1,7 +1,5 @@
-import { atom, type Atom } from 'jotai';
+import { atom, useAtomValue, type Atom } from 'jotai';
 import type { PrimitiveAtom, WritableAtom } from 'jotai/experimental';
-import { useMemo } from 'react';
-import type { JsonObject, JsonValue, SimplifyDeep } from 'type-fest';
 
 export const isAtom = (value: any): value is Atom<unknown> => {
   if (typeof value !== 'object') {
@@ -21,44 +19,24 @@ export type AtomOrValue<TValue> =
   | PrimitiveAtom<TValue>
   | WritableAtom<TValue, [Partial<TValue>], any>;
 
+export type InferAtomOrValue<TAtomOrValue extends AtomOrValue<unknown>> =
+  TAtomOrValue extends AtomOrValue<infer T> ? T : never;
+
+const noopAtom = atom(() => undefined);
+
+export const useAtomOrValue = <TValue extends AtomOrValue<unknown>>(
+  value: TValue,
+) => {
+  const valueIsAtom = isAtom(value);
+  const atomValue = useAtomValue(valueIsAtom ? value : noopAtom);
+  return (valueIsAtom ? atomValue : value) as InferAtomOrValue<TValue>;
+};
+
 export const asPrimitiveAtom = <TValue extends AtomOrValue<unknown>>(
   value: TValue,
-): [TValue] extends [AtomOrValue<infer T>] ? PrimitiveAtom<T> : never => {
+): PrimitiveAtom<InferAtomOrValue<TValue>> => {
   if (isAtom(value)) {
     return value as any;
   }
   return atom(value) as any;
 };
-
-// export const useAsPrimitiveAtom = <
-//   TValue extends AtomOrValue<unknown>,
-//   TDefaultValue extends
-//     | NoInfer<InferAtomOrValue<TValue>>
-//     | { (): NoInfer<InferAtomOrValue<TValue>> } = never,
-// >(
-//   value: TValue,
-//   defaultValue?: TDefaultValue,
-// ): [TDefaultValue] extends [never]
-//   ? PrimitiveAtom<InferAtomOrValue<TValue>>
-//   : PrimitiveAtom<
-//       | Exclude<InferAtomOrValue<TValue>, undefined>
-//       | (undefined extends InferDefault<TDefaultValue> ? undefined : never)
-//     > => {
-//   const defaultValueCallback = useMemo((): undefined | { (): unknown } => {
-//     if (value !== undefined && value !== null) {
-//       return undefined;
-//     }
-//     if (defaultValue === undefined) {
-//       return undefined;
-//     }
-//     if (typeof defaultValue === 'function') {
-//       return defaultValue as () => unknown;
-//     }
-//     return () => defaultValue;
-//   }, [defaultValue, value]);
-
-//   return useMemo(
-//     (): any => asPrimitiveAtom(value ?? defaultValueCallback?.()),
-//     [defaultValueCallback, value],
-//   );
-// };

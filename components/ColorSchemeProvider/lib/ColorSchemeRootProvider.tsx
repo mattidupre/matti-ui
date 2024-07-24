@@ -6,7 +6,11 @@ import {
   type ContextType,
   useCallback,
 } from 'react';
-import { COLOR_SCHEME_CONFIG, useSystemColorScheme } from '../../../shared';
+import {
+  COLOR_SCHEME_CONFIG,
+  DEFAULT_COLOR_SCHEME,
+  useSystemColorScheme,
+} from '../../../shared';
 import { ColorSchemeRootContext } from '../entities';
 
 const classNameStrings = COLOR_SCHEME_CONFIG.className;
@@ -22,8 +26,7 @@ export function ColorSchemeRootProvider({
   onColorSchemeChange,
   children,
 }: ColorSchemeRootProviderProps) {
-  const systemColorScheme =
-    useSystemColorScheme() ?? COLOR_SCHEME_CONFIG.colorSchemeSsr;
+  const systemColorScheme = useSystemColorScheme() ?? DEFAULT_COLOR_SCHEME;
 
   const [colorSchemeState, setColorSchemeState] = useState<
     undefined | 'light' | 'dark'

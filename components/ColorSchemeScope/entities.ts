@@ -1,5 +1,11 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
+import { useSystemColorScheme } from '../../shared';
 
-export const ColorSchemeScopeContext = createContext<{
-  colorScheme: undefined | 'light' | 'dark';
-}>({ colorScheme: undefined });
+export const ColorSchemeScopeContext = createContext<
+  undefined | 'light' | 'dark'
+>(undefined);
+
+export const useValueAtom = () => {
+  const systemColorScheme = useSystemColorScheme();
+  return useContext(ColorSchemeScopeContext) ?? systemColorScheme;
+};

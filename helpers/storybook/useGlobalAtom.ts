@@ -6,37 +6,24 @@ import { useMemo, useState } from 'react';
 // https://github.com/storybookjs/storybook/blob/2f7072b79a7d18f32effca6860690fe387fdea33/code/core/src/core-events/index.ts
 const UPDATE_GLOBALS = 'updateGlobals';
 
-type Callbacks = [
-  fromGlobals: (globals: Record<string, any>) => any,
-  toGlobals: (value: any) => Record<string, any>,
-];
-
-export const useGlobalAtom: {
-  <TValue = unknown>(globalKey: string): PrimitiveAtom<TValue>;
-  <TValue = unknown>(...args: Callbacks): PrimitiveAtom<TValue>;
-} = (...args) => {
-  const [[fromGlobals, toGlobals]] = useState<Callbacks>(() =>
-    typeof args[0] === 'string'
-      ? [
-          (globals) => globals[args[0] as string],
-          (value) => ({ [args[0] as string]: value }),
-        ]
-      : (args as Callbacks),
-  );
-
+export const useGlobalAtom = <TValue>(globalKey: string) => {
   const [globals, updateGlobals] = useGlobals();
 
-  const [primitiveAtom] = useState(() => atom<unknown>(fromGlobals(globals)));
+  if (!(globalKey in globals)) {
+    throw new Error(`Key "${globalKey}" not found in globals.`);
+  }
+
+  const [primitiveAtom] = useState(() => atom<unknown>(globals[globalKey]));
   const globalAtom = useMemo(
     (): PrimitiveAtom<unknown> =>
       atom(
         (get) => get(primitiveAtom),
         (get, set, value) => {
-          updateGlobals(toGlobals(value));
+          updateGlobals({ [globalKey]: value });
           set(primitiveAtom, value);
         },
       ),
-    [toGlobals, primitiveAtom, updateGlobals],
+    [globalKey, primitiveAtom, updateGlobals],
   );
 
   const setAtom = useSetAtom(primitiveAtom);
@@ -44,11 +31,13 @@ export const useGlobalAtom: {
   useChannel(
     {
       [UPDATE_GLOBALS]: ({ globals }) => {
-        setAtom(fromGlobals(globals));
+        if (globalKey in globals) {
+          setAtom(globals[globalKey]);
+        }
       },
     },
-    [setAtom, fromGlobals],
+    [setAtom, globalKey],
   );
 
-  return globalAtom;
+  return globalAtom as PrimitiveAtom<TValue>;
 };

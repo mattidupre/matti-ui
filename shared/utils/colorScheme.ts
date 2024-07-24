@@ -1,4 +1,8 @@
+import { type Atom, atom, useAtomValue } from 'jotai';
+import { atomFamily } from 'jotai/utils';
 import { useEffect, useState } from 'react';
+
+export const DEFAULT_COLOR_SCHEME = 'dark';
 
 export type LightAndDark<T> = {
   light: T;
@@ -45,23 +49,39 @@ export const parseLightOrDarkOrString = <T extends string>(
   return { light: undefined, dark: undefined, ...value } as LightAndDark<T>;
 };
 
+let systemColorAtom: Atom<'light' | 'dark'>;
+
 /**
- * Will return undefined on SSR.
+ * Defaults to dark.
  */
-export const useSystemColorScheme = () => {
-  const [isDarkMediaQuery] = useState<undefined | MediaQueryList>(() =>
-    globalThis?.matchMedia('(prefers-color-scheme: dark)'),
-  );
-
-  const [colorSchemeState, setColorSchemeState] = useState<
-    undefined | 'light' | 'dark'
-  >(() => (isDarkMediaQuery?.matches ? 'dark' : 'light'));
-
-  useEffect(() => {
-    isDarkMediaQuery?.addEventListener('change', ({ matches }) =>
-      setColorSchemeState(matches ? 'dark' : 'light'),
+export const getSystemColorAtom = () => {
+  if (!systemColorAtom) {
+    const isLightMediaQuery = globalThis?.matchMedia(
+      '(prefers-color-scheme: light)',
     );
-  }, [isDarkMediaQuery]);
+    const primitiveSystemColorAtom = atom<'light' | 'dark'>(
+      isLightMediaQuery ? 'light' : 'dark',
+    );
+    primitiveSystemColorAtom.onMount = (setAtom) => {
+      if (!isLightMediaQuery) {
+        return;
+      }
 
-  return colorSchemeState;
+      const callback = ({ matches }: { matches: boolean }) => {
+        setAtom(matches ? 'dark' : 'light');
+      };
+
+      isLightMediaQuery.addEventListener('change', callback);
+
+      return () => {
+        isLightMediaQuery.removeEventListener('change', callback);
+      };
+    };
+
+    systemColorAtom = atom((get) => get(primitiveSystemColorAtom));
+  }
+
+  return systemColorAtom;
 };
+
+export const useSystemColorScheme = () => useAtomValue(getSystemColorAtom());

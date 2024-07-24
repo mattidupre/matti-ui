@@ -1,7 +1,9 @@
 import '../index.css';
 import type { Preview, ArgTypes } from '@storybook/react';
-import { UiProvider2 } from '../components';
+import { UiProvider } from '../components';
 import { useGlobalAtom } from '../helpers/storybook';
+import { TYPOGRAPHY_CONFIG, TypographyThemeId } from '../shared';
+import { ComponentProps } from 'react';
 
 export const argTypes: ArgTypes = {
   children: { control: { disable: true } },
@@ -26,19 +28,41 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    typographyTheme: {
+      description: 'Global typography theme',
+      defaultValue: TYPOGRAPHY_CONFIG.defaultThemeId,
+      toolbar: {
+        title: 'Typography',
+        icon: 'circlehollow',
+        items: [
+          ...Object.values(TYPOGRAPHY_CONFIG.themesById).map(
+            ({ themeId, themeName }) => ({
+              value: themeId,
+              title: themeName,
+            }),
+          ),
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   decorators: [
     (Story) => {
-      const colorSchemeAtom = useGlobalAtom<undefined | 'light' | 'dark'>(
-        ({ colorScheme }) =>
-          colorScheme === 'system' ? undefined : colorScheme,
-        (colorScheme = 'system') => ({ colorScheme }),
-      );
+      const colorSchemeAtom = useGlobalAtom('colorScheme') as ComponentProps<
+        typeof UiProvider
+      >['colorScheme'];
+
+      const typographyAtom = useGlobalAtom<TypographyThemeId>(
+        'typographyTheme',
+      ) as ComponentProps<typeof UiProvider>['typographyTheme'];
 
       return (
-        <UiProvider2 colorScheme={colorSchemeAtom}>
+        <UiProvider
+          colorScheme={colorSchemeAtom}
+          typographyTheme={typographyAtom}
+        >
           <Story />
-        </UiProvider2>
+        </UiProvider>
       );
     },
   ],

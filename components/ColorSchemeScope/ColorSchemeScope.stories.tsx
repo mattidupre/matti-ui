@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentProps } from 'react';
 import { css } from '../../styled-system/css';
-import { ColorSchemeScope } from './ColorSchemeScope';
-import { useScopedColorScheme } from './useScopedColorScheme';
+import { useAtomOrValue, useSystemColorScheme } from '../../shared';
+import { ColorSchemeScope, useScopedColorScheme } from '.';
 
 export default {
   component: ColorSchemeScope,
@@ -14,7 +14,7 @@ export default {
     },
     colorScheme: {
       control: 'radio',
-      options: [undefined, 'light', 'dark', 'invert'],
+      options: [undefined, 'system', 'light', 'dark', 'invert'],
     },
   },
 } satisfies Meta<typeof ColorSchemeScope>;
@@ -30,9 +30,10 @@ const style = css({
 });
 
 function Scheme({
-  colorScheme,
+  colorScheme: colorSchemeProp,
   children,
 }: ComponentProps<typeof ColorSchemeScope>) {
+  const colorScheme = useAtomOrValue(colorSchemeProp);
   return (
     <ColorSchemeScope colorScheme={colorScheme}>
       <div className={style}>
@@ -46,18 +47,20 @@ function Scheme({
 export const _ColorSchemeScope: Story = {
   render: function Render(props) {
     const colorSchemeCurrent = useScopedColorScheme();
+    const colorSchemeSystem = useSystemColorScheme();
+
     return (
       <div className={style}>
-        <pre>System Color Scheme: {colorSchemeCurrent}</pre>
-        <Scheme colorScheme="invert" />
-        <Scheme colorScheme="light" />
-        <Scheme colorScheme="dark" />
+        <pre>System Color Scheme: {colorSchemeSystem}</pre>
+        <pre>Storybook Color Scheme: {colorSchemeCurrent}</pre>
         <Scheme {...props}>
           {
             <>
-              <Scheme colorScheme="invert" />
               <Scheme colorScheme="light" />
               <Scheme colorScheme="dark" />
+              <Scheme colorScheme="invert" />
+              <Scheme colorScheme={undefined} />
+              <Scheme colorScheme="system" />
             </>
           }
         </Scheme>

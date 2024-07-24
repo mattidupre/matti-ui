@@ -41,7 +41,7 @@ export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
   defaultThemeId: 'mixed',
   themes: [
     {
-      themeName: 'Mixed Typography',
+      themeName: 'Default',
       themeId: 'mixed',
       variants: {
         heading1: {
@@ -58,7 +58,7 @@ export const TYPOGRAPHY_CONFIG = defineTypographyConfig({
       },
     },
     {
-      themeName: 'Serif Only',
+      themeName: 'Prefer Serif',
       themeId: 'serif-only',
       variants: {
         heading1: {

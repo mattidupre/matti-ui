@@ -1,4 +1,4 @@
-import { useContext, useState, type ReactElement } from 'react';
+import { type ReactNode, useContext, useState, type ReactElement } from 'react';
 import {
   createPaletteAtoms,
   mapPalettesToIds,
@@ -13,7 +13,7 @@ import {
 
 type ProviderProps = {
   defaultColors?: Partial<Record<PaletteId, PaletteConfig['base']>>;
-  children: ReactElement;
+  children?: ReactNode;
 };
 
 export function ColorsProvider({

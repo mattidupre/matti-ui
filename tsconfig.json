@@ -11,7 +11,16 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "experimentalDecorators": true
+    "outDir": "./dist",
+    "experimentalDecorators": true,
+    "allowArbitraryExtensions": true
   },
-  "include": ["./components/**/*", "./shared/**/*", "./panda/**/*"]
+  "include": [
+    "./components/**/*.mdx",
+    "./components/**/*",
+    "./helpers/**/*",
+    "./panda/**/*",
+    "./shared/**/*",
+    "./.storybook/**/*"
+  ]
 }

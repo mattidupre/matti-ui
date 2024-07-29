@@ -16,6 +16,9 @@ test(defineTypographyConfig, () => {
   expect.soft(new Set(variantIds)).toEqual(new Set(Object.keys(variantsById)));
   expect.soft(new Set(themeIds)).toEqual(new Set(Object.keys(themesById)));
   for (const [themeId, theme] of Object.entries(themesById)) {
+    expect.soft(theme.themeId).toBeTypeOf('string');
+    expect.soft(theme.themeName).toBeTypeOf('string');
+    expect.soft(theme.themeClassName).toBeTypeOf('string');
     for (const [variantId, variant] of Object.entries(theme.variants)) {
       expect.soft(variantIds).toContain(variantId);
       expect.soft(variant).toEqual(

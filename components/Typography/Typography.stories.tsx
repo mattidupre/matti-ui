@@ -11,7 +11,7 @@ export default {
   argTypes: {
     variant: {
       control: {
-        type: 'radio',
+        type: 'select',
       },
       options: TYPOGRAPHY_VARIANT_IDS,
     },

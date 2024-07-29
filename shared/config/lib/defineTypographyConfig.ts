@@ -1,10 +1,11 @@
-import type { Simplify, SimplifyDeep } from 'type-fest';
+import type { SimplifyDeep } from 'type-fest';
 import { mapValues } from 'lodash-es';
 import {
   type TupleRecord,
   type TuplePluck,
   defineCssVariable,
 } from '../../utils';
+import { UI_PREFIX } from '../../constants';
 
 const TYPOGRAPHY_VARIANT_KEYS = [
   'themeId',
@@ -72,6 +73,7 @@ type ThemeConfig<
   TVariantId extends string = string,
   TThemeId extends string = string,
 > = Omit<ThemeOptions<TFontId, TVariantId>, 'variants'> & {
+  themeClassName: string;
   variants: {
     [V in TVariantId]: VariantThemeConfig<TFontId, TVariantId, TThemeId>;
   };
@@ -130,6 +132,7 @@ export const defineTypographyConfig = <
     themesById[themeId] = {
       ...themeRest,
       themeId,
+      themeClassName: `${UI_PREFIX}-typography-theme--id_${themeId}`,
       variants: mapValues(variants, (variantTheme, variantId) => ({
         themeId,
         ...variantsById[variantId],

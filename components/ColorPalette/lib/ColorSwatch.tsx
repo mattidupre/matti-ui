@@ -6,6 +6,7 @@ import {
 import { css } from '../../../styled-system/css';
 import { useSwatch } from '../../ColorsProvider';
 import { ColorSwatchBox } from './ColorSwatchBox';
+import { IsInGamut } from './IsInGamut';
 
 const styles = css({
   width: '32rem',
@@ -39,7 +40,7 @@ export function ColorSwatch({ color }: ColorSwatchProps) {
       <ColorSwatchBox colorToken={colorToken} />
       <pre>{colorToken}</pre>
       <pre>{colorScheme}</pre>
-      <pre>{inGamut[colorScheme] ? 'gamut okay' : 'gamut invalid'}</pre>
+      <IsInGamut isInGamut={inGamut[colorScheme]} />
       <pre>{stringValue[colorScheme]}</pre>
     </div>
   );

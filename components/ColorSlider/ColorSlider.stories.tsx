@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { InputDecorator, COLOR_DEFAULTS } from '../../shared';
+import { COLOR_DEFAULTS } from '../../shared';
+import { InputDecorator } from '../../helpers/storybook';
 import { ColorSlider } from './ColorSlider';
 
 export default {

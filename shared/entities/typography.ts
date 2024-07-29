@@ -6,7 +6,6 @@ import { defineCssVariable } from '../utils';
 const {
   fontIds,
   variantIds,
-  variantKeys,
   defaultThemeId,
   variantsById,
   themeIds,
@@ -68,11 +67,14 @@ export const getTypographyVariable = (
 ) => defineCssVariable([themeId, variantId, property]);
 
 export const getTypographyVariableValues = (
-  themeId: TypographyThemeId,
+  themeId: undefined | TypographyThemeId,
 ): Record<string, string> => {
   return Object.fromEntries(
     mapTypographyVariants(({ variantId, cssVariables }) => {
-      const variant = getTypographyVariant(themeId, variantId);
+      const variant = getTypographyVariant(
+        themeId ?? defaultThemeId,
+        variantId,
+      );
       return Object.entries(cssVariables).map(
         ([cssProperty, { var: cssVariableName }]) => {
           return [

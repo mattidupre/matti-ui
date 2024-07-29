@@ -8,6 +8,8 @@ import {
   TYPOGRAPHY_VARIANTS,
   TYPOGRAPHY_VARIANT_IDS,
   TYPOGRAPHY_CSS_BY_VARIANT_ID,
+  mapSpacingToIds,
+  mapRadiiToIds,
 } from './shared/entities';
 import { UI_PREFIX, COLOR_SCHEME_CONFIG } from './shared';
 import { globalCss } from './panda/globalCss';
@@ -88,6 +90,20 @@ export default defineConfig({
     extend: {
       recipes,
       tokens: {
+        animations: {},
+        aspectRatios: {},
+        assets: {},
+        colors: Object.fromEntries(
+          mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
+            [
+              colorTokenLight,
+              { value: swatchDefaultValue(colorToken, 'light') },
+            ],
+            [colorTokenDark, { value: swatchDefaultValue(colorToken, 'dark') }],
+          ]).flat(),
+        ),
+        durations: {},
+        easings: {},
         fonts: Object.fromEntries(
           mapTypographyVariants(({ variantId }) => {
             const { fontFamily } = getTypographyVariant(
@@ -102,15 +118,19 @@ export default defineConfig({
             ];
           }),
         ),
-        colors: Object.fromEntries(
-          mapSwatches(({ colorToken, colorTokenLight, colorTokenDark }) => [
-            [
-              colorTokenLight,
-              { value: swatchDefaultValue(colorToken, 'light') },
-            ],
-            [colorTokenDark, { value: swatchDefaultValue(colorToken, 'dark') }],
-          ]).flat(),
-        ),
+        fontSizes: {},
+        fontWeights: {},
+        gradients: {},
+        letterSpacings: {},
+        lineHeights: {},
+        opacity: {},
+        radii: mapRadiiToIds(({ value }) => ({ value })),
+        borders: {},
+        borderWidths: {},
+        shadows: {},
+        sizes: {},
+        spacing: mapSpacingToIds(({ value }) => ({ value })),
+        zIndex: {},
       },
       semanticTokens: {
         colors: {

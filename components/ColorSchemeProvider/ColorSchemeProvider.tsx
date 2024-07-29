@@ -1,52 +1,39 @@
-import { type CSSProperties, useContext, useMemo, type ReactNode } from 'react';
-import { useAtomValue } from 'jotai';
-import { COLOR_SCHEME_CONFIG, useSystemColorScheme } from '../../shared';
-import { cx } from '../../styled-system/css';
-import { ColorSchemeContext, colorSchemePreferenceAtom } from './entities';
+import { useContext, type ReactNode } from 'react';
+import { ColorSchemeRootContext } from './entities';
+import { ColorSchemeRootProvider } from './lib/ColorSchemeRootProvider';
+import { ColorSchemeScopedProvider } from './lib/ColorSchemeScopedProvider';
 
 type ColorSchemeProviderProps = {
-  className?: string;
-  style?: CSSProperties;
-  colorScheme?: 'light' | 'dark' | 'invert';
+  defaultColorScheme?: undefined | 'light' | 'dark';
+  onColorSchemeChange?: (colorScheme: undefined | 'light' | 'dark') => void;
+  colorScheme?: undefined | 'light' | 'dark' | 'invert';
   children?: ReactNode;
 };
 
 export function ColorSchemeProvider({
-  className,
-  style,
-  colorScheme: colorSchemeProp,
+  defaultColorScheme,
+  onColorSchemeChange,
+  colorScheme,
   children,
 }: ColorSchemeProviderProps) {
-  const { colorScheme: colorSchemeParent } =
-    useContext(ColorSchemeContext) ?? {};
+  const isRoot = !useContext(ColorSchemeRootContext);
 
-  const colorSchemePreference = useAtomValue(colorSchemePreferenceAtom);
+  if (isRoot && colorScheme !== undefined) {
+    throw new Error(`Fixed color scheme cannot be set at the root level.`);
+  } else if (!isRoot && defaultColorScheme !== undefined) {
+    throw new Error(`Default color scheme can only be set at the root level.`);
+  }
 
-  const colorSchemeSystem = useSystemColorScheme();
-
-  const colorSchemeInherited =
-    colorSchemeParent ??
-    colorSchemePreference ??
-    colorSchemeSystem ??
-    COLOR_SCHEME_CONFIG.colorSchemeSsr;
-
-  const colorScheme =
-    colorSchemeProp === 'invert'
-      ? colorSchemeInherited === 'light'
-        ? 'dark'
-        : 'light'
-      : colorSchemeProp ?? colorSchemeInherited;
-
-  const contextValue = useMemo(() => ({ colorScheme }), [colorScheme]);
-
-  return (
-    <ColorSchemeContext.Provider value={contextValue}>
-      <div
-        className={cx(COLOR_SCHEME_CONFIG.className[colorScheme], className)}
-        style={style}
-      >
-        {children}
-      </div>
-    </ColorSchemeContext.Provider>
+  return isRoot ? (
+    <ColorSchemeRootProvider
+      defaultColorScheme={defaultColorScheme}
+      onColorSchemeChange={onColorSchemeChange}
+    >
+      {children}
+    </ColorSchemeRootProvider>
+  ) : (
+    <ColorSchemeScopedProvider colorScheme={colorScheme}>
+      {children}
+    </ColorSchemeScopedProvider>
   );
 }

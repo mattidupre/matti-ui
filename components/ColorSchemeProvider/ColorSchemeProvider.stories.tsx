@@ -2,14 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentProps } from 'react';
 import { css } from '../../styled-system/css';
 import { ColorSchemeProvider } from './ColorSchemeProvider';
+import { useColorScheme } from './useColorScheme';
 
 export default {
   component: ColorSchemeProvider,
   argTypes: {
-    colorScheme: {
-      control: 'radio',
-      options: [undefined, 'light', 'dark', 'invert'],
-    },
+    // colorScheme: {
+    //   control: 'radio',
+    //   options: [undefined, 'light', 'dark', 'invert'],
+    // },
   },
 } satisfies Meta<typeof ColorSchemeProvider>;
 
@@ -28,18 +29,21 @@ function Scheme({
   children,
 }: ComponentProps<typeof ColorSchemeProvider>) {
   return (
-    <ColorSchemeProvider colorScheme={colorScheme} className={style}>
-      <pre>Color Scheme: {colorScheme}</pre>
-      {children}
+    <ColorSchemeProvider colorScheme={colorScheme}>
+      <div className={style}>
+        <pre>Color Scheme: {colorScheme ?? 'undefined'}</pre>
+        {children}
+      </div>
     </ColorSchemeProvider>
   );
 }
 
 export const _ColorSchemeProvider: Story = {
   render: function Render(props) {
+    const { colorSchemeCurrent } = useColorScheme();
     return (
       <div className={style}>
-        <pre>System</pre>
+        <pre>System: {colorSchemeCurrent}</pre>
         <Scheme {...props}>
           {
             <>
